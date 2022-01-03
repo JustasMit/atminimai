@@ -6,5 +6,24 @@ body {
 	padding: 0;
 	margin: 0;
 	height: 100%;
-	width: 100%;
+	width: 70%;
+    float: right;
+}
+
+.objectTable {
+	height: 100%;
+	width: 30%;
+	float: left;
+	overflow: scroll;
+	overflow-x: hidden;
+	position: relative;
+    display: block;
+}
+
+.esri-popup__main-container.esri-widget {
+	width: 450px !important;
+}
+
+.add-margin-bottom {
+	margin-bottom: 7px;
 }

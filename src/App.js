@@ -1,52 +1,75 @@
 import React, { useRef, useEffect } from "react"
-import Bookmarks from "@arcgis/core/widgets/Bookmarks"
-import Expand from "@arcgis/core/widgets/Expand"
+import Map from "@arcgis/core/Map"
 import MapView from "@arcgis/core/views/MapView"
-import WebMap from "@arcgis/core/WebMap"
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer"
+import TileLayer from "@arcgis/core/layers/TileLayer"
+import Search from "@arcgis/core/widgets/Search"
 
 import "./App.css"
 
-function App() {
+const App = () => {
 	const mapDiv = useRef(null)
 
 	useEffect(() => {
 		if (mapDiv.current) {
-			/**
-			 * Initialize application
-			 */
-			const webmap = new WebMap({
-				portalItem: {
-					id: "aa1d3f80270146208328cf66d022e09c",
-				},
+			const objects = new FeatureLayer({
+				url: "https://atviras.vplanas.lt/arcgis/rest/services/VilniausDNR/VilniausDNR/MapServer/0",
+				outFields: ["*"],
+				title: "Lentelės",
+				minScale: 0,
+				maxScale: 0,
+			})
+
+			const vilnius = new TileLayer({
+				url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
+				title: "Vilnius",
+				minScale: 0,
+				maxScale: 0,
+			})
+
+			const map = new Map({
+				layers: [vilnius, objects],
 			})
 
 			const view = new MapView({
 				container: mapDiv.current,
-				map: webmap,
+				map: map,
+				popup: {
+					dockEnabled: true,
+					dockOptions: {
+						buttonEnabled: false,
+						breakpoint: false,
+						position: "top-right",
+					},
+				},
 			})
 
-			const bookmarks = new Bookmarks({
-				view,
-				// allows bookmarks to be added, edited, or deleted
-				editingEnabled: true,
+			const source = [
+				{
+					layer: objects,
+					placeholder: "Paieška...",
+					searchFields: ["OBJ_PAV"],
+					suggestionTemplate: "{OBJ_PAV} ({VIETA})",
+					zoomScale: 2000,
+				},
+			]
+
+			const searchWidget = new Search({
+				view: view,
+				sources: source,
+				includeDefaultSources: false,
+				locationEnabled: false,
+				exactMatch: false,
 			})
 
-			const bkExpand = new Expand({
-				view,
-				content: bookmarks,
-				expanded: true,
+			objects.when(() => {
+				view.extent = objects.fullExtent
+				console.log(objects)
 			})
 
-			// Add the widget to the top-right corner of the view
-			view.ui.add(bkExpand, "top-right")
-
-			// bonus - how many bookmarks in the webmap?
-			webmap.when(() => {
-				if (webmap.bookmarks && webmap.bookmarks.length) {
-					console.log("Bookmarks: ", webmap.bookmarks.length)
-				} else {
-					console.log("No bookmarks in this webmap.")
-				}
+			view.ui.add(searchWidget, {
+				position: "top-left",
+				index: 0,
 			})
 		}
 	}, [])
@@ -55,6 +78,7 @@ function App() {
 }
 
 export default App
+
 
 //import React, { useState } from 'react';
 //import { CalciteButton, CalciteIcon, CalciteSlider } from '@esri/calcite-components-react';
