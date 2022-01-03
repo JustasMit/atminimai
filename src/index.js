@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import Table from './Table';
+import App from './components/map/Map';
+import Table from './components/table/Table';
 import { applyPolyfills, defineCustomElements } from '@esri/calcite-components/dist/loader';
-import './index.css';
+import './css/index.css';
 
 applyPolyfills().then(() => {
   defineCustomElements(window);

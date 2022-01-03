@@ -5,7 +5,7 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer"
 import TileLayer from "@arcgis/core/layers/TileLayer"
 import Search from "@arcgis/core/widgets/Search"
 
-import "./App.css"
+import "../../css/map.css"
 
 const App = () => {
 	const mapDiv = useRef(null)
