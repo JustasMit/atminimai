@@ -1,7 +1,7 @@
 import React from "react"
 import "../../css/table.css"
 
-const Table = () => {
+const ObjectTable = () => {
 	return (
 		<div className="objectTable">
 			<div className="add-margin-bottom"></div>
@@ -33,4 +33,4 @@ const Table = () => {
 	)
 }
 
-export default Table
+export default ObjectTable
