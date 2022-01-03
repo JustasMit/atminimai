@@ -24,7 +24,6 @@ export const map = new Map({
 })
 
 export const view = new MapView({
-    //container: mapDiv.current,
     map: map,
     popup: {
         dockEnabled: true,
