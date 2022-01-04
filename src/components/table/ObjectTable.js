@@ -1,36 +1,40 @@
 import React from "react"
+import Filter from "./Filter"
+import TableItem from "./TableItem"
+import { objects } from "../map/ArcgisItems"
 import "../../css/table.css"
 
-const ObjectTable = () => {
-	return (
-		<div className="objectTable">
-			<div className="add-margin-bottom"></div>
-			<calcite-label alignment="center" layout="default" status="idle">
-				<b>Objektų filtravimo parinktys</b>
-			</calcite-label>
-			<div className="add-margin-bottom"></div>
-			<calcite-select width="full" id="object-filter-group">
-				<calcite-option selected id="0">
-					Pasirinkti objekto tipą
-				</calcite-option>
-			</calcite-select>
-			<div className="add-margin-bottom"></div>
-			<calcite-select width="full" id="memory-filter-group">
-				<calcite-option selected id="0">
-					Pasirinkti atminimo tipą
-				</calcite-option>
-			</calcite-select>
-			<div className="add-margin-bottom"></div>
-			<calcite-button appearance="solid" color="blue" width="full" id="filter-show-all">
-				Rodyti visus
-			</calcite-button>
-			<div className="add-margin-bottom"></div>
-			<calcite-label alignment="center" layout="default" status="idle">
-				<b>Objektų sąrašas</b>
-			</calcite-label>
-			<div id="object-table-content"></div>
-		</div>
-	)
+class ObjectTable extends React.Component {
+	state = {
+		objectsList: [],
+	}
+
+	componentDidMount() {
+		let filter = sessionStorage.getItem("filter")
+		if (!filter) {
+			filter = ""
+		}
+		objects
+			.queryFeatures({
+				outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "OBJECTID"],
+				where: filter,
+			})
+			.then((response) => {
+                this.setState({objectsList: response.features})
+			})
+			.catch((error) => {
+				console.error(error)
+			})
+	}
+
+	render() {
+		return (
+			<div className="table">
+				<Filter />
+                <TableItem objects={this.state.objectsList}/>
+			</div>
+		)
+	}
 }
 
 export default ObjectTable
