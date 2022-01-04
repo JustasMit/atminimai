@@ -3,7 +3,7 @@ import "../../css/table.css"
 
 const Filter = () => {
 	return (
-		<div>
+		<div className="filter">
 			<div className="add-margin-bottom"></div>
 			<calcite-label alignment="center" layout="default" status="idle">
 				<b>Objektų filtravimo parinktys</b>

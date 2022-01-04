@@ -11,7 +11,7 @@ const ObjectMap = () => {
 		if (mapDiv.current) {
 			
             view.container = mapDiv.current
-            
+
 			objects.when(() => {
 				view.extent = objects.fullExtent
 			})
@@ -23,7 +23,7 @@ const ObjectMap = () => {
 		}
 	}, [])
 
-	return <div className="mapDiv" ref={mapDiv}></div>
+	return <div className="map" ref={mapDiv}></div>
 }
 
 export default ObjectMap
