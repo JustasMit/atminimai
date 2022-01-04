@@ -1,9 +1,9 @@
 import React from "react"
 import "../../css/table.css"
 
-const TableItem = (props) => {
-	let kazkas = (event) => {
-		console.log(event.currentTarget.id)
+const TableItems = (props) => {
+	let kazkas = (target) => {
+		console.log(target.currentTarget.id)
 	}
 
 	return (
@@ -22,4 +22,4 @@ const TableItem = (props) => {
 		</div>
 	)
 }
-export default TableItem
+export default TableItems

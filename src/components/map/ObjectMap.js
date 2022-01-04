@@ -3,31 +3,24 @@ import { objects, view, searchWidget } from "./ArcgisItems"
 
 import "../../css/map.css"
 
-
 const ObjectMap = () => {
 	const mapDiv = useRef(null)
 
 	useEffect(() => {
-		if (mapDiv.current) {
-			
-            view.container = mapDiv.current
-
-			objects.when(() => {
-				view.extent = objects.fullExtent
-			})
-
+		objects.when(() => {
+			view.container = mapDiv.current
+			view.extent = objects.fullExtent
 			view.ui.add(searchWidget, {
 				position: "top-left",
 				index: 0,
 			})
-		}
+		})
 	}, [])
 
 	return <div className="map" ref={mapDiv}></div>
 }
 
 export default ObjectMap
-
 
 //import React, { useState } from 'react';
 //import { CalciteButton, CalciteIcon, CalciteSlider } from '@esri/calcite-components-react';
