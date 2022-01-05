@@ -20,7 +20,7 @@ export const vilnius = new TileLayer({
 })
 
 export const map = new Map({
-    layers: [vilnius, objects],
+    layers: [vilnius],
 })
 
 export const view = new MapView({

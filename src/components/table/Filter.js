@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { objects } from "../map/ArcgisItems"
+import { objects } from "../../utils/arcgisItems"
 import "../../css/table.css"
 
 const Filter = (props) => {
@@ -52,6 +52,27 @@ const Filter = (props) => {
 			props.setSelectedMemory(memFilter.current.selectedOption.value)
 		})
 	}, [])
+
+	useEffect(() => {
+		let query
+
+		if (props.selectedObject !== "0" && props.selectedMemory === "0") {
+			query = `TIPAS = ${props.selectedObject}`
+		} else if (props.selectedObject === "0" && props.selectedMemory !== "0") {
+			query = `ATMINT_TIP = ${props.selectedMemory}`
+		} else if (props.selectedObject !== "0" && props.selectedMemory !== "0") {
+			query = `ATMINT_TIP = ${props.selectedMemory} AND TIPAS = ${props.selectedObject}`
+		} else if (props.selectedObject === "0" && props.selectedMemory === "0") {
+			query = ""
+		}
+
+        props.setFilter(query)
+        
+        if (props.selectedObject === "0" && props.selectedMemory === "0") {
+            objFilter.current.childNodes[0].selected = true
+            memFilter.current.childNodes[0].selected = true
+        }
+	}, [props.selectedObject, props.selectedMemory])
 
 	return (
 		<div>

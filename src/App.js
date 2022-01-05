@@ -1,53 +1,51 @@
 import React, { useEffect, useState } from "react"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
-import { objects } from "./components/map/ArcgisItems"
+import { objects } from "./utils/arcgisItems"
+import displayFeatures from "./utils/displayFeatures"
 import "./css/app.css"
 
 const App = () => {
 	const [selectedObject, setSelectedObject] = useState("0")
 	const [selectedMemory, setSelectedMemory] = useState("0")
+	const [filter, setFilter] = useState("")
 	const [objectsList, setObjectsList] = useState([])
-	const [visible, setVisible] = useState(true)
+	const [visible, setVisible] = useState(false)
 
 	useEffect(() => {
 		objects
 			.queryFeatures({
-				outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "OBJECTID"],
-				where: "",
+				outFields: ["*"],
+				where: filter,
+				returnGeometry: true,
 			})
 			.then((response) => {
 				setObjectsList(response.features)
+				displayFeatures(response)
 			})
 			.catch((error) => {
 				console.error(error)
 			})
 	}, [])
 
-	useEffect(() => {
-		if (selectedObject !== "0" && selectedMemory === "0") {
-			objects.definitionExpression = `TIPAS = ${selectedObject}`
-		} else if (selectedObject === "0" && selectedMemory !== "0") {
-			objects.definitionExpression = `ATMINT_TIP = ${selectedMemory}`
-		} else if (selectedObject !== "0" && selectedMemory !== "0") {
-			objects.definitionExpression = `ATMINT_TIP = ${selectedMemory} AND TIPAS = ${selectedObject}`
-		} else if (selectedObject === "0" && selectedMemory === "0") {
-			objects.definitionExpression = ""
-		}
-
-        objects.queryFeatureCount().then((response) => {
-            if (response === 0) {
-                alert("Nerasta objektų!\n")
-                setSelectedObject("0")
-                setSelectedMemory("0")
-            }
-        })
-	}, [selectedObject, selectedMemory])
-
 	return (
 		<React.Fragment>
-			<ObjectMap setVisible={setVisible} visible={visible}/>
-			<Table setSelectedObject={setSelectedObject} setSelectedMemory={setSelectedMemory} objects={objectsList} />
+			<ObjectMap
+				setVisible={setVisible}
+				visible={visible}
+				objects={objectsList}
+                filter={filter}
+			/>
+			<Table
+				setSelectedObject={setSelectedObject}
+				selectedObject={selectedObject}
+				setSelectedMemory={setSelectedMemory}
+				selectedMemory={selectedMemory}
+				setObjectsList={setObjectsList}
+				objects={objectsList}
+                setFilter={setFilter}
+                filter={filter}
+			/>
 		</React.Fragment>
 	)
 }
