@@ -8,6 +8,7 @@ const App = () => {
 	const [selectedObject, setSelectedObject] = useState("0")
 	const [selectedMemory, setSelectedMemory] = useState("0")
 	const [objectsList, setObjectsList] = useState([])
+	const [visible, setVisible] = useState(true)
 
 	useEffect(() => {
 		objects
@@ -41,11 +42,11 @@ const App = () => {
                 setSelectedMemory("0")
             }
         })
-	})
+	}, [selectedObject, selectedMemory])
 
 	return (
 		<React.Fragment>
-			<ObjectMap />
+			<ObjectMap setVisible={setVisible} visible={visible}/>
 			<Table setSelectedObject={setSelectedObject} setSelectedMemory={setSelectedMemory} objects={objectsList} />
 		</React.Fragment>
 	)

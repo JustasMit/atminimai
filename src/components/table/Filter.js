@@ -54,7 +54,7 @@ const Filter = (props) => {
 	}, [])
 
 	return (
-		<div className="filter">
+		<div>
 			<div className="add-margin-bottom"></div>
 			<calcite-label alignment="center" layout="default" status="idle">
 				<b>Objektų filtravimo parinktys</b>

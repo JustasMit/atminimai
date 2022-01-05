@@ -1,11 +1,7 @@
-.filter {
-}
-
 .table {
 	height: 100%;
-	width: 30%;
+	width: 25%;
 	float: left;
-
 	position: relative;
 	display: block;
 }
