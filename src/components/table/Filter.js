@@ -29,7 +29,7 @@ const Filter = (props) => {
 							objCodeAlias.code = response.features[0].layer.fields[field].domain.codedValues[code].code
 							tempObjectAlias.push(objCodeAlias)
 						}
-                        setObjectAlias(tempObjectAlias)
+						setObjectAlias(tempObjectAlias)
 					} else if (response.features[0].layer.fields[field].name === "ATMINT_TIP") {
 						for (let code in response.features[0].layer.fields[field].domain.codedValues) {
 							const objCodeAlias = {}
@@ -37,7 +37,7 @@ const Filter = (props) => {
 							objCodeAlias.code = response.features[0].layer.fields[field].domain.codedValues[code].code
 							tempMemoryAlias.push(objCodeAlias)
 						}
-                        setMemoryAlias(tempMemoryAlias)
+						setMemoryAlias(tempMemoryAlias)
 					}
 				}
 			})
@@ -45,12 +45,11 @@ const Filter = (props) => {
 				console.error(error)
 			})
 
-
 		objFilter.current.addEventListener("calciteSelectChange", () => {
-			props.setFilter(objFilter.current.selectedOption.value)
+			props.setSelectedObject(objFilter.current.selectedOption.value)
 		})
 		memFilter.current.addEventListener("calciteSelectChange", () => {
-			props.setFilter(memFilter.current.selectedOption.value)
+			props.setSelectedMemory(memFilter.current.selectedOption.value)
 		})
 	}, [])
 
@@ -73,7 +72,7 @@ const Filter = (props) => {
 			</calcite-select>
 			<div className="add-margin-bottom"></div>
 			<calcite-select ref={memFilter} width="full" id="memory-filter-group">
-				<calcite-option selected>
+				<calcite-option value="0" selected>
 					Pasirinkti atminimo tipą
 				</calcite-option>
 				{memoryAlias.map((object, index) => (
@@ -83,7 +82,16 @@ const Filter = (props) => {
 				))}
 			</calcite-select>
 			<div className="add-margin-bottom"></div>
-			<calcite-button appearance="solid" color="blue" width="full" id="filter-show-all">
+			<calcite-button
+				onClick={() => {
+					props.setSelectedObject("0")
+					props.setSelectedMemory("0")
+				}}
+				appearance="solid"
+				color="blue"
+				width="full"
+				id="filter-show-all"
+			>
 				Rodyti visus
 			</calcite-button>
 			<div className="add-margin-bottom"></div>

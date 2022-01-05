@@ -1,47 +1,54 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./components/map/ArcgisItems"
 import "./css/app.css"
 
-class App extends React.Component {
-    //change to functional comp?
+const App = () => {
+	const [selectedObject, setSelectedObject] = useState("0")
+	const [selectedMemory, setSelectedMemory] = useState("0")
+	const [objectsList, setObjectsList] = useState([])
 
-	state = {
-		filter: "",
-		objectsList: [],
-	}
-
-	setFilter = (value) => {
-		this.setState({ filter: value })
-	}
-
-	componentDidMount() {
+	useEffect(() => {
 		objects
 			.queryFeatures({
 				outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "OBJECTID"],
 				where: "",
 			})
 			.then((response) => {
-				this.setState({ objectsList: response.features })
+				setObjectsList(response.features)
 			})
 			.catch((error) => {
 				console.error(error)
 			})
-	}
+	}, [])
 
-	componentDidUpdate() {
-		console.log(this.state.filter, "STATE")
-		//rerun filter?
-	}
-	render() {
-		return (
-			<React.Fragment>
-				<ObjectMap />
-				<Table setFilter={this.setFilter} objects={this.state.objectsList}/>
-			</React.Fragment>
-		)
-	}
+	useEffect(() => {
+		if (selectedObject !== "0" && selectedMemory === "0") {
+			objects.definitionExpression = `TIPAS = ${selectedObject}`
+		} else if (selectedObject === "0" && selectedMemory !== "0") {
+			objects.definitionExpression = `ATMINT_TIP = ${selectedMemory}`
+		} else if (selectedObject !== "0" && selectedMemory !== "0") {
+			objects.definitionExpression = `ATMINT_TIP = ${selectedMemory} AND TIPAS = ${selectedObject}`
+		} else if (selectedObject === "0" && selectedMemory === "0") {
+			objects.definitionExpression = ""
+		}
+
+        objects.queryFeatureCount().then((response) => {
+            if (response === 0) {
+                alert("Nerasta objektų!\n")
+                setSelectedObject("0")
+                setSelectedMemory("0")
+            }
+        })
+	})
+
+	return (
+		<React.Fragment>
+			<ObjectMap />
+			<Table setSelectedObject={setSelectedObject} setSelectedMemory={setSelectedMemory} objects={objectsList} />
+		</React.Fragment>
+	)
 }
 
 export default App

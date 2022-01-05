@@ -6,7 +6,7 @@ import "../../css/table.css"
 const Table = (props) => {
 	return (
 		<div className="table">
-			<Filter setFilter={props.setFilter} />
+			<Filter setSelectedObject={props.setSelectedObject} setSelectedMemory={props.setSelectedMemory} />
 			<TableItems objects={props.objects} />
 		</div>
 	)
