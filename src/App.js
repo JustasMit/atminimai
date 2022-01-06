@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
+import Popup from "./components/map/Popup"
+import { Routes, Route } from "react-router-dom"
+
 import "./css/app.css"
 
 const App = () => {
@@ -57,26 +60,35 @@ const App = () => {
 	}, [filter])
 
 	return (
-		<React.Fragment>
-			{initialLoading ? (
-				<calcite-loader active scale="l"></calcite-loader>
-			) : (
-				<>
-					<ObjectMap setVisible={setVisible} visible={visible} objects={objectsList} filter={filter} />
-					<Table
-						setSelectedObject={setSelectedObject}
-						selectedObject={selectedObject}
-						setSelectedMemory={setSelectedMemory}
-						selectedMemory={selectedMemory}
-						setObjectsList={setObjectsList}
-						objects={objectsList}
-						setFilter={setFilter}
-						filter={filter}
-						filterLoading={filterLoading}
-					/>
-				</>
-			)}
-		</React.Fragment>
+		<Routes>
+			<Route
+				path="/"
+				element={
+					<React.Fragment>
+						{initialLoading ? (
+							<calcite-loader active scale="l"></calcite-loader>
+						) : (
+							<>
+								<ObjectMap setVisible={setVisible} visible={visible} objects={objectsList} filter={filter} />
+								<Table
+									setSelectedObject={setSelectedObject}
+									selectedObject={selectedObject}
+									setSelectedMemory={setSelectedMemory}
+									selectedMemory={selectedMemory}
+									setObjectsList={setObjectsList}
+									objects={objectsList}
+									setFilter={setFilter}
+									filter={filter}
+									filterLoading={filterLoading}
+								/>
+							</>
+						)}
+					</React.Fragment>
+				}
+			>
+				<Route path=":objectID" element={<Popup />} />
+			</Route>
+		</Routes>
 	)
 }
 

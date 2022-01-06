@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react"
 import { objects, view, searchWidget } from "../../utils/arcgisItems"
 import displayFeatures from "../../utils/displayFeatures"
+import { Outlet } from "react-router-dom"
+
 import "../../css/map.css"
 
 const toggleDiv = document.createElement("div")
@@ -49,7 +51,11 @@ const ObjectMap = (props) => {
 		})
 	})
 
-	return <div style={{ width: props.visible ? "75%" : "100%" }} className="map" ref={mapDiv}></div>
+	return (
+		<div style={{ width: props.visible ? "75%" : "100%" }} className="map" ref={mapDiv}>
+			<Outlet />
+		</div>
+	)
 }
 
 export default ObjectMap
