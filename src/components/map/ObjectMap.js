@@ -32,20 +32,9 @@ const ObjectMap = (props) => {
 		}, [])
 	})
 
-    useEffect(() => {
-        objects
-			.queryFeatures({
-				outFields: ["*"],
-				where: props.filter,
-				returnGeometry: true,
-			})
-			.then((response) => {
-				displayFeatures(response)
-			})
-			.catch((error) => {
-				console.error(error)
-			})
-    }, [props.filter])
+	useEffect(() => {
+		displayFeatures(props.objects)
+	}, [props.objects])
 
 	useEffect(() => {
 		if (props.visible) {
@@ -59,8 +48,8 @@ const ObjectMap = (props) => {
 			index: 0,
 		})
 	})
-    
-	return <div style={{width: props.visible ? "75%" : "100%"}} className="map" ref={mapDiv}></div>
+
+	return <div style={{ width: props.visible ? "75%" : "100%" }} className="map" ref={mapDiv}></div>
 }
 
 export default ObjectMap

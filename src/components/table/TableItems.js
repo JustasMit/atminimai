@@ -2,24 +2,21 @@ import React from "react"
 import "../../css/table.css"
 
 const TableItems = (props) => {
-	let kazkas = (target) => {
-		console.log(target.currentTarget.id)
+	let kazkas = (event) => {
+		console.log(event.currentTarget.value)
 	}
-
+    console.log(props.filterLoading)
 	return (
-		<div className="table-list">
+		<calcite-pick-list loading={props.filterLoading ? true : false}>
 			{Object.keys(props.objects).map((object) => (
-				<calcite-button
+				<calcite-pick-list-item
 					onClick={kazkas}
-					id={props.objects[object].attributes.OBJECTID}
+					label={props.objects[object].attributes.OBJ_PAV}
+					value={props.objects[object].attributes.OBJECTID}
 					key={props.objects[object].attributes.OBJECTID}
-					appearance="clear"
-					width="full"
-				>
-					{props.objects[object].attributes.OBJ_PAV}
-				</calcite-button>
+				></calcite-pick-list-item>
 			))}
-		</div>
+		</calcite-pick-list>
 	)
 }
 export default TableItems
