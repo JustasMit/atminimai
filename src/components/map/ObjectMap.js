@@ -24,10 +24,10 @@ const ObjectMap = (props) => {
 			})
 			toggleButton.onclick = () => {
 				if (props.visible) {
-					toggleButton.innerHTML = `<calcite-icon icon="chevron-left" scale="m"></calcite-icon>`
+					toggleButton.innerHTML = `<ASD`
 					props.setVisible(false)
 				} else {
-					toggleButton.innerHTML = `<calcite-icon icon="chevron-right" scale="m"></calcite-icon>`
+					toggleButton.innerHTML = `ASD`
 					props.setVisible(true)
 				}
 			}
@@ -40,9 +40,9 @@ const ObjectMap = (props) => {
 
 	useEffect(() => {
 		if (props.visible) {
-			toggleButton.innerHTML = `<calcite-icon icon="chevron-left" scale="m"></calcite-icon>`
+			toggleButton.innerHTML = `<ASD`
 		} else {
-			toggleButton.innerHTML = `<calcite-icon icon="chevron-right" scale="m"></calcite-icon>`
+			toggleButton.innerHTML = `ASD`
 		}
 
 		view.ui.add(toggleButton, {
