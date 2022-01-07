@@ -1,19 +1,19 @@
-import React from "react"
+import * as React from "react"
 import ReactDOM from "react-dom"
-import App from "./App"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { applyPolyfills, defineCustomElements } from "@esri/calcite-components/dist/loader"
+import { ThemeProvider } from "@mui/material/styles"
+import theme from "./theme"
+import App from "./App"
 
-applyPolyfills().then(() => {
-	defineCustomElements(window)
-	ReactDOM.render(
+ReactDOM.render(
+	<ThemeProvider theme={theme}>
 		<React.StrictMode>
 			<BrowserRouter>
 				<Routes>
 					<Route path="*" element={<App />} />
 				</Routes>
 			</BrowserRouter>
-		</React.StrictMode>,
-		document.getElementById("root")
-	)
-})
+		</React.StrictMode>
+	</ThemeProvider>,
+	document.querySelector("#root")
+)
