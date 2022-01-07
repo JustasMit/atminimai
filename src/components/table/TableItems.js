@@ -1,9 +1,11 @@
 import React from "react"
 import "../../css/table.css"
+import { useNavigate } from "react-router-dom"
 
 const TableItems = (props) => {
+    const navigate = useNavigate()
 	const kazkas = (event) => {
-		console.log(event.currentTarget.value)
+        navigate(`/${event.currentTarget.value}`)
 	}
 
 	return (
@@ -13,7 +15,7 @@ const TableItems = (props) => {
 					<calcite-pick-list-item
 						onClick={kazkas}
 						label={props.objects[object].attributes.OBJ_PAV}
-						value={props.objects[object].attributes.OBJECTID}
+						value={props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}
 						key={props.objects[object].attributes.OBJECTID}
 					></calcite-pick-list-item>
 				))}
