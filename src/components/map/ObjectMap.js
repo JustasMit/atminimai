@@ -2,14 +2,15 @@ import React, { useRef, useEffect } from "react"
 import { objects, view, searchWidget } from "../../utils/arcgisItems"
 import displayFeatures from "../../utils/displayFeatures"
 import { Outlet } from "react-router-dom"
+import ReactDOM from "react-dom"
 
+import ToggleButton from "@mui/material/ToggleButton"
+import Paper from "@mui/material/Paper"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
 import "../../css/map.css"
 
-const toggleDiv = document.createElement("div")
-const toggleButton = document.createElement("calcite-button")
-toggleButton.setAttribute("appearance", "outline")
-toggleButton.setAttribute("color", "blue")
-toggleDiv.appendChild(toggleButton)
+const toggleNode = document.createElement("div")
 
 const ObjectMap = (props) => {
 	const mapDiv = useRef(null)
@@ -22,15 +23,6 @@ const ObjectMap = (props) => {
 				position: "top-left",
 				index: 0,
 			})
-			toggleButton.onclick = () => {
-				if (props.visible) {
-					toggleButton.innerHTML = `<calcite-icon icon="chevron-left" scale="m"></calcite-icon>`
-					props.setVisible(false)
-				} else {
-					toggleButton.innerHTML = `<calcite-icon icon="chevron-right" scale="m"></calcite-icon>`
-					props.setVisible(true)
-				}
-			}
 		}, [])
 	})
 
@@ -40,15 +32,39 @@ const ObjectMap = (props) => {
 
 	useEffect(() => {
 		if (props.visible) {
-			toggleButton.innerHTML = `<calcite-icon icon="chevron-left" scale="m"></calcite-icon>`
+			ReactDOM.render(
+				<Paper>
+					<ToggleButton
+						value="check"
+						selected={false}
+						color="secondary"
+						onChange={() => {
+							props.setVisible(false)
+						}}
+					>
+						<ArrowBackIcon />
+					</ToggleButton>
+				</Paper>,
+				toggleNode
+			)
 		} else {
-			toggleButton.innerHTML = `<calcite-icon icon="chevron-right" scale="m"></calcite-icon>`
+			ReactDOM.render(
+				<Paper>
+					<ToggleButton
+						value="check"
+						selected={true}
+						onChange={() => {
+							props.setVisible(true)
+						}}
+					>
+						<ArrowForwardIcon />
+					</ToggleButton>
+				</Paper>,
+				toggleNode
+			)
 		}
 
-		view.ui.add(toggleButton, {
-			position: "bottom-left",
-			index: 0,
-		})
+		view.ui.add(toggleNode, "bottom-left")
 	})
 
 	return (

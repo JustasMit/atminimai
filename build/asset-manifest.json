@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/VilniausDNR/static/css/main.c6b3d91e.css",
-    "main.js": "/VilniausDNR/static/js/main.0bb31c30.js",
+    "main.js": "/VilniausDNR/static/js/main.d27f0116.js",
     "static/js/519.c810ada4.chunk.js": "/VilniausDNR/static/js/519.c810ada4.chunk.js",
     "static/js/5626.fdc4737f.chunk.js": "/VilniausDNR/static/js/5626.fdc4737f.chunk.js",
     "static/js/9512.595e1d13.chunk.js": "/VilniausDNR/static/js/9512.595e1d13.chunk.js",
@@ -208,7 +208,7 @@
     "static/js/172.18575ba7.chunk.js": "/VilniausDNR/static/js/172.18575ba7.chunk.js",
     "index.html": "/VilniausDNR/index.html",
     "main.c6b3d91e.css.map": "/VilniausDNR/static/css/main.c6b3d91e.css.map",
-    "main.0bb31c30.js.map": "/VilniausDNR/static/js/main.0bb31c30.js.map",
+    "main.d27f0116.js.map": "/VilniausDNR/static/js/main.d27f0116.js.map",
     "519.c810ada4.chunk.js.map": "/VilniausDNR/static/js/519.c810ada4.chunk.js.map",
     "5626.fdc4737f.chunk.js.map": "/VilniausDNR/static/js/5626.fdc4737f.chunk.js.map",
     "9512.595e1d13.chunk.js.map": "/VilniausDNR/static/js/9512.595e1d13.chunk.js.map",
@@ -414,6 +414,6 @@
   },
   "entrypoints": [
     "static/css/main.c6b3d91e.css",
-    "static/js/main.0bb31c30.js"
+    "static/js/main.d27f0116.js"
   ]
 }
