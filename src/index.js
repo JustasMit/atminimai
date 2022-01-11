@@ -10,11 +10,7 @@ ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />
 		<React.StrictMode>
-			<BrowserRouter>
-				<Routes>
-					<Route path="*" element={<App />} />
-				</Routes>
-			</BrowserRouter>
+			<App />
 		</React.StrictMode>
 	</ThemeProvider>,
 	document.querySelector("#root")
