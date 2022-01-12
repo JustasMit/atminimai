@@ -1,16 +1,18 @@
 import React from "react"
-import "../../css/table.css"
 import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
-import Paper from "@mui/material/Paper"
 import { useNavigate } from "react-router-dom"
 
 const TableItems = (props) => {
 	const navigate = useNavigate()
 
 	return (
-		<List sx={{ m: 1, width: 1 }} style={{ maxHeight: "75vh", overflowY: "auto", overflowX: "hidden" }} component="nav">
+		<List
+			sx={{ mr: 1, ml: 1, width: 1 }}
+			style={{ height: "100%", overflowY: "scroll", overflowX: "hidden" }}
+			component="nav"
+		>
 			{Object.keys(props.objects).map((object) => (
 				<ListItemButton
 					onClick={() => {

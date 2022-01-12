@@ -7,8 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
-import Container from "@mui/material/Container"
-import Box from "@mui/material/Box"
+import Collapse from "@mui/material/Collapse"
 
 import "./css/app.css"
 
@@ -18,7 +17,7 @@ const App = () => {
 	const [selectedObject, setSelectedObject] = useState("")
 	const [filter, setFilter] = useState("")
 	const [objectsList, setObjectsList] = useState([])
-	const [visible, setVisible] = useState(true)
+	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [filterLoading, setFilterLoading] = useState(false)
 
@@ -86,9 +85,9 @@ const App = () => {
 									</Grid>
 								</Grid>
 							) : (
-								<Grid container spacing={2}>
-									<Grid item xs={6} md={4}>
-										<Box>
+								<Grid container spacing={0}>
+									<Collapse item orientation="horizontal" in={visible}>
+										<Grid xs={4} style={{height: "100vh"}}>
 											<Table
 												setSelectedObjectFilter={setSelectedObjectFilter}
 												selectedObjectFilter={selectedObjectFilter}
@@ -104,35 +103,33 @@ const App = () => {
 												setSelectedObject={setSelectedObject}
 												selectedObject={selectedObject}
 											/>
-										</Box>
-									</Grid>
-									<Grid item xs={6} md={8}>
-										<Box sx={{ height: "100vh" }}>
-											<ObjectMap visible={visible} objects={objectsList} filter={filter} />
-										</Box>
+										</Grid>
+									</Collapse>
+									<Grid item xs={true} style={{height: "100vh"}}>
+										<ObjectMap objects={objectsList} />
 									</Grid>
 								</Grid>
-
-								//<>
-								//	<ObjectMap visible={visible} objects={objectsList} filter={filter} />
-								//	<Table
-								//		setSelectedObjectFilter={setSelectedObjectFilter}
-								//		selectedObjectFilter={selectedObjectFilter}
-								//		setSelectedMemoryFilter={setSelectedMemoryFilter}
-								//		selectedMemoryFilter={selectedMemoryFilter}
-								//		setObjectsList={setObjectsList}
-								//		objects={objectsList}
-								//		setFilter={setFilter}
-								//		filter={filter}
-								//		filterLoading={filterLoading}
-								//		setVisible={setVisible}
-								//		visible={visible}
-								//		setSelectedObject={setSelectedObject}
-								//		selectedObject={selectedObject}
-								//	/>
-								//</>
 							)}
 						</React.Fragment>
+
+						//<>
+						//	<ObjectMap visible={visible} objects={objectsList} filter={filter} />
+						//	<Table
+						//		setSelectedObjectFilter={setSelectedObjectFilter}
+						//		selectedObjectFilter={selectedObjectFilter}
+						//		setSelectedMemoryFilter={setSelectedMemoryFilter}
+						//		selectedMemoryFilter={selectedMemoryFilter}
+						//		setObjectsList={setObjectsList}
+						//		objects={objectsList}
+						//		setFilter={setFilter}
+						//		filter={filter}
+						//		filterLoading={filterLoading}
+						//		setVisible={setVisible}
+						//		visible={visible}
+						//		setSelectedObject={setSelectedObject}
+						//		selectedObject={selectedObject}
+						//	/>
+						//</>
 					}
 				>
 					<Route path=":objectID" element={<Popup />} />
