@@ -1,20 +1,26 @@
 import React from "react"
 import Filter from "./Filter"
 import TableItems from "./TableItems"
-import "../../css/table.css"
+import TableToggle from "./TableToggle"
 
 const Table = (props) => {
 	return (
-		<div className="table">
+		<div>
 			<Filter
-				setSelectedObject={props.setSelectedObject}
-				selectedObject={props.selectedObject}
-				setSelectedMemory={props.setSelectedMemory}
-				selectedMemory={props.selectedMemory}
+				setSelectedObjectFilter={props.setSelectedObjectFilter}
+				selectedObjectFilter={props.selectedObjectFilter}
+				setSelectedMemoryFilter={props.setSelectedMemoryFilter}
+				selectedMemoryFilter={props.selectedMemoryFilter}
 				setObjectsList={props.setObjectsList}
 				setFilter={props.setFilter}
 			/>
-			<TableItems objects={props.objects.features} filterLoading={props.filterLoading} />
+			<TableItems
+				objects={props.objects.features}
+				filterLoading={props.filterLoading}
+				setSelectedObject={props.setSelectedObject}
+				selectedObject={props.selectedObject}
+			/>
+			<TableToggle visible={props.visible} setVisible={props.setVisible} />
 		</div>
 	)
 }

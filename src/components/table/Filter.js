@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { objects } from "../../utils/arcgisItems"
-import "../../css/table.css"
+
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import FormControl from "@mui/material/FormControl"
+import Select from "@mui/material/Select"
+import Button from "@mui/material/Button"
 
 const Filter = (props) => {
 	const objFilter = React.useRef(null)
@@ -44,82 +49,77 @@ const Filter = (props) => {
 			.catch((error) => {
 				console.error(error)
 			})
-
-		objFilter.current.addEventListener("calciteSelectChange", () => {
-			props.setSelectedObject(objFilter.current.selectedOption.value)
-		})
-		memFilter.current.addEventListener("calciteSelectChange", () => {
-			props.setSelectedMemory(memFilter.current.selectedOption.value)
-		})
 	}, [])
 
 	useEffect(() => {
 		let query
 
-		if (props.selectedObject !== "0" && props.selectedMemory === "0") {
-			query = `TIPAS = ${props.selectedObject}`
-		} else if (props.selectedObject === "0" && props.selectedMemory !== "0") {
-			query = `ATMINT_TIP = ${props.selectedMemory}`
-		} else if (props.selectedObject !== "0" && props.selectedMemory !== "0") {
-			query = `ATMINT_TIP = ${props.selectedMemory} AND TIPAS = ${props.selectedObject}`
-		} else if (props.selectedObject === "0" && props.selectedMemory === "0") {
+		if (props.selectedObjectFilter !== "" && props.selectedMemoryFilter === "") {
+			query = `TIPAS = ${props.selectedObjectFilter}`
+		} else if (props.selectedObjectFilter === "" && props.selectedMemoryFilter !== "") {
+			query = `ATMINT_TIP = ${props.selectedMemoryFilter}`
+		} else if (props.selectedObjectFilter !== "" && props.selectedMemoryFilter !== "") {
+			query = `ATMINT_TIP = ${props.selectedMemoryFilter} AND TIPAS = ${props.selectedObjectFilter}`
+		} else if (props.selectedObjectFilter === "" && props.selectedMemoryFilter === "") {
 			query = ""
 		}
 
-        props.setFilter(query)
-        
-        if (props.selectedObject === "0" && props.selectedMemory === "0") {
-            objFilter.current.childNodes[0].selected = true
-            memFilter.current.childNodes[0].selected = true
-        }
-	}, [props.selectedObject, props.selectedMemory])
+		props.setFilter(query)
+	}, [props.selectedObjectFilter, props.selectedMemoryFilter])
 
 	return (
 		<div>
-			<div className="add-margin-bottom"></div>
-			<calcite-label alignment="center" layout="default" status="idle">
-				<b>Objektų filtravimo parinktys</b>
-			</calcite-label>
-			<div className="add-margin-bottom"></div>
-			<calcite-select ref={objFilter} width="full" id="object-filter-group">
-				<calcite-option value="0" selected>
-					Pasirinkti objekto tipą
-				</calcite-option>
-				{objectAlias.map((object, index) => (
-					<calcite-option key={index} value={object.code}>
-						{object.alias}
-					</calcite-option>
-				))}
-			</calcite-select>
-			<div className="add-margin-bottom"></div>
-			<calcite-select ref={memFilter} width="full" id="memory-filter-group">
-				<calcite-option value="0" selected>
-					Pasirinkti atminimo tipą
-				</calcite-option>
-				{memoryAlias.map((object, index) => (
-					<calcite-option key={index} value={object.code}>
-						{object.alias}
-					</calcite-option>
-				))}
-			</calcite-select>
-			<div className="add-margin-bottom"></div>
-			<calcite-button
+			<FormControl sx={{ m: 1, width: 1 }}>
+				<InputLabel id="object-select-helper-label">Objekto tipas</InputLabel>
+				<Select
+					labelId="object-select-helper-label"
+					id="object-select-helper"
+					value={props.selectedObjectFilter}
+					label="Objekto tipas"
+					onChange={(event) => props.setSelectedObjectFilter(event.target.value)}
+				>
+					<MenuItem value="">
+						<em>Visi</em>
+					</MenuItem>
+					{objectAlias.map((object, index) => (
+						<MenuItem key={index} value={object.code}>
+							{object.alias}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+
+			<FormControl sx={{ m: 1, width: 1 }}>
+				<InputLabel id="memory-select-helper-label">Atminimo tipas</InputLabel>
+				<Select
+					labelId="memory-select-helper-label"
+					id="memory-select-helper"
+					value={props.selectedObjectFilter}
+					label="Atminimo tipas"
+					onChange={(event) => props.setSelectedMemoryFilter(event.target.value)}
+				>
+					<MenuItem value="">
+						<em>Visi</em>
+					</MenuItem>
+					{memoryAlias.map((object, index) => (
+						<MenuItem key={index} value={object.code}>
+							{object.alias}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+
+			<Button
+				variant="contained"
+				disableElevation
+                sx={{ m: 1, width: 1 }}
 				onClick={() => {
-					props.setSelectedObject("0")
-					props.setSelectedMemory("0")
+					props.setSelectedObjectFilter("")
+					props.setSelectedMemoryFilter("")
 				}}
-				appearance="solid"
-				color="blue"
-				width="full"
-				id="filter-show-all"
 			>
-				Rodyti visus
-			</calcite-button>
-			<div className="add-margin-bottom"></div>
-			<calcite-label alignment="center" layout="default" status="idle">
-				<b>Objektų sąrašas</b>
-			</calcite-label>
-			<div id="object-table-content"></div>
+				Išvalyti filtrus
+			</Button>
 		</div>
 	)
 }

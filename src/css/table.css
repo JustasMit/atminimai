@@ -7,11 +7,7 @@
 }
 
 .table-list {
-    height: 100%;
+    height: 200;
 	overflow-y: scroll;
 	overflow-x: hidden;
-}
-
-.add-margin-bottom {
-	margin-bottom: 7px;
 }
