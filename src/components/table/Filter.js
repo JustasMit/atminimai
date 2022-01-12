@@ -8,9 +8,6 @@ import Select from "@mui/material/Select"
 import Button from "@mui/material/Button"
 
 const Filter = (props) => {
-	const objFilter = React.useRef(null)
-	const memFilter = React.useRef(null)
-
 	const [objectAlias, setObjectAlias] = useState([])
 	const [memoryAlias, setMemoryAlias] = useState([])
 
@@ -76,7 +73,10 @@ const Filter = (props) => {
 					id="object-select-helper"
 					value={props.selectedObjectFilter}
 					label="Objekto tipas"
-					onChange={(event) => props.setSelectedObjectFilter(event.target.value)}
+					onChange={(event) => {
+                        props.setSelectedObjectFilter(event.target.value)
+                        console.log("ASD")
+                    }}
 				>
 					<MenuItem value="">
 						<em>Visi</em>

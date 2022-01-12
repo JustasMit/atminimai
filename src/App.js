@@ -86,8 +86,8 @@ const App = () => {
 								</Grid>
 							) : (
 								<Grid container spacing={0}>
-									<Collapse item orientation="horizontal" in={visible}>
-										<Grid xs={4} style={{height: "100vh"}}>
+									<Collapse orientation="horizontal" in={visible}>
+										<Grid style={{height: "100vh"}}>
 											<Table
 												setSelectedObjectFilter={setSelectedObjectFilter}
 												selectedObjectFilter={selectedObjectFilter}
@@ -111,25 +111,6 @@ const App = () => {
 								</Grid>
 							)}
 						</React.Fragment>
-
-						//<>
-						//	<ObjectMap visible={visible} objects={objectsList} filter={filter} />
-						//	<Table
-						//		setSelectedObjectFilter={setSelectedObjectFilter}
-						//		selectedObjectFilter={selectedObjectFilter}
-						//		setSelectedMemoryFilter={setSelectedMemoryFilter}
-						//		selectedMemoryFilter={selectedMemoryFilter}
-						//		setObjectsList={setObjectsList}
-						//		objects={objectsList}
-						//		setFilter={setFilter}
-						//		filter={filter}
-						//		filterLoading={filterLoading}
-						//		setVisible={setVisible}
-						//		visible={visible}
-						//		setSelectedObject={setSelectedObject}
-						//		selectedObject={selectedObject}
-						//	/>
-						//</>
 					}
 				>
 					<Route path=":objectID" element={<Popup />} />
