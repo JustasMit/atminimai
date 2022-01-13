@@ -113,7 +113,7 @@ const App = () => {
 						</React.Fragment>
 					}
 				>
-					<Route path=":objectID" element={<Popup />} />
+					<Route path=":globalID" element={<Popup />} />
 					<Route path="VilniausDNR" element={<Navigate to="/" />} />
 				</Route>
 			</Routes>

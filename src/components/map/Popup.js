@@ -7,42 +7,13 @@ import ObjectPopupContent from "./ObjectPopupContent"
 const popupNode = document.createElement("div")
 
 const Popup = () => {
-	const { objectID } = useParams()
-
-	const setObjectPopupContent = async (response) => {
-		return "ASDAFWG156156"
-	}
+	const { globalID } = useParams()
 
 	useEffect(() => {
-		objects
-			.queryFeatures({
-				where: `GlobalID = '${objectID}'`,
-				returnGeometry: true,
-				outFields: ["*"],
-			})
-			.then((response) => {
-				if (!!response.features.length) {
-					view.goTo({
-						target: response.features[0].geometry,
-						zoom: 7,
-					})
-
-					ReactDOM.render(
-						<ObjectPopupContent />,
-						popupNode
-					)
-
-					console.log(response)
-				} else {
-					return
-				}
-			})
-			.catch((error) => {
-				console.error(error)
-			})
+		console.log(globalID)
+		ReactDOM.render(<ObjectPopupContent globalID={globalID} />, popupNode)
 		view.ui.add(popupNode, "top-right")
-		console.log(objectID, "popup")
-	}, [objectID])
+	}, [globalID])
 
 	return null
 }
