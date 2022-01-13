@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
+import { view } from "../../utils/arcgisItems"
 
 import ToggleButton from "@mui/material/ToggleButton"
 import Paper from "@mui/material/Paper"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
 
-import { view } from "../../utils/arcgisItems"
 
 const toggleNode = document.createElement("div")
 

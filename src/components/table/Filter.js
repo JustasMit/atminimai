@@ -14,6 +14,10 @@ const Filter = (props) => {
 	let tempObjectAlias = []
 	let tempMemoryAlias = []
 
+	const handleSelect = (event) => {
+		props.setSelectedObjectFilter(event.target.value)
+	}
+
 	useEffect(() => {
 		objects
 			.queryFeatures({
@@ -66,17 +70,14 @@ const Filter = (props) => {
 
 	return (
 		<div>
-			<FormControl sx={{ m: 1, width: 1 }}>
+			<FormControl sx={{ ml:1, mt: 1, width: 1 }}>
 				<InputLabel id="object-select-helper-label">Objekto tipas</InputLabel>
 				<Select
 					labelId="object-select-helper-label"
 					id="object-select-helper"
 					value={props.selectedObjectFilter}
 					label="Objekto tipas"
-					onChange={(event) => {
-                        props.setSelectedObjectFilter(event.target.value)
-                        console.log("ASD")
-                    }}
+					onChange={(event) => handleSelect(event)}
 				>
 					<MenuItem value="">
 						<em>Visi</em>
@@ -89,14 +90,14 @@ const Filter = (props) => {
 				</Select>
 			</FormControl>
 
-			<FormControl sx={{ m: 1, width: 1 }}>
+			<FormControl sx={{ ml:1, mt: 1, width: 1 }}>
 				<InputLabel id="memory-select-helper-label">Atminimo tipas</InputLabel>
 				<Select
 					labelId="memory-select-helper-label"
 					id="memory-select-helper"
 					value={props.selectedObjectFilter}
 					label="Atminimo tipas"
-					onChange={(event) => props.setSelectedMemoryFilter(event.target.value)}
+					onChange={(event) => handleSelect(event)}
 				>
 					<MenuItem value="">
 						<em>Visi</em>
@@ -112,7 +113,7 @@ const Filter = (props) => {
 			<Button
 				variant="contained"
 				disableElevation
-                sx={{ m: 1, width: 1 }}
+				sx={{ m: 1, width: 1 }}
 				onClick={() => {
 					props.setSelectedObjectFilter("")
 					props.setSelectedMemoryFilter("")

@@ -2,11 +2,15 @@ import React from "react"
 import Filter from "./Filter"
 import TableItems from "./TableItems"
 import TableToggle from "./TableToggle"
+import Search from "./Search"
 import Box from "@mui/material/Box"
 
 const Table = (props) => {
 	return (
 		<Box sx={{ mr: 2, width: 350 }} style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+			<Box>
+				<Search objects={props.objects.features} />
+			</Box>
 			<Box>
 				<Filter
 					setSelectedObjectFilter={props.setSelectedObjectFilter}

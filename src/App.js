@@ -3,7 +3,7 @@ import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
 import Popup from "./components/map/Popup"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
@@ -24,7 +24,7 @@ const App = () => {
 	useEffect(() => {
 		objects
 			.queryFeatures({
-				outFields: ["*"],
+				outFields: ["OBJ_PAV, GlobalID"],
 				where: filter,
 				returnGeometry: true,
 			})
@@ -38,12 +38,12 @@ const App = () => {
 				console.error(error)
 			})
 	}, [])
-
+    //gal nereikia query? objektus jau turiu
 	useEffect(() => {
 		setFilterLoading(true)
 		objects
 			.queryFeatures({
-				outFields: ["*"],
+				outFields: ["OBJ_PAV, GlobalID"],
 				where: filter,
 				returnGeometry: true,
 			})
@@ -87,7 +87,7 @@ const App = () => {
 							) : (
 								<Grid container spacing={0}>
 									<Collapse orientation="horizontal" in={visible}>
-										<Grid style={{height: "100vh"}}>
+										<Grid style={{ height: "100vh" }}>
 											<Table
 												setSelectedObjectFilter={setSelectedObjectFilter}
 												selectedObjectFilter={selectedObjectFilter}
@@ -105,7 +105,7 @@ const App = () => {
 											/>
 										</Grid>
 									</Collapse>
-									<Grid item xs={true} style={{height: "100vh"}}>
+									<Grid item xs={true} style={{ height: "100vh" }}>
 										<ObjectMap objects={objectsList} />
 									</Grid>
 								</Grid>
@@ -114,6 +114,7 @@ const App = () => {
 					}
 				>
 					<Route path=":objectID" element={<Popup />} />
+					<Route path="VilniausDNR" element={<Navigate to="/" />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
