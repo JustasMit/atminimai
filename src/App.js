@@ -38,7 +38,7 @@ const App = () => {
 				console.error(error)
 			})
 	}, [])
-    //gal nereikia query? objektus jau turiu
+	//https://developers.arcgis.com/javascript/latest/sample-code/featurefilter-attributes/ ?
 	useEffect(() => {
 		setFilterLoading(true)
 		objects
@@ -106,7 +106,7 @@ const App = () => {
 										</Grid>
 									</Collapse>
 									<Grid item xs={true} style={{ height: "100vh" }}>
-										<ObjectMap objects={objectsList} />
+										<ObjectMap objects={objectsList} filter={filter} />
 									</Grid>
 								</Grid>
 							)}
