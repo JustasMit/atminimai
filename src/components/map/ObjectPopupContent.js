@@ -7,7 +7,24 @@ import CardActions from "@mui/material/CardActions"
 import CardContent from "@mui/material/CardContent"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
+import Table from "@mui/material/Table"
+import TableBody from "@mui/material/TableBody"
+import TableCell from "@mui/material/TableCell"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import Paper from "@mui/material/Paper"
+function createData(name, calories) {
+	return { name, calories }
+}
 
+const rows = [
+	createData("Frozen yoghurt", 159),
+	createData("Ice cream sandwich", 237),
+	createData("Eclair", 2620),
+	createData("Cupcake", 305),
+	createData("Gingerbread", 3569),
+]
 const ObjectPopupContent = (props) => {
 	const [objectAttr, setObjectAttr] = useState([])
 
@@ -20,13 +37,13 @@ const ObjectPopupContent = (props) => {
 				returnGeometry: true,
 				where: `GlobalID = '${props.globalID}'`,
 			})
-			.then(function (response) {
+			.then((response) => {
 				view.goTo({
 					target: response.features[0].geometry,
 					zoom: 8,
 				})
 
-				view.graphics.some(function (graphic) {
+				view.graphics.some((graphic) => {
 					if (graphic.attributes["highlight"] == "highlight") {
 						view.graphics.remove(graphic)
 						return true
@@ -105,6 +122,20 @@ const ObjectPopupContent = (props) => {
 				<Typography variant="h6" component="div">
 					{objectAttr[2].value}
 				</Typography>
+				<TableContainer component={Paper}>
+					<Table sx={{ maxWidth: 450 }} size="small">
+						<TableBody>
+							{Object.keys(objectAttr).map((attr) => (
+								<TableRow key={objectAttr[attr].field} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+									<TableCell component="th" scope="row">
+										{objectAttr[attr].alias}
+									</TableCell>
+									<TableCell align="right">{objectAttr[attr].value}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
 			</CardContent>
 		</Card>
 	) : null
