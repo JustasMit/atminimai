@@ -67,7 +67,7 @@ const Filter = (props) => {
 
 		props.setFilter(query)
 	}, [props.selectedObjectFilter, props.selectedMemoryFilter])
-
+// TARPAI !!! margins
 	return (
 		<div>
 			<FormControl sx={{ ml:1, mt: 1, width: 1 }}>
