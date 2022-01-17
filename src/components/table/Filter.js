@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select from "@mui/material/Select"
 import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
 
 const Filter = (props) => {
 	const [objectAlias, setObjectAlias] = useState([])
@@ -67,10 +68,10 @@ const Filter = (props) => {
 
 		props.setFilter(query)
 	}, [props.selectedObjectFilter, props.selectedMemoryFilter])
-// TARPAI !!! margins
+	// TARPAI !!! margins
 	return (
-		<div>
-			<FormControl sx={{ ml:1, mt: 1, width: 1 }}>
+		<Box sx={{ ml: 0.5, mr: 0.5 }}>
+			<FormControl sx={{ mt: 1, width: "100%" }}>
 				<InputLabel id="object-select-helper-label">Objekto tipas</InputLabel>
 				<Select
 					labelId="object-select-helper-label"
@@ -90,7 +91,7 @@ const Filter = (props) => {
 				</Select>
 			</FormControl>
 
-			<FormControl sx={{ ml:1, mt: 1, width: 1 }}>
+			<FormControl sx={{ mt: 1, width: "100%" }}>
 				<InputLabel id="memory-select-helper-label">Atminimo tipas</InputLabel>
 				<Select
 					labelId="memory-select-helper-label"
@@ -113,7 +114,7 @@ const Filter = (props) => {
 			<Button
 				variant="contained"
 				disableElevation
-				sx={{ m: 1, width: 1 }}
+				sx={{ mt: 1, mb: 1, width: "100%" }}
 				onClick={() => {
 					props.setSelectedObjectFilter("")
 					props.setSelectedMemoryFilter("")
@@ -121,7 +122,7 @@ const Filter = (props) => {
 			>
 				Išvalyti filtrus
 			</Button>
-		</div>
+		</Box>
 	)
 }
 

@@ -1,53 +1,30 @@
-import React, { useEffect } from "react"
-import ReactDOM from "react-dom"
-import { view } from "../../utils/arcgisItems"
+import React from "react"
 
 import ToggleButton from "@mui/material/ToggleButton"
-import Paper from "@mui/material/Paper"
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
-
-
-const toggleNode = document.createElement("div")
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 
 const TableToggle = (props) => {
-	useEffect(() => {
-		if (props.visible) {
-			ReactDOM.render(
-				<Paper>
-					<ToggleButton
-						value="check"
-						selected={false}
-						color="secondary"
-						onChange={() => {
-							props.setVisible(false)
-						}}
-					>
-						<ArrowBackIcon />
-					</ToggleButton>
-				</Paper>,
-				toggleNode
-			)
-		} else {
-			ReactDOM.render(
-				<Paper>
-					<ToggleButton
-						value="check"
-						selected={true}
-						onChange={() => {
-							props.setVisible(true)
-						}}
-					>
-						<ArrowForwardIcon />
-					</ToggleButton>
-				</Paper>,
-				toggleNode
-			)
-		}
-		view.ui.add(toggleNode, "bottom-left")
-	})
-
-	return null
+	return (
+		<ToggleButton
+			sx={{
+				bgcolor: "primary.main",
+				width: "20px",
+				height: "100vh",
+				borderRadius: 0,
+				"&:hover": {
+					bgcolor: "primary.main",
+				},
+			}}
+			value="check"
+			selected={false}
+			onChange={() => {
+				props.setVisible(!props.visible)
+			}}
+		>
+			{props.visible ? <ArrowBackIosNewIcon /> : <ArrowForwardIosIcon />}
+		</ToggleButton>
+	)
 }
 
 export default TableToggle

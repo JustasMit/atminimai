@@ -178,7 +178,6 @@ const ObjectPopupContent = (props) => {
 	}, [props.globalID])
 	return objectAttr.length ? (
 		<Card sx={{ width: 500 }}>
-			{console.log(window.innerHeight)}
 			<CardContent style={{ maxHeight: window.innerHeight - 50, overflowY: "auto", overflowX: "hidden" }}>
 				{Object.keys(objectAttr).map((attr) =>
 					objectAttr[attr].field === "OBJ_PAV" ? (
@@ -235,11 +234,14 @@ const ObjectPopupContent = (props) => {
 						Susiję asmenys
 						<Typography component="div">
 							{Object.keys(objectPer).map((per) => (
-								<Link
-									component="button"
-									variant="body2"
-									key={per}
-								>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
+								<>
+									<Link
+										component="button"
+										variant="body2"
+										key={per}
+									>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
+									<br></br>
+								</>
 							))}
 						</Typography>
 					</Typography>

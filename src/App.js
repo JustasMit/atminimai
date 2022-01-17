@@ -3,6 +3,7 @@ import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
 import Popup from "./components/map/Popup"
+import TableToggle from "./components/table/TableToggle"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import CircularProgress from "@mui/material/CircularProgress"
@@ -105,6 +106,9 @@ const App = () => {
 											/>
 										</Grid>
 									</Collapse>
+									<Grid item style={{ height: "100vh", width: "25px" }}>
+										<TableToggle visible={visible} setVisible={setVisible}/>
+									</Grid>
 									<Grid item xs={true} style={{ height: "100vh" }}>
 										<ObjectMap objects={objectsList} filter={filter} />
 									</Grid>

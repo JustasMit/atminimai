@@ -1,6 +1,7 @@
 import React from "react"
 import TextField from "@mui/material/TextField"
 import Autocomplete from "@mui/material/Autocomplete"
+import Box from "@mui/material/Box"
 import { useNavigate } from "react-router-dom"
 
 const Search = (props) => {
@@ -22,22 +23,24 @@ const Search = (props) => {
 	}
 
 	return (
-		<Autocomplete
-			sx={{ ml: 1, mt: 1, width: 1 }}
-			freeSolo
-			id="search"
-			options={listObj}
-			getOptionLabel={(option) => option.pav}
-			onChange={handleSearch}
-			renderOption={(props, option) => {
-				return (
-					<li {...props} id={option.key} key={option.key}>
-						{option.pav}
-					</li>
-				)
-			}}
-			renderInput={(params) => <TextField {...params} label="Paieška" />}
-		/>
+		<Box sx={{ ml: 0.5, mr: 0.5 }}>
+			<Autocomplete
+				sx={{ mt: 1, width: "100%" }}
+				freeSolo
+				id="search"
+				options={listObj}
+				getOptionLabel={(option) => option.pav}
+				onChange={handleSearch}
+				renderOption={(props, option) => {
+					return (
+						<li {...props} id={option.key} key={option.key}>
+							{option.pav}
+						</li>
+					)
+				}}
+				renderInput={(params) => <TextField {...params} label="Paieška" />}
+			/>
+		</Box>
 	)
 }
 

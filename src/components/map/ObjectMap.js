@@ -21,7 +21,7 @@ const ObjectMap = (props) => {
 						// console.log(response.results[graphic])
 					// }
 
-					navigate(response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+					//navigate(response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 				}
 			})
 		})

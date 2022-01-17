@@ -10,9 +10,7 @@ const TableItems = (props) => {
 
 	return (
 		<List
-			sx={{ mr: 1, ml: 1, width: 1 }}
-			style={{ height: "100%", overflowY: "scroll", overflowX: "hidden" }}
-			component="nav"
+			style={{ height: "100%", width: "100%", overflowY: "scroll", overflowX: "hidden" }}
 		>
 			<ListSubheader disableSticky={true}>Objektų sąrašas</ListSubheader>
 			{Object.keys(props.objects).map((object) => (
