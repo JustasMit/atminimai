@@ -17,6 +17,7 @@ import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
 import ImageList from "@mui/material/ImageList"
 import ImageListItem from "@mui/material/ImageListItem"
+import Box from "@mui/material/Box"
 
 function createData(name, calories) {
 	return { name, calories }
@@ -175,10 +176,10 @@ const ObjectPopupContent = (props) => {
 		console.log(objectPer)
 		console.log(objectAtt)
 	}, [props.globalID])
-	//scroll?, responsive width? button vietoj link?
 	return objectAttr.length ? (
 		<Card sx={{ width: 500 }}>
-			<CardContent style={{ maxHeight: "100%", overflowY: "auto", overflowX: "hidden" }}>
+			{console.log(window.innerHeight)}
+			<CardContent style={{ maxHeight: window.innerHeight - 50, overflowY: "auto", overflowX: "hidden" }}>
 				{Object.keys(objectAttr).map((attr) =>
 					objectAttr[attr].field === "OBJ_PAV" ? (
 						<Typography variant="h5" component="div">
@@ -232,9 +233,11 @@ const ObjectPopupContent = (props) => {
 				{objectPer.length ? (
 					<Typography variant="h6" component="div">
 						Susiję asmenys
-						<Typography variant="body2" component="div">
+						<Typography component="div">
 							{Object.keys(objectPer).map((per) => (
 								<Link
+									component="button"
+									variant="body2"
 									key={per}
 								>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
 							))}
@@ -243,7 +246,9 @@ const ObjectPopupContent = (props) => {
 				) : null}
 				{objectAtt.length
 					? Object.keys(objectAtt).map((att) => (
-							<img style={{ width: 400, objectFit: "contain" }} src={`${objectAtt[att].url}`} />
+							<Box sx={{ width: 450, mt: 1 }}>
+								<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+							</Box>
 					  ))
 					: null}
 			</CardContent>
