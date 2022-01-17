@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from "react"
 import { objects, view } from "../../utils/arcgisItems"
 import displayFeatures from "../../utils/displayFeatures"
 import { Outlet } from "react-router-dom"
-import "../../css/map.css"
 import { useNavigate } from "react-router-dom"
+import "../../css/map.css"
 
 const ObjectMap = (props) => {
 	const navigate = useNavigate()
@@ -15,13 +15,12 @@ const ObjectMap = (props) => {
 		view.on("click", (event) => {
 			view.hitTest(event).then(function (response) {
 				if (response.results.length) {
-                    //console.log(response.results[0])
-					// for (let graphic in response.results) {
-						// console.log(response.results[graphic].graphic.attributes)
-						// console.log(response.results[graphic])
-					// }
-
-					//navigate(response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+					props.setQueryObjects(response.results)
+					//for (let graphic in response.results) {
+					//	console.log(response.results[graphic].graphic.attributes)
+					//	console.log(response.results[graphic])
+					//}
+					navigate(response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 				}
 			})
 		})

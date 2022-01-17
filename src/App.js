@@ -18,6 +18,8 @@ const App = () => {
 	const [selectedObject, setSelectedObject] = useState("")
 	const [filter, setFilter] = useState("")
 	const [objectsList, setObjectsList] = useState([])
+	const [queryObjects, setQueryObjects] = useState([])
+	const [objectPopupPage, setObjectPopupPage] = useState(1)
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [filterLoading, setFilterLoading] = useState(false)
@@ -110,14 +112,14 @@ const App = () => {
 										<TableToggle visible={visible} setVisible={setVisible}/>
 									</Grid>
 									<Grid item xs={true} style={{ height: "100vh" }}>
-										<ObjectMap objects={objectsList} filter={filter} />
+										<ObjectMap setQueryObjects={setQueryObjects} objects={objectsList} filter={filter} />
 									</Grid>
 								</Grid>
 							)}
 						</React.Fragment>
 					}
 				>
-					<Route path=":globalID" element={<Popup />} />
+					<Route path=":globalID" element={<Popup queryObjects={queryObjects} objectPopupPage={objectPopupPage} setObjectPopupPage={setObjectPopupPage}/>} />
 					<Route path="VilniausDNR" element={<Navigate to="/" />} />
 				</Route>
 			</Routes>

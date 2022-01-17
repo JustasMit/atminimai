@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { view, objects } from "../../utils/arcgisItems"
 import Graphic from "@arcgis/core/Graphic"
 
 import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
 import CardContent from "@mui/material/CardContent"
-import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
-import ImageList from "@mui/material/ImageList"
-import ImageListItem from "@mui/material/ImageListItem"
 import Box from "@mui/material/Box"
+import Pagination from "@mui/material/Pagination"
 
-function createData(name, calories) {
-	return { name, calories }
-}
 
-const rows = [
-	createData("Frozen yoghurt", 159),
-	createData("Ice cream sandwich", 237),
-	createData("Eclair", 2620),
-	createData("Cupcake", 305),
-	createData("Gingerbread", 3569),
-]
 const ObjectPopupContent = (props) => {
 	const [objectAttr, setObjectAttr] = useState([])
 	const [objectPer, setObjectPer] = useState([])
 	const [objectAtt, setObjectAtt] = useState([])
+	//const navigate = useNavigate()
+
+	const handlePage = (event, value) => {
+		props.setObjectPopupPage(value)
+        console.log(props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+		//navigate(props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+	}
 
 	useEffect(() => {
 		objects
@@ -172,13 +166,16 @@ const ObjectPopupContent = (props) => {
 			.catch((error) => {
 				console.error(error)
 			})
-		console.log(objectAttr)
-		console.log(objectPer)
-		console.log(objectAtt)
+		console.log(props.queryObjects)
 	}, [props.globalID])
 	return objectAttr.length ? (
 		<Card sx={{ width: 500 }}>
 			<CardContent style={{ maxHeight: window.innerHeight - 50, overflowY: "auto", overflowX: "hidden" }}>
+				{props.queryObjects.length > 1 ? (
+					<Box display="flex" justifyContent="center" alignItems="center">
+						<Pagination count={props.queryObjects.length} page={props.objectPopupPage} onChange={handlePage} />
+					</Box>
+				) : null}
 				{Object.keys(objectAttr).map((attr) =>
 					objectAttr[attr].field === "OBJ_PAV" ? (
 						<Typography variant="h5" component="div">
