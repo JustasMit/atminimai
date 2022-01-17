@@ -6,12 +6,20 @@ import ObjectPopupContent from "./ObjectPopupContent"
 
 const popupNode = document.createElement("div")
 
-const Popup = () => {
+const Popup = (props) => {
 	const { globalID } = useParams()
 
 	useEffect(() => {
 		console.log(globalID)
-		ReactDOM.render(<ObjectPopupContent globalID={globalID} />, popupNode)
+		ReactDOM.render(
+			<ObjectPopupContent
+				globalID={globalID}
+                queryObjects={props.queryObjects}
+				objectPopupPage={props.objectPopupPage}
+				setObjectPopupPage={props.setObjectPopupPage}
+			/>,
+			popupNode
+		)
 		view.ui.add(popupNode, "top-right")
 	}, [globalID])
 
