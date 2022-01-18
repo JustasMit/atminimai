@@ -3,6 +3,7 @@ import Filter from "./Filter"
 import TableItems from "./TableItems"
 import Search from "./Search"
 import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 
 const Table = (props) => {
 	return (

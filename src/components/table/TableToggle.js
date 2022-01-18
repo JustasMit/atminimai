@@ -8,9 +8,12 @@ const TableToggle = (props) => {
 	return (
 		<ToggleButton
 			sx={{
+				position: "absolute",
+				zIndex: 2,
+				height: "20vh",
+                top: "40vh",
+				width: "25px",
 				bgcolor: "primary.main",
-				width: "20px",
-				height: "100vh",
 				borderRadius: 0,
 				"&:hover": {
 					bgcolor: "primary.main",

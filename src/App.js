@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
-import Popup from "./components/map/Popup"
+import ObjectPopup from "./components/map/ObjectPopup"
 import TableToggle from "./components/table/TableToggle"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
@@ -68,62 +68,54 @@ const App = () => {
 	}, [filter])
 
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/"
-					element={
-						<React.Fragment>
-							{initialLoading ? (
-								<Grid
-									container
-									spacing={0}
-									direction="column"
-									alignItems="center"
-									justifyContent="center"
-									style={{ minHeight: "100vh" }}
-								>
-									<Grid item xs={3}>
-										<CircularProgress />
-									</Grid>
+		<Routes>
+			<Route
+				path="/*"
+				element={
+					initialLoading ? (
+						<Grid
+							container
+							spacing={0}
+							direction="column"
+							alignItems="center"
+							justifyContent="center"
+							sx={{ minHeight: "100vh" }}
+						>
+							<Grid item xs={3}>
+								<CircularProgress />
+							</Grid>
+						</Grid>
+					) : (
+						<Grid container spacing={0}>
+							<Collapse orientation="horizontal" in={visible}>
+								<Grid sx={{ height: "100vh" }}>
+									<Table
+										setSelectedObjectFilter={setSelectedObjectFilter}
+										selectedObjectFilter={selectedObjectFilter}
+										setSelectedMemoryFilter={setSelectedMemoryFilter}
+										selectedMemoryFilter={selectedMemoryFilter}
+										setObjectsList={setObjectsList}
+										objects={objectsList}
+										setFilter={setFilter}
+										filter={filter}
+										filterLoading={filterLoading}
+										setVisible={setVisible}
+										visible={visible}
+										setSelectedObject={setSelectedObject}
+										selectedObject={selectedObject}
+									/>
 								</Grid>
-							) : (
-								<Grid container spacing={0}>
-									<Collapse orientation="horizontal" in={visible}>
-										<Grid style={{ height: "100vh" }}>
-											<Table
-												setSelectedObjectFilter={setSelectedObjectFilter}
-												selectedObjectFilter={selectedObjectFilter}
-												setSelectedMemoryFilter={setSelectedMemoryFilter}
-												selectedMemoryFilter={selectedMemoryFilter}
-												setObjectsList={setObjectsList}
-												objects={objectsList}
-												setFilter={setFilter}
-												filter={filter}
-												filterLoading={filterLoading}
-												setVisible={setVisible}
-												visible={visible}
-												setSelectedObject={setSelectedObject}
-												selectedObject={selectedObject}
-											/>
-										</Grid>
-									</Collapse>
-									<Grid item style={{ height: "100vh", width: "25px" }}>
-										<TableToggle visible={visible} setVisible={setVisible}/>
-									</Grid>
-									<Grid item xs={true} style={{ height: "100vh" }}>
-										<ObjectMap setQueryObjects={setQueryObjects} objects={objectsList} filter={filter} />
-									</Grid>
-								</Grid>
-							)}
-						</React.Fragment>
-					}
-				>
-					<Route path=":globalID" element={<Popup queryObjects={queryObjects} objectPopupPage={objectPopupPage} setObjectPopupPage={setObjectPopupPage}/>} />
-					<Route path="VilniausDNR" element={<Navigate to="/" />} />
-				</Route>
-			</Routes>
-		</BrowserRouter>
+							</Collapse>
+							<Grid item xs={true} sx={{ height: "100vh" }}>
+								<TableToggle visible={visible} setVisible={setVisible} />
+								<ObjectMap queryObjects={queryObjects} setQueryObjects={setQueryObjects} objects={objectsList} filter={filter} />
+							</Grid>
+						</Grid>
+					)
+				}
+			/>
+			<Route path="VilniausDNR" element={<Navigate to="/" />} />
+		</Routes>
 	)
 }
 

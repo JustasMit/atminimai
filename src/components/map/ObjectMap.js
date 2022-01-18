@@ -1,8 +1,11 @@
 import React, { useRef, useEffect } from "react"
 import { objects, view } from "../../utils/arcgisItems"
+import ObjectPopup from "./ObjectPopup"
 import displayFeatures from "../../utils/displayFeatures"
 import { Outlet } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import Box from "@mui/material/Box"
+
 import "../../css/map.css"
 
 const ObjectMap = (props) => {
@@ -55,6 +58,20 @@ const ObjectMap = (props) => {
 
 	return (
 		<div className="map" ref={mapDiv}>
+			<Box sx={{ position: "absolute", zIndex: 2 }}>
+				<Routes>
+					<Route
+						path=":globalID"
+						element={
+							<ObjectPopup
+								queryObjects={props.queryObjects}
+								objectPopupPage={props.objectPopupPage}
+								setObjectPopupPage={props.setObjectPopupPage}
+							/>
+						}
+					/>
+				</Routes>
+			</Box>
 			<Outlet />
 		</div>
 	)
