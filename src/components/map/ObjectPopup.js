@@ -31,7 +31,13 @@ const ObjectPopup = (props) => {
 	const handlePage = (event, value) => {
 		props.setObjectPopupPage(value)
 		console.log(props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
-		//navigate(props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+        console.log(value)
+		navigate(
+			`/${props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
+			{
+				replace: true,
+			}
+		)
 	}
 
 	useEffect(() => {
@@ -182,7 +188,11 @@ const ObjectPopup = (props) => {
 					<CardContent style={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
 						{props.queryObjects.length > 1 ? (
 							<Box display="flex" justifyContent="center" alignItems="center">
-								<Pagination count={props.queryObjects.length} page={props.objectPopupPage} onChange={handlePage} />
+								<Pagination
+									count={props.queryObjects.length}
+									page={props.objectPopupPage}
+									onChange={handlePage}
+								/>
 							</Box>
 						) : null}
 						{Object.keys(objectAttr).map((attr) =>
@@ -200,7 +210,10 @@ const ObjectPopup = (props) => {
 										objectAttr[attr].field === "AUTORIUS" ||
 										objectAttr[attr].field === "OBJ_PAV" ||
 										objectAttr[attr].field === "SALTINIS" ? null : (
-											<TableRow key={objectAttr[attr].field} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+											<TableRow
+												key={objectAttr[attr].field}
+												sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+											>
 												<TableCell component="th" scope="row">
 													{objectAttr[attr].alias}
 												</TableCell>

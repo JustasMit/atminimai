@@ -9,11 +9,9 @@ import App from "./App"
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />
-		<React.StrictMode>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</React.StrictMode>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</ThemeProvider>,
 	document.querySelector("#root")
 )

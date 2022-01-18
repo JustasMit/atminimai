@@ -15,10 +15,13 @@ const Filter = (props) => {
 	let tempObjectAlias = []
 	let tempMemoryAlias = []
 
-	const handleSelect = (event) => {
+	const handleObjectSelect = (event) => {
 		props.setSelectedObjectFilter(event.target.value)
 	}
-
+	const handleMemorySelect = (event) => {
+        props.setSelectedMemoryFilter(event.target.value)
+	}
+    
 	useEffect(() => {
 		objects
 			.queryFeatures({
@@ -39,10 +42,10 @@ const Filter = (props) => {
 						setObjectAlias(tempObjectAlias)
 					} else if (response.features[0].layer.fields[field].name === "ATMINT_TIP") {
 						for (let code in response.features[0].layer.fields[field].domain.codedValues) {
-							const objCodeAlias = {}
-							objCodeAlias.alias = response.features[0].layer.fields[field].domain.codedValues[code].name
-							objCodeAlias.code = response.features[0].layer.fields[field].domain.codedValues[code].code
-							tempMemoryAlias.push(objCodeAlias)
+							const memCodeAlias = {}
+							memCodeAlias.alias = response.features[0].layer.fields[field].domain.codedValues[code].name
+							memCodeAlias.code = response.features[0].layer.fields[field].domain.codedValues[code].code
+							tempMemoryAlias.push(memCodeAlias)
 						}
 						setMemoryAlias(tempMemoryAlias)
 					}
@@ -68,23 +71,23 @@ const Filter = (props) => {
 
 		props.setFilter(query)
 	}, [props.selectedObjectFilter, props.selectedMemoryFilter])
-	// TARPAI !!! margins
 	return (
 		<Box sx={{ ml: 0.5, mr: 0.5 }}>
 			<FormControl sx={{ mt: 1, width: "100%" }}>
-				<InputLabel id="object-select-helper-label">Objekto tipas</InputLabel>
+				<InputLabel id="object-select-label">Objekto tipas</InputLabel>
 				<Select
-					labelId="object-select-helper-label"
-					id="object-select-helper"
+					labelId="object-select-label"
+					name="object-select"
+					id="object-select"
 					value={props.selectedObjectFilter}
 					label="Objekto tipas"
-					onChange={(event) => handleSelect(event)}
+					onChange={handleObjectSelect}
 				>
 					<MenuItem value="">
 						<em>Visi</em>
 					</MenuItem>
-					{objectAlias.map((object, index) => (
-						<MenuItem key={index} value={object.code}>
+					{objectAlias.map((object) => (
+						<MenuItem key={object.code} value={object.code}>
 							{object.alias}
 						</MenuItem>
 					))}
@@ -92,19 +95,20 @@ const Filter = (props) => {
 			</FormControl>
 
 			<FormControl sx={{ mt: 1, width: "100%" }}>
-				<InputLabel id="memory-select-helper-label">Atminimo tipas</InputLabel>
+				<InputLabel id="memory-select-label">Atminimo tipas</InputLabel>
 				<Select
-					labelId="memory-select-helper-label"
-					id="memory-select-helper"
-					value={props.selectedObjectFilter}
+					labelId="memory-select-label"
+					name="memory-select"
+					id="memory-select"
+					value={props.selectedMemoryFilter}
 					label="Atminimo tipas"
-					onChange={(event) => handleSelect(event)}
+					onChange={handleMemorySelect}
 				>
 					<MenuItem value="">
 						<em>Visi</em>
 					</MenuItem>
-					{memoryAlias.map((object, index) => (
-						<MenuItem key={index} value={object.code}>
+					{memoryAlias.map((object) => (
+						<MenuItem key={object.code} value={object.code}>
 							{object.alias}
 						</MenuItem>
 					))}

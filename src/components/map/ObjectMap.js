@@ -13,15 +13,19 @@ const ObjectMap = (props) => {
 		view.container = mapDiv.current
 
 		view.on("click", (event) => {
-			view.hitTest(event).then(function (response) {
+			view.hitTest(event).then((response) => {
 				if (response.results.length) {
-					props.setQueryObjects(response.results)
-                    props.setObjectPopupPage(1)
-					//for (let graphic in response.results) {
-					//	console.log(response.results[graphic].graphic.attributes)
-					//	console.log(response.results[graphic])
-					//}
-					navigate(response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+                    const filteredResponse = []
+					Object.keys(response.results).forEach((result) => {
+						if (!response.results[result].graphic.attributes.highlight) {
+							filteredResponse.push(response.results[result])
+						}
+					})
+                    console.log(filteredResponse)
+					props.setQueryObjects(filteredResponse)
+					props.setObjectPopupPage(1)
+
+					navigate(filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 				}
 			})
 		})
