@@ -33,7 +33,7 @@ const ObjectPopup = (props) => {
 		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
         console.log(value)
 		navigate(
-			`/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
+			`/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
 			{
 				replace: true,
 			}

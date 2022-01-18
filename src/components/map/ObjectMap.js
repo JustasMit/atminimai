@@ -11,7 +11,6 @@ const ObjectMap = (props) => {
 
 	useEffect(() => {
 		view.container = mapDiv.current
-
 		view.on("click", (event) => {
 			view.hitTest(event).then((response) => {
 				if (response.results.length) {
@@ -25,7 +24,7 @@ const ObjectMap = (props) => {
 					props.setQueryObjects(filteredResponse)
 					props.setObjectPopupPage(1)
 
-					navigate(filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+					navigate(`object/${filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
 				}
 			})
 		})

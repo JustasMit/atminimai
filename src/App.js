@@ -12,7 +12,7 @@ import Collapse from "@mui/material/Collapse"
 import Box from "@mui/material/Box"
 
 import "./css/app.css"
-
+//todo - memory router, forward/backward, clear highlight on route /, fuzzy search on enter/lose focus
 const App = () => {
 	const [selectedObjectFilter, setSelectedObjectFilter] = useState("")
 	const [selectedMemoryFilter, setSelectedMemoryFilter] = useState("")
@@ -71,7 +71,7 @@ const App = () => {
 	return (
 		<Routes>
 			<Route
-				path="/*"
+				path="/"
 				element={
 					initialLoading ? (
 						<Grid
@@ -121,7 +121,7 @@ const App = () => {
 				}
 			>
 				<Route
-					path=":globalID"
+					path="/object/:globalID"
 					element={
 						<ObjectPopup
 							queryObjects={queryObjects}
@@ -131,7 +131,6 @@ const App = () => {
 					}
 				/>
 			</Route>
-			<Route path="VilniausDNR" element={<Navigate to="/" />} />
 		</Routes>
 	)
 }

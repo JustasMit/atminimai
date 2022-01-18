@@ -10,7 +10,10 @@ ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />
 		<BrowserRouter>
-			<App />
+			<Routes>
+				<Route path="*" element={<App />}></Route>
+				<Route path="VilniausDNR" element={<Navigate to="*" />} />
+			</Routes>
 		</BrowserRouter>
 	</ThemeProvider>,
 	document.querySelector("#root")
