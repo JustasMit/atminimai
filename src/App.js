@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
 import Collapse from "@mui/material/Collapse"
+import Box from "@mui/material/Box"
 
 import "./css/app.css"
 
@@ -108,12 +109,28 @@ const App = () => {
 							</Collapse>
 							<Grid item xs={true} sx={{ height: "100vh" }}>
 								<TableToggle visible={visible} setVisible={setVisible} />
-								<ObjectMap queryObjects={queryObjects} setQueryObjects={setQueryObjects} objects={objectsList} filter={filter} />
+								<ObjectMap
+									setQueryObjects={setQueryObjects}
+									setObjectPopupPage={setObjectPopupPage}
+									objects={objectsList}
+									filter={filter}
+								/>
 							</Grid>
 						</Grid>
 					)
 				}
-			/>
+			>
+				<Route
+					path=":globalID"
+					element={
+						<ObjectPopup
+							queryObjects={queryObjects}
+							objectPopupPage={objectPopupPage}
+							setObjectPopupPage={setObjectPopupPage}
+						/>
+					}
+				/>
+			</Route>
 			<Route path="VilniausDNR" element={<Navigate to="/" />} />
 		</Routes>
 	)

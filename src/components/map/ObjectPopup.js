@@ -175,91 +175,95 @@ const ObjectPopup = (props) => {
 		console.log(props.queryObjects)
 	}, [globalID])
 
-	return objectAttr.length ? (
-		<Card sx={{ width: 500, positon: "absolute", zIndex: "10" }}>
-			<CardContent style={{ maxHeight: window.innerHeight - 50, overflowY: "auto", overflowX: "hidden" }}>
-				{props.queryObjects.length > 1 ? (
-					<Box display="flex" justifyContent="center" alignItems="center">
-						<Pagination count={props.queryObjects.length} page={props.objectPopupPage} onChange={handlePage} />
-					</Box>
-				) : null}
-				{Object.keys(objectAttr).map((attr) =>
-					objectAttr[attr].field === "OBJ_PAV" ? (
-						<Typography variant="h5" component="div">
-							{objectAttr[attr].value}
-						</Typography>
-					) : null
-				)}
-				<TableContainer sx={{ mt: 1, mb: 1 }} component={Paper}>
-					<Table sx={{ width: 450 }} size="small">
-						<TableBody>
-							{Object.keys(objectAttr).map((attr) =>
-								objectAttr[attr].field === "OBJ_APRAS" ||
-								objectAttr[attr].field === "AUTORIUS" ||
-								objectAttr[attr].field === "OBJ_PAV" ||
-								objectAttr[attr].field === "SALTINIS" ? null : (
-									<TableRow key={objectAttr[attr].field} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-										<TableCell component="th" scope="row">
-											{objectAttr[attr].alias}
-										</TableCell>
-										<TableCell align="right">{objectAttr[attr].value}</TableCell>
-									</TableRow>
-								)
-							)}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				{Object.keys(objectAttr).map((attr) =>
-					objectAttr[attr].field === "OBJ_APRAS" ? (
-						<Typography variant="h6" component="div">
-							{objectAttr[attr].alias}
-							<Typography variant="body2" component="div">
-								{objectAttr[attr].value}
-							</Typography>
-						</Typography>
-					) : objectAttr[attr].field === "AUTORIUS" ? (
-						<Typography variant="h6" component="div">
-							{objectAttr[attr].alias}
-							<Typography variant="body2" component="div">
-								{objectAttr[attr].value}
-							</Typography>
-						</Typography>
-					) : objectAttr[attr].field === "SALTINIS" ? (
-						<Typography variant="h6" component="div">
-							{objectAttr[attr].alias}
-							<Typography variant="body2" component="div">
-								{objectAttr[attr].value}
-							</Typography>
-						</Typography>
-					) : null
-				)}
-				{objectPer.length ? (
-					<Typography variant="h6" component="div">
-						Susiję asmenys
-						<Typography component="div">
-							{Object.keys(objectPer).map((per) => (
-								<>
-									<Link
-										component="button"
-										variant="body2"
-										key={per}
-									>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
-									<br></br>
-								</>
-							))}
-						</Typography>
-					</Typography>
-				) : null}
-				{objectAtt.length
-					? Object.keys(objectAtt).map((att) => (
-							<Box sx={{ width: 450, mt: 1 }}>
-								<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+	return (
+		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
+			{objectAttr.length ? (
+				<Card sx={{ width: 500 }}>
+					<CardContent style={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+						{props.queryObjects.length > 1 ? (
+							<Box display="flex" justifyContent="center" alignItems="center">
+								<Pagination count={props.queryObjects.length} page={props.objectPopupPage} onChange={handlePage} />
 							</Box>
-					  ))
-					: null}
-			</CardContent>
-		</Card>
-	) : null
+						) : null}
+						{Object.keys(objectAttr).map((attr) =>
+							objectAttr[attr].field === "OBJ_PAV" ? (
+								<Typography variant="h5" component="div">
+									{objectAttr[attr].value}
+								</Typography>
+							) : null
+						)}
+						<TableContainer sx={{ mt: 1, mb: 1 }} component={Paper}>
+							<Table sx={{ width: 450 }} size="small">
+								<TableBody>
+									{Object.keys(objectAttr).map((attr) =>
+										objectAttr[attr].field === "OBJ_APRAS" ||
+										objectAttr[attr].field === "AUTORIUS" ||
+										objectAttr[attr].field === "OBJ_PAV" ||
+										objectAttr[attr].field === "SALTINIS" ? null : (
+											<TableRow key={objectAttr[attr].field} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+												<TableCell component="th" scope="row">
+													{objectAttr[attr].alias}
+												</TableCell>
+												<TableCell align="right">{objectAttr[attr].value}</TableCell>
+											</TableRow>
+										)
+									)}
+								</TableBody>
+							</Table>
+						</TableContainer>
+						{Object.keys(objectAttr).map((attr) =>
+							objectAttr[attr].field === "OBJ_APRAS" ? (
+								<Typography variant="h6" component="div">
+									{objectAttr[attr].alias}
+									<Typography variant="body2" component="div">
+										{objectAttr[attr].value}
+									</Typography>
+								</Typography>
+							) : objectAttr[attr].field === "AUTORIUS" ? (
+								<Typography variant="h6" component="div">
+									{objectAttr[attr].alias}
+									<Typography variant="body2" component="div">
+										{objectAttr[attr].value}
+									</Typography>
+								</Typography>
+							) : objectAttr[attr].field === "SALTINIS" ? (
+								<Typography variant="h6" component="div">
+									{objectAttr[attr].alias}
+									<Typography variant="body2" component="div">
+										{objectAttr[attr].value}
+									</Typography>
+								</Typography>
+							) : null
+						)}
+						{objectPer.length ? (
+							<Typography variant="h6" component="div">
+								Susiję asmenys
+								<Typography component="div">
+									{Object.keys(objectPer).map((per) => (
+										<>
+											<Link
+												component="button"
+												variant="body2"
+												key={per}
+											>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
+											<br></br>
+										</>
+									))}
+								</Typography>
+							</Typography>
+						) : null}
+						{objectAtt.length
+							? Object.keys(objectAtt).map((att) => (
+									<Box sx={{ width: 450, mt: 1 }}>
+										<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+									</Box>
+							  ))
+							: null}
+					</CardContent>
+				</Card>
+			) : null}
+		</Box>
+	)
 }
 
 export default ObjectPopup
