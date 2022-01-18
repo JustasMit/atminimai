@@ -30,10 +30,10 @@ const ObjectPopup = (props) => {
 
 	const handlePage = (event, value) => {
 		props.setObjectPopupPage(value)
-		console.log(props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
         console.log(value)
 		navigate(
-			`/${props.queryObjects[props.objectPopupPage - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
+			`/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
 			{
 				replace: true,
 			}
@@ -179,7 +179,7 @@ const ObjectPopup = (props) => {
 				console.error(error)
 			})
 		console.log(props.queryObjects)
-	}, [globalID])
+	}, [globalID, props.objectPopupPage])
 
 	return (
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
