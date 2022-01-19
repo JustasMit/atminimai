@@ -200,7 +200,7 @@ const ObjectPopup = (props) => {
 						) : null}
 						{Object.keys(objectAttr).map((attr) =>
 							objectAttr[attr].field === "OBJ_PAV" ? (
-								<Typography variant="h5" component="div">
+								<Typography variant="h5" component="div" key={objectAttr[attr].field}>
 									{objectAttr[attr].value}
 								</Typography>
 							) : null
@@ -231,7 +231,7 @@ const ObjectPopup = (props) => {
 							objectAttr[attr].field === "OBJ_APRAS" ||
 							objectAttr[attr].field === "AUTORIUS" ||
 							objectAttr[attr].field === "SALTINIS" ? (
-								<Typography variant="h6" component="div">
+								<Typography variant="h6" component="div" key={objectAttr[attr].field}>
 									{objectAttr[attr].alias}
 									<Typography variant="body2" component="div">
 										{objectAttr[attr].value}
@@ -244,24 +244,23 @@ const ObjectPopup = (props) => {
 								Susiję asmenys
 								<Typography component="div">
 									{Object.keys(objectPer).map((per) => (
-										<>
+										<div key={per}>
 											<Link
 												component="button"
 												variant="body2"
 												onClick={() => {
 													navigate(`/person/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
 												}}
-												key={per}
 											>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
 											<br></br>
-										</>
+										</div>
 									))}
 								</Typography>
 							</Typography>
 						) : null}
 						{objectAtt.length
 							? Object.keys(objectAtt).map((att) => (
-									<Box sx={{ width: 450, mt: 1 }}>
+									<Box sx={{ width: 450, mt: 1 }} key={att}>
 										<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
 									</Box>
 							  ))

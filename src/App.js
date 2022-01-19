@@ -13,7 +13,7 @@ import Collapse from "@mui/material/Collapse"
 import Box from "@mui/material/Box"
 
 import "./css/app.css"
-//todo - memory router, forward/backward, clear highlight on route /, fuzzy search on enter/lose focus
+//todo - memory router (popup pagination), error when backward after refresh (redirect to / ?), route errors after refresh
 const App = () => {
 	const [selectedObjectFilter, setSelectedObjectFilter] = useState("")
 	const [selectedMemoryFilter, setSelectedMemoryFilter] = useState("")

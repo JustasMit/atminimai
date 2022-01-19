@@ -75,7 +75,6 @@ const PersonPopup = (props) => {
 					count++
 				}
 				setPersonAttr(allAttributes)
-				console.log(personAttr)
 				return response.features[0].attributes.OBJECTID
 			})
 			.then((OBJECTID) => {
@@ -100,7 +99,6 @@ const PersonPopup = (props) => {
 						})
 
 						setPersonObj(allObjects)
-						console.log(personObj)
 					})
 					.catch((error) => {
 						console.error(error)
@@ -155,7 +153,7 @@ const PersonPopup = (props) => {
 							personAttr[attr].field === "Mirties_vieta" ||
 							personAttr[attr].field === "Palaidojimo_vieta" ||
 							personAttr[attr].field === "Veikla__profesija" ? null : (
-								<Typography variant="h6" component="div">
+								<Typography variant="h6" component="div" key={personAttr[attr].field}>
 									{personAttr[attr].alias}
 									<Typography variant="body2" component="div">
 										{personAttr[attr].value}
@@ -168,19 +166,18 @@ const PersonPopup = (props) => {
 								Susiję asmenys
 								<Typography component="div">
 									{Object.keys(personObj).map((obj) => (
-										<>
+										<div key={obj}>
 											<Link
 												component="button"
 												variant="body2"
 												onClick={() => {
 													navigate(`/object/${personObj[obj].attributes.GlobalID.replace(/[{}]/g, "")}`)
 												}}
-												key={obj}
 											>
 												{personObj[obj].attributes.OBJ_PAV}
 											</Link>
 											<br></br>
-										</>
+										</div>
 									))}
 								</Typography>
 							</Typography>
