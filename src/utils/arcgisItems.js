@@ -11,6 +11,14 @@ export const objects = new FeatureLayer({
 	maxScale: 0,
 })
 
+export const persons = new FeatureLayer({
+	url: "https://atviras.vplanas.lt/arcgis/rest/services/VilniausDNR/VilniausDNR/MapServer/2",
+	outFields: ["*"],
+	title: "Asmenys",
+	minScale: 0,
+	maxScale: 0,
+})
+
 export const vilnius = new TileLayer({
 	url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
 	title: "Vilnius",

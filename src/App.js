@@ -3,8 +3,9 @@ import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
 import ObjectPopup from "./components/map/ObjectPopup"
+import PersonPopup from "./components/map/PersonPopup"
 import TableToggle from "./components/table/TableToggle"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom"
 
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
@@ -121,7 +122,7 @@ const App = () => {
 				}
 			>
 				<Route
-					path="/object/:globalID"
+					path="object/:globalID"
 					element={
 						<ObjectPopup
 							queryObjects={queryObjects}
@@ -130,6 +131,7 @@ const App = () => {
 						/>
 					}
 				/>
+				<Route path="person/:globalID" element={<PersonPopup />} />
 			</Route>
 		</Routes>
 	)

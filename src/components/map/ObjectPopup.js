@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import ReactDOM from "react-dom"
 import { view, objects } from "../../utils/arcgisItems"
 import Graphic from "@arcgis/core/Graphic"
-//import ObjectPopupContent from "./ObjectPopupContent"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
@@ -18,9 +16,6 @@ import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
 import Pagination from "@mui/material/Pagination"
 
-const popupNode = document.createElement("div")
-view.ui.add(popupNode, "top-right")
-
 const ObjectPopup = (props) => {
 	const { globalID } = useParams()
 	const [objectAttr, setObjectAttr] = useState([])
@@ -31,13 +26,10 @@ const ObjectPopup = (props) => {
 	const handlePage = (event, value) => {
 		props.setObjectPopupPage(value)
 		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
-        console.log(value)
-		navigate(
-			`/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`,
-			{
-				replace: true,
-			}
-		)
+		console.log(value)
+		navigate(`/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`, {
+			replace: true,
+		})
 	}
 
 	useEffect(() => {
@@ -129,7 +121,7 @@ const ObjectPopup = (props) => {
 				const allPersons = []
 				objects
 					.queryRelatedFeatures({
-						outFields: ["*"],
+						outFields: ["GlobalID", "Pavardė__liet_", "Vardas__liet_"],
 						relationshipId: 0,
 						objectIds: OBJECTID,
 					})
@@ -181,6 +173,17 @@ const ObjectPopup = (props) => {
 		console.log(props.queryObjects)
 	}, [globalID, props.objectPopupPage])
 
+	useEffect(() => {
+		return () => {
+			view.graphics.some((graphic) => {
+				if (graphic.attributes["highlight"] == "highlight") {
+					view.graphics.remove(graphic)
+					return true
+				}
+			})
+		}
+	}, [])
+
 	return (
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
 			{objectAttr.length ? (
@@ -225,21 +228,9 @@ const ObjectPopup = (props) => {
 							</Table>
 						</TableContainer>
 						{Object.keys(objectAttr).map((attr) =>
-							objectAttr[attr].field === "OBJ_APRAS" ? (
-								<Typography variant="h6" component="div">
-									{objectAttr[attr].alias}
-									<Typography variant="body2" component="div">
-										{objectAttr[attr].value}
-									</Typography>
-								</Typography>
-							) : objectAttr[attr].field === "AUTORIUS" ? (
-								<Typography variant="h6" component="div">
-									{objectAttr[attr].alias}
-									<Typography variant="body2" component="div">
-										{objectAttr[attr].value}
-									</Typography>
-								</Typography>
-							) : objectAttr[attr].field === "SALTINIS" ? (
+							objectAttr[attr].field === "OBJ_APRAS" ||
+							objectAttr[attr].field === "AUTORIUS" ||
+							objectAttr[attr].field === "SALTINIS" ? (
 								<Typography variant="h6" component="div">
 									{objectAttr[attr].alias}
 									<Typography variant="body2" component="div">
@@ -257,6 +248,9 @@ const ObjectPopup = (props) => {
 											<Link
 												component="button"
 												variant="body2"
+												onClick={() => {
+													navigate(`/person/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
+												}}
 												key={per}
 											>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
 											<br></br>

@@ -18,7 +18,7 @@ const Search = (props) => {
 
 	const handleSearch = (event) => {
 		if (event.target.id) {
-			navigate(`${event.target.id}`)
+			navigate(`/object/${event.target.id}`)
 		}
 	}
 

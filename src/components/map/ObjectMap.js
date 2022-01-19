@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { objects, view } from "../../utils/arcgisItems"
 import displayFeatures from "../../utils/displayFeatures"
-import { Outlet } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import "../../css/map.css"
 
 const ObjectMap = (props) => {
@@ -14,13 +13,13 @@ const ObjectMap = (props) => {
 		view.on("click", (event) => {
 			view.hitTest(event).then((response) => {
 				if (response.results.length) {
-                    const filteredResponse = []
+					const filteredResponse = []
 					Object.keys(response.results).forEach((result) => {
 						if (!response.results[result].graphic.attributes.highlight) {
 							filteredResponse.push(response.results[result])
 						}
 					})
-                    console.log(filteredResponse)
+					console.log(filteredResponse)
 					props.setQueryObjects(filteredResponse)
 					props.setObjectPopupPage(1)
 
@@ -28,29 +27,6 @@ const ObjectMap = (props) => {
 				}
 			})
 		})
-		// view.on("click", (event) => {
-		// 	const point = view.toMap(event)
-
-		// 	objects
-		// 		.queryFeatures({
-		// 			geometry: point,
-		// 			distance: 5 * view.resolution,
-		// 			units: "meters",
-		// 			spatialRelationship: "intersects",
-		// 			returnGeometry: false,
-		// 			outFields: ["GlobalID"],
-		// 			where: props.filter,
-		// 		})
-		// 		.then((response) => {
-		// 			if (!!response.features.length) {
-		//                 navigate(response.features[0].attributes.GlobalID.replace(/[{}]/g, ""))
-		// 			} else {
-		// 				return
-		// 			}
-		// 		})
-		// 		.catch((error) => {
-		// 			console.error(error)
-		// 		})
 	}, [])
 
 	useEffect(() => {
