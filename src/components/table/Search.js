@@ -16,21 +16,25 @@ const Search = (props) => {
 
 	const navigate = useNavigate()
 
-	const handleSearch = (event) => {
-		if (event.target.id) {
-			navigate(`/object/${event.target.id}`)
-		}
+	const handleSearch = (value) => {
+        if(value){
+            navigate(`/object/${value.key}`)
+        }
 	}
 
 	return (
 		<Box sx={{ ml: 0.5, mr: 0.5 }}>
 			<Autocomplete
 				sx={{ mt: 1, width: "100%" }}
-				freeSolo
+				clearOnBlur
+                noOptionsText="Nerasta"
+                clearText="Išvalyti"
+                closeText="Suskleisti"
+                openText="Išskleisti"
 				id="search"
 				options={listObj}
 				getOptionLabel={(option) => option.pav}
-				onChange={handleSearch}
+				onChange={(event, value) => handleSearch(value)}
 				renderOption={(props, option) => {
 					return (
 						<li {...props} id={option.key} key={option.key}>
