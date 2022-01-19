@@ -5,6 +5,9 @@ import Graphic from "@arcgis/core/Graphic"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
+import CardHeader from "@mui/material/CardHeader"
+import CloseIcon from "@mui/icons-material/Close"
+import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -188,7 +191,7 @@ const ObjectPopup = (props) => {
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
 			{objectAttr.length ? (
 				<Card sx={{ width: 500 }}>
-					<CardContent style={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+					<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
 						{props.queryObjects.length > 1 ? (
 							<Box display="flex" justifyContent="center" alignItems="center">
 								<Pagination
@@ -198,14 +201,23 @@ const ObjectPopup = (props) => {
 								/>
 							</Box>
 						) : null}
-						{Object.keys(objectAttr).map((attr) =>
-							objectAttr[attr].field === "OBJ_PAV" ? (
-								<Typography variant="h5" component="div" key={objectAttr[attr].field}>
-									{objectAttr[attr].value}
-								</Typography>
-							) : null
-						)}
-						<TableContainer sx={{ mt: 1, mb: 1 }} component={Paper}>
+						<CardHeader
+							sx={{ px: 0, pt: 0.5, pb: 1 }}
+							action={
+								<IconButton
+									aria-label="close"
+									onClick={() => {
+										navigate("/")
+									}}
+								>
+									<CloseIcon />
+								</IconButton>
+							}
+							title={Object.keys(objectAttr).map((attr) =>
+								objectAttr[attr].field === "OBJ_PAV" ? objectAttr[attr].value : null
+							)}
+						/>
+						<TableContainer sx={{ mb: 1 }} component={Paper}>
 							<Table sx={{ width: 450 }} size="small">
 								<TableBody>
 									{Object.keys(objectAttr).map((attr) =>

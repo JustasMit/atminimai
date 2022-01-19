@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { view, objects, persons } from "../../utils/arcgisItems"
-import Graphic from "@arcgis/core/Graphic"
+import { persons } from "../../utils/arcgisItems"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
+import CardHeader from "@mui/material/CardHeader"
+import CloseIcon from "@mui/icons-material/Close"
+import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -14,7 +16,6 @@ import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
-import Pagination from "@mui/material/Pagination"
 
 const PersonPopup = (props) => {
 	const { globalID } = useParams()
@@ -115,40 +116,51 @@ const PersonPopup = (props) => {
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
 			{personAttr.length ? (
 				<Card sx={{ width: 500 }}>
-					<CardContent style={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
-						<Typography variant="h5" component="div">
-							{Object.keys(personAttr).map((attr) =>
+					<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+						<CardHeader
+							sx={{ px: 0, pt: 0.5, pb: 1 }}
+							action={
+								<IconButton
+									aria-label="close"
+									onClick={() => {
+										navigate("/")
+									}}
+								>
+									<CloseIcon />
+								</IconButton>
+							}
+							title={Object.keys(personAttr).map((attr) =>
 								personAttr[attr].field === "Vardas__liet_" || personAttr[attr].field === "Pavardė__liet_"
 									? `${personAttr[attr].value} `
 									: null
 							)}
-						</Typography>
-						{
-							<TableContainer sx={{ mt: 1, mb: 1 }} component={Paper}>
-								<Table sx={{ width: 450 }} size="small">
-									<TableBody>
-										{Object.keys(personAttr).map((attr) =>
-											personAttr[attr].field === "Gimimo_data" ||
-											personAttr[attr].field === "Gimimo_vieta" ||
-											personAttr[attr].field === "Mirties_data" ||
-											personAttr[attr].field === "Mirties_vieta" ||
-											personAttr[attr].field === "Palaidojimo_vieta" ||
-											personAttr[attr].field === "Veikla__profesija" ? (
-												<TableRow
-													key={personAttr[attr].field}
-													sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-												>
-													<TableCell component="th" scope="row">
-														{personAttr[attr].alias}
-													</TableCell>
-													<TableCell align="right">{personAttr[attr].value}</TableCell>
-												</TableRow>
-											) : null
-										)}
-									</TableBody>
-								</Table>
-							</TableContainer>
-						}
+						/>
+
+						<TableContainer sx={{ mb: 1 }} component={Paper}>
+							<Table sx={{ width: 450 }} size="small">
+								<TableBody>
+									{Object.keys(personAttr).map((attr) =>
+										personAttr[attr].field === "Gimimo_data" ||
+										personAttr[attr].field === "Gimimo_vieta" ||
+										personAttr[attr].field === "Mirties_data" ||
+										personAttr[attr].field === "Mirties_vieta" ||
+										personAttr[attr].field === "Palaidojimo_vieta" ||
+										personAttr[attr].field === "Veikla__profesija" ? (
+											<TableRow
+												key={personAttr[attr].field}
+												sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+											>
+												<TableCell component="th" scope="row">
+													{personAttr[attr].alias}
+												</TableCell>
+												<TableCell align="right">{personAttr[attr].value}</TableCell>
+											</TableRow>
+										) : null
+									)}
+								</TableBody>
+							</Table>
+						</TableContainer>
+
 						{Object.keys(personAttr).map((attr) =>
 							personAttr[attr].field === "Vardas__liet_" ||
 							personAttr[attr].field === "Pavardė__liet_" ||
