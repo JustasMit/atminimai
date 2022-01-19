@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline"
 import theme from "./theme"
 import App from "./App"
 
+//istrint?
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />

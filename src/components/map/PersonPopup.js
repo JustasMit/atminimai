@@ -57,7 +57,12 @@ const PersonPopup = (props) => {
 
 						obj.alias = response.features[0].layer.fields[count].alias
 						if (response.features[0].layer.fields[count].domain === null) {
-							obj.value = response.features[0].attributes[attr]
+							if (attr === "Gimimo_data" || attr === "Mirties_data") {
+								let parsedDate = new Date(Date.parse(response.features[0].attributes[attr]))
+								obj.value = parsedDate.toLocaleDateString("lt-LT")
+							} else {
+								obj.value = response.features[0].attributes[attr]
+							}
 						} else {
 							for (let code in response.features[0].layer.fields[count].domain.codedValues) {
 								if (
