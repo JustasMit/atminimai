@@ -17,7 +17,7 @@ const TableItems = (props) => {
 				<ListItemButton
 					onClick={() => {
 						props.setSelectedObject(`${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
-						navigate(`/object/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
+						navigate(`object/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 					}}
 					selected={props.objects[object].attributes.GlobalID.replace(/[{}]/g, "") === props.selectedObject}
 					key={props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}

@@ -30,9 +30,12 @@ const ObjectPopup = (props) => {
 		props.setObjectPopupPage(value)
 		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 		console.log(value)
-		navigate(`/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`, {
-			replace: true,
-		})
+		navigate(
+			`/vilniausdnr/map/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(
+				/[{}]/g,
+				""
+			)}`
+		)
 	}
 
 	useEffect(() => {
@@ -207,7 +210,7 @@ const ObjectPopup = (props) => {
 								<IconButton
 									aria-label="close"
 									onClick={() => {
-										navigate("/")
+										navigate("/vilniausdnr/map")
 									}}
 								>
 									<CloseIcon />
@@ -261,7 +264,12 @@ const ObjectPopup = (props) => {
 												component="button"
 												variant="body2"
 												onClick={() => {
-													navigate(`/person/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
+													navigate(
+														`/vilniausdnr/map/person/${objectPer[per].attributes.GlobalID.replace(
+															/[{}]/g,
+															""
+														)}`
+													)
 												}}
 											>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
 											<br></br>

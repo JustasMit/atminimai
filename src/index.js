@@ -6,14 +6,13 @@ import CssBaseline from "@mui/material/CssBaseline"
 import theme from "./theme"
 import App from "./App"
 
-//istrint?
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<CssBaseline />
 		<BrowserRouter>
 			<Routes>
-				<Route path="/*" element={<App />}></Route>
-				<Route path="VilniausDNR" element={<Navigate to="/" />} />
+				<Route path="/vilniausdnr/map/*" element={<App />}></Route>
+				<Route path="/" element={<Navigate to="/vilniausdnr/map"/>}></Route>
 			</Routes>
 		</BrowserRouter>
 	</ThemeProvider>,

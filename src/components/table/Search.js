@@ -18,7 +18,7 @@ const Search = (props) => {
 
 	const handleSearch = (value) => {
         if(value){
-            navigate(`/object/${value.key}`)
+            navigate(`object/${value.key}`)
         }
 	}
 
@@ -34,6 +34,7 @@ const Search = (props) => {
 				id="search"
 				options={listObj}
 				getOptionLabel={(option) => option.pav}
+        isOptionEqualToValue={(option, value) => option.key === value.key}
 				onChange={(event, value) => handleSearch(value)}
 				renderOption={(props, option) => {
 					return (
