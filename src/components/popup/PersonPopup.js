@@ -16,11 +16,14 @@ import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
+import CircularProgress from "@mui/material/CircularProgress"
+import Grid from "@mui/material/Grid"
 
 const PersonPopup = (props) => {
 	const { globalID } = useParams()
 	const [personAttr, setPersonAttr] = useState([])
 	const [personObj, setPersonObj] = useState([])
+	const [loading, setLoading] = useState(true)
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -40,17 +43,33 @@ const PersonPopup = (props) => {
 						attr === "OBJECTID" ||
 						attr === "GAT_ID" ||
 						attr === "Daiktas" ||
+						attr === "Vardas__pavardė_kitomis_kalbomi" ||
+						attr === "Pseudonimas__slapyvardžiai" ||
 						attr === "Pagrindinė_veikla" ||
 						attr === "Veiklos_detalizavimas" ||
-						attr === "GATVĖ_1" ||
+						attr === "Kiti_veiklos_momentai_faktai" ||
+						attr === "Kiti_vertinimai__nuomonės" ||
+						attr === "objekto_adresas" ||
 						attr === "ATMINIMO_LENTA" ||
+						attr === "KITA" ||
+						attr === "KITA2" ||
+						attr === "KITA3" ||
+						attr === "KITA4" ||
+						attr === "KITA5" ||
+						attr === "KITA6" ||
+						attr === "KITA7" ||
 						attr === "MUZIEJUS_KOREGAVO" ||
 						attr === "Meninė_vertė" ||
 						attr === "gatvė" ||
+						attr === "GATVĖ_1" ||
 						attr === "lentelė_apie_asmenybė__instituc" ||
 						attr === "objekto_adresas" ||
 						attr === "lentos_prieinamumas" ||
-						attr === "ATMINIMO_LENTA " ||
+						attr === "ATMINIMO_LENTA" ||
+						attr === "created_user" ||
+						attr === "created_date" ||
+						attr === "last_edited_user" ||
+						attr === "last_edited_date" ||
 						attr === "GlobalID"
 					) {
 					} else {
@@ -87,7 +106,7 @@ const PersonPopup = (props) => {
 				const allObjects = []
 				persons
 					.queryRelatedFeatures({
-						outFields: ["GlobalID", "OBJ_PAV"],
+						outFields: ["GlobalID", "OBJ_PAV", "VIETA"],
 						relationshipId: 0,
 						objectIds: OBJECTID,
 					})
@@ -110,103 +129,118 @@ const PersonPopup = (props) => {
 						console.error(error)
 					})
 			})
+		setLoading(false)
 	}, [globalID])
 
 	return (
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
-			{personAttr.length ? (
-				<Card sx={{ width: 500 }}>
-					<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
-						<CardHeader
-							sx={{ px: 0, pt: 0.5, pb: 1 }}
-							action={
-								<IconButton
-									aria-label="close"
-									onClick={() => {
-										navigate("/atminimolentos")
-									}}
-								>
-									<CloseIcon />
-								</IconButton>
-							}
-							title={Object.keys(personAttr).map((attr) =>
-								personAttr[attr].field === "Vardas__liet_" || personAttr[attr].field === "Pavardė__liet_"
-									? `${personAttr[attr].value} `
-									: null
+			<Card sx={{ width: 500 }}>
+				<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+					{loading ? (
+						<Grid
+							container
+							spacing={0}
+							direction="column"
+							alignItems="center"
+							justifyContent="center"
+							sx={{ minHeight: "10vh" }}
+						>
+							<Grid item xs={3}>
+								<CircularProgress />
+							</Grid>
+						</Grid>
+					) : (
+						<>
+							<CardHeader
+								sx={{ px: 0, pt: 0.5, pb: 1 }}
+								action={
+									<IconButton
+										aria-label="close"
+										onClick={() => {
+											navigate("/")
+										}}
+									>
+										<CloseIcon />
+									</IconButton>
+								}
+								title={Object.keys(personAttr).map((attr) =>
+									personAttr[attr].field === "Vardas__liet_" || personAttr[attr].field === "Pavardė__liet_"
+										? `${personAttr[attr].value} `
+										: null
+								)}
+							/>
+
+							<TableContainer sx={{ mb: 1 }} component={Paper}>
+								<Table sx={{ width: 450 }} size="small">
+									<TableBody>
+										{Object.keys(personAttr).map((attr) =>
+											personAttr[attr].field === "Gimimo_data" ||
+											personAttr[attr].field === "Gimimo_vieta" ||
+											personAttr[attr].field === "Mirties_data" ||
+											personAttr[attr].field === "Mirties_vieta" ||
+											personAttr[attr].field === "Palaidojimo_vieta" ||
+											personAttr[attr].field === "Veikla__profesija" ? (
+												<TableRow
+													key={personAttr[attr].field}
+													sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+												>
+													<TableCell component="th" scope="row">
+														{personAttr[attr].alias}
+													</TableCell>
+													<TableCell align="right">{personAttr[attr].value}</TableCell>
+												</TableRow>
+											) : null
+										)}
+									</TableBody>
+								</Table>
+							</TableContainer>
+
+							{Object.keys(personAttr).map((attr) =>
+								personAttr[attr].field === "Vardas__liet_" ||
+								personAttr[attr].field === "Pavardė__liet_" ||
+								personAttr[attr].field === "Gimimo_data" ||
+								personAttr[attr].field === "Gimimo_vieta" ||
+								personAttr[attr].field === "Mirties_data" ||
+								personAttr[attr].field === "Mirties_vieta" ||
+								personAttr[attr].field === "Palaidojimo_vieta" ||
+								personAttr[attr].field === "Veikla__profesija" ? null : (
+									<Typography variant="h6" component="div" key={personAttr[attr].field}>
+										{personAttr[attr].alias}
+										<Typography variant="body2" component="div">
+											{personAttr[attr].value}
+										</Typography>
+									</Typography>
+								)
 							)}
-						/>
-
-						<TableContainer sx={{ mb: 1 }} component={Paper}>
-							<Table sx={{ width: 450 }} size="small">
-								<TableBody>
-									{Object.keys(personAttr).map((attr) =>
-										personAttr[attr].field === "Gimimo_data" ||
-										personAttr[attr].field === "Gimimo_vieta" ||
-										personAttr[attr].field === "Mirties_data" ||
-										personAttr[attr].field === "Mirties_vieta" ||
-										personAttr[attr].field === "Palaidojimo_vieta" ||
-										personAttr[attr].field === "Veikla__profesija" ? (
-											<TableRow
-												key={personAttr[attr].field}
-												sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-											>
-												<TableCell component="th" scope="row">
-													{personAttr[attr].alias}
-												</TableCell>
-												<TableCell align="right">{personAttr[attr].value}</TableCell>
-											</TableRow>
-										) : null
-									)}
-								</TableBody>
-							</Table>
-						</TableContainer>
-
-						{Object.keys(personAttr).map((attr) =>
-							personAttr[attr].field === "Vardas__liet_" ||
-							personAttr[attr].field === "Pavardė__liet_" ||
-							personAttr[attr].field === "Gimimo_data" ||
-							personAttr[attr].field === "Gimimo_vieta" ||
-							personAttr[attr].field === "Mirties_data" ||
-							personAttr[attr].field === "Mirties_vieta" ||
-							personAttr[attr].field === "Palaidojimo_vieta" ||
-							personAttr[attr].field === "Veikla__profesija" ? null : (
-								<Typography variant="h6" component="div" key={personAttr[attr].field}>
-									{personAttr[attr].alias}
-									<Typography variant="body2" component="div">
-										{personAttr[attr].value}
+							{personObj.length ? (
+								<Typography variant="h6" component="div">
+									{personObj.length > 1 ? "Susiję objektai" : "Susijęs objektas"}
+									<Typography component="div">
+										{Object.keys(personObj).map((obj) => (
+											<div key={obj}>
+												<Link
+													sx={{ mt: 0.5 }}
+													textAlign="left"
+													component="button"
+													variant="body2"
+													onClick={() => {
+														props.setSearchInputValue(null)
+														navigate(`/objektas/${personObj[obj].attributes.GlobalID.replace(/[{}]/g, "")}`)
+													}}
+												>
+													{personObj[obj].attributes.OBJ_PAV}{" "}
+													{personObj[obj].attributes.VIETA ? `(${personObj[obj].attributes.VIETA})` : null}
+												</Link>
+												<br></br>
+											</div>
+										))}
 									</Typography>
 								</Typography>
-							)
-						)}
-						{personObj.length ? (
-							<Typography variant="h6" component="div">
-								Susiję asmenys
-								<Typography component="div">
-									{Object.keys(personObj).map((obj) => (
-										<div key={obj}>
-											<Link
-												component="button"
-												variant="body2"
-												onClick={() => {
-													navigate(
-														`/atminimolentos/objektas/${personObj[obj].attributes.GlobalID.replace(
-															/[{}]/g,
-															""
-														)}`
-													)
-												}}
-											>
-												{personObj[obj].attributes.OBJ_PAV}
-											</Link>
-											<br></br>
-										</div>
-									))}
-								</Typography>
-							</Typography>
-						) : null}
-					</CardContent>
-				</Card>
-			) : null}
+							) : null}
+						</>
+					)}
+				</CardContent>
+			</Card>
 		</Box>
 	)
 }

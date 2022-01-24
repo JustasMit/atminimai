@@ -18,28 +18,23 @@ import Paper from "@mui/material/Paper"
 import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
 import Pagination from "@mui/material/Pagination"
+import CircularProgress from "@mui/material/CircularProgress"
+import Grid from "@mui/material/Grid"
 
 const ObjectPopup = (props) => {
 	const { globalID } = useParams()
 	const [objectAttr, setObjectAttr] = useState([])
 	const [objectPer, setObjectPer] = useState([])
 	const [objectAtt, setObjectAtt] = useState([])
+	const [loading, setLoading] = useState(true)
 	const navigate = useNavigate()
 
 	const handlePage = (event, value) => {
 		props.setObjectPopupPage(value)
-		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
-		console.log(value)
-		navigate(
-			`/atminimolentos/objektas/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(
-				/[{}]/g,
-				""
-			)}`
-		)
+		navigate(`/objektas/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
 	}
 
 	useEffect(() => {
-		console.log(globalID)
 		objects
 			.queryFeatures({
 				outFields: ["*"],
@@ -176,7 +171,7 @@ const ObjectPopup = (props) => {
 			.catch((error) => {
 				console.error(error)
 			})
-		console.log(props.queryObjects)
+		setLoading(false)
 	}, [globalID, props.objectPopupPage])
 
 	useEffect(() => {
@@ -192,102 +187,115 @@ const ObjectPopup = (props) => {
 
 	return (
 		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
-			{objectAttr.length ? (
-				<Card sx={{ width: 500 }}>
-					<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
-						{props.queryObjects.length > 1 ? (
-							<Box display="flex" justifyContent="center" alignItems="center">
-								<Pagination
-									count={props.queryObjects.length}
-									page={props.objectPopupPage}
-									onChange={handlePage}
-								/>
-							</Box>
-						) : null}
-						<CardHeader
-							sx={{ px: 0, pt: 0.5, pb: 1 }}
-							action={
-								<IconButton
-									aria-label="close"
-									onClick={() => {
-										navigate("/atminimolentos")
-									}}
-								>
-									<CloseIcon />
-								</IconButton>
-							}
-							title={Object.keys(objectAttr).map((attr) =>
-								objectAttr[attr].field === "OBJ_PAV" ? objectAttr[attr].value : null
+			<Card sx={{ width: 500 }}>
+				<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+					{loading ? (
+						<Grid
+							container
+							spacing={0}
+							direction="column"
+							alignItems="center"
+							justifyContent="center"
+							sx={{ minHeight: "10vh" }}
+						>
+							<Grid item xs={3}>
+								<CircularProgress />
+							</Grid>
+						</Grid>
+					) : (
+						<>
+							{props.queryObjects.length > 1 ? (
+								<Box display="flex" justifyContent="center" alignItems="center">
+									<Pagination
+										count={props.queryObjects.length}
+										page={props.objectPopupPage}
+										onChange={handlePage}
+									/>
+								</Box>
+							) : null}
+							<CardHeader
+								sx={{ px: 0, pt: 0.5, pb: 1 }}
+								action={
+									<IconButton
+										aria-label="close"
+										onClick={() => {
+											navigate("/")
+										}}
+									>
+										<CloseIcon />
+									</IconButton>
+								}
+								title={Object.keys(objectAttr).map((attr) =>
+									objectAttr[attr].field === "OBJ_PAV" ? objectAttr[attr].value : null
+								)}
+							/>
+							<TableContainer sx={{ mb: 1 }} component={Paper}>
+								<Table sx={{ width: 450 }} size="small">
+									<TableBody>
+										{Object.keys(objectAttr).map((attr) =>
+											objectAttr[attr].field === "OBJ_APRAS" ||
+											objectAttr[attr].field === "AUTORIUS" ||
+											objectAttr[attr].field === "OBJ_PAV" ||
+											objectAttr[attr].field === "SALTINIS" ? null : (
+												<TableRow
+													key={objectAttr[attr].field}
+													sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+												>
+													<TableCell component="th" scope="row">
+														{objectAttr[attr].alias}
+													</TableCell>
+													<TableCell align="right">{objectAttr[attr].value}</TableCell>
+												</TableRow>
+											)
+										)}
+									</TableBody>
+								</Table>
+							</TableContainer>
+							{Object.keys(objectAttr).map((attr) =>
+								objectAttr[attr].field === "OBJ_APRAS" ||
+								objectAttr[attr].field === "AUTORIUS" ||
+								objectAttr[attr].field === "SALTINIS" ? (
+									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
+										{objectAttr[attr].alias}
+										<Typography variant="body2" component="div">
+											{objectAttr[attr].value}
+										</Typography>
+									</Typography>
+								) : null
 							)}
-						/>
-						<TableContainer sx={{ mb: 1 }} component={Paper}>
-							<Table sx={{ width: 450 }} size="small">
-								<TableBody>
-									{Object.keys(objectAttr).map((attr) =>
-										objectAttr[attr].field === "OBJ_APRAS" ||
-										objectAttr[attr].field === "AUTORIUS" ||
-										objectAttr[attr].field === "OBJ_PAV" ||
-										objectAttr[attr].field === "SALTINIS" ? null : (
-											<TableRow
-												key={objectAttr[attr].field}
-												sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-											>
-												<TableCell component="th" scope="row">
-													{objectAttr[attr].alias}
-												</TableCell>
-												<TableCell align="right">{objectAttr[attr].value}</TableCell>
-											</TableRow>
-										)
-									)}
-								</TableBody>
-							</Table>
-						</TableContainer>
-						{Object.keys(objectAttr).map((attr) =>
-							objectAttr[attr].field === "OBJ_APRAS" ||
-							objectAttr[attr].field === "AUTORIUS" ||
-							objectAttr[attr].field === "SALTINIS" ? (
-								<Typography variant="h6" component="div" key={objectAttr[attr].field}>
-									{objectAttr[attr].alias}
-									<Typography variant="body2" component="div">
-										{objectAttr[attr].value}
+							{objectPer.length ? (
+								<Typography variant="h6" component="div">
+									{objectPer.length > 1 ? "Susiję asmenys" : "Susijęs asmuo"}
+									<Typography component="div">
+										{Object.keys(objectPer).map((per) => (
+											<div key={per}>
+												<Link
+													sx={{ mt: 0.5 }}
+													textAlign="left"
+													component="button"
+													variant="body2"
+													onClick={() => {
+														props.setSearchInputValue(null)
+														navigate(`/asmuo/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
+													}}
+												>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
+												<br></br>
+											</div>
+										))}
 									</Typography>
 								</Typography>
-							) : null
-						)}
-						{objectPer.length ? (
-							<Typography variant="h6" component="div">
-								Susiję asmenys
-								<Typography component="div">
-									{Object.keys(objectPer).map((per) => (
-										<div key={per}>
-											<Link
-												component="button"
-												variant="body2"
-												onClick={() => {
-													navigate(
-														`/atminimolentos/asmuo/${objectPer[per].attributes.GlobalID.replace(
-															/[{}]/g,
-															""
-														)}`
-													)
-												}}
-											>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
-											<br></br>
-										</div>
-									))}
-								</Typography>
-							</Typography>
-						) : null}
-						{objectAtt.length
-							? Object.keys(objectAtt).map((att) => (
-									<Box sx={{ width: 450, mt: 1 }} key={att}>
-										<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
-									</Box>
-							  ))
-							: null}
-					</CardContent>
-				</Card>
-			) : null}
+							) : null}
+							{objectAtt.length
+								? Object.keys(objectAtt).map((att) => (
+										<Box sx={{ width: 450, mt: 1 }} key={att}>
+											<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+										</Box>
+								  ))
+								: null}
+						</>
+					)}
+				</CardContent>
+			</Card>
 		</Box>
 	)
 }

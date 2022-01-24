@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react"
+import { Routes, Route } from "react-router-dom"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
 import ObjectPopup from "./components/popup/ObjectPopup"
 import PersonPopup from "./components/popup/PersonPopup"
 import TableToggle from "./components/table/TableToggle"
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom"
 
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
 import Collapse from "@mui/material/Collapse"
-import Box from "@mui/material/Box"
 
 import "./css/app.css"
-
+//images, routes, list select?, 
 const App = () => {
 	const [selectedObjectFilter, setSelectedObjectFilter] = useState("")
 	const [selectedMemoryFilter, setSelectedMemoryFilter] = useState("")
@@ -25,6 +24,7 @@ const App = () => {
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [filterLoading, setFilterLoading] = useState(false)
+	const [searchInputValue, setSearchInputValue] = useState(null)
 
 	useEffect(() => {
 		objects
@@ -105,6 +105,9 @@ const App = () => {
 										visible={visible}
 										setSelectedObject={setSelectedObject}
 										selectedObject={selectedObject}
+										searchInputValue={searchInputValue}
+										setSearchInputValue={setSearchInputValue}
+                    setQueryObjects={setQueryObjects}
 									/>
 								</Grid>
 							</Collapse>
@@ -115,6 +118,8 @@ const App = () => {
 									setObjectPopupPage={setObjectPopupPage}
 									objects={objectsList}
 									filter={filter}
+									setSearchInputValue={setSearchInputValue}
+									setSelectedObject={setSelectedObject}
 								/>
 							</Grid>
 						</Grid>
@@ -128,10 +133,13 @@ const App = () => {
 							queryObjects={queryObjects}
 							objectPopupPage={objectPopupPage}
 							setObjectPopupPage={setObjectPopupPage}
+							setSearchInputValue={setSearchInputValue}
+							setSelectedObject={setSelectedObject}
 						/>
 					}
 				/>
-				<Route path="asmuo/:globalID" element={<PersonPopup />} />
+
+				<Route path="asmuo/:globalID" element={<PersonPopup setSearchInputValue={setSearchInputValue} />} />
 			</Route>
 		</Routes>
 	)

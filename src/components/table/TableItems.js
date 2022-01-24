@@ -1,9 +1,10 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
+
 import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import ListSubheader from "@mui/material/ListSubheader"
-import { useNavigate } from "react-router-dom"
 
 const TableItems = (props) => {
 	const navigate = useNavigate()
@@ -16,6 +17,8 @@ const TableItems = (props) => {
 			{Object.keys(props.objects).map((object) => (
 				<ListItemButton
 					onClick={() => {
+            props.setQueryObjects([])
+            props.setSearchInputValue(null)
 						props.setSelectedObject(`${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 						navigate(`objektas/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 					}}

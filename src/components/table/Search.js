@@ -1,8 +1,9 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
+
 import TextField from "@mui/material/TextField"
 import Autocomplete from "@mui/material/Autocomplete"
 import Box from "@mui/material/Box"
-import { useNavigate } from "react-router-dom"
 
 const Search = (props) => {
 	let listObj = []
@@ -16,9 +17,12 @@ const Search = (props) => {
 	const navigate = useNavigate()
 
 	const handleSearch = (value) => {
-        if(value){
-            navigate(`objektas/${value.key}`)
-        }
+		if (value) {
+      props.setQueryObjects([])
+      props.setSelectedObject(value.key)
+			props.setSearchInputValue(value)
+			navigate(`objektas/${value.key}`)
+		}
 	}
 
 	return (
@@ -26,14 +30,15 @@ const Search = (props) => {
 			<Autocomplete
 				sx={{ mt: 1, width: "100%" }}
 				clearOnBlur
-                noOptionsText="Nerasta"
-                clearText="Išvalyti"
-                closeText="Suskleisti"
-                openText="Išskleisti"
+				noOptionsText="Nerasta"
+				clearText="Išvalyti"
+				closeText="Suskleisti"
+				openText="Išskleisti"
 				id="search"
+        value={props.searchInputValue}
 				options={listObj}
 				getOptionLabel={(option) => option.pav}
-        isOptionEqualToValue={(option, value) => option.key === value.key}
+				isOptionEqualToValue={(option, value) => option.key === value.key}
 				onChange={(event, value) => handleSearch(value)}
 				renderOption={(props, option) => {
 					return (

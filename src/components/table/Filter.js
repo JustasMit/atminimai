@@ -16,12 +16,20 @@ const Filter = (props) => {
 	let tempMemoryAlias = []
 
 	const handleObjectSelect = (event) => {
+		props.setSearchInputValue(null)
 		props.setSelectedObjectFilter(event.target.value)
 	}
 	const handleMemorySelect = (event) => {
-        props.setSelectedMemoryFilter(event.target.value)
+		props.setSearchInputValue(null)
+		props.setSelectedMemoryFilter(event.target.value)
 	}
-    
+	const handleClearFilters = () => {
+    props.setSelectedObject("")
+		props.setSearchInputValue(null)
+		props.setSelectedObjectFilter("")
+		props.setSelectedMemoryFilter("")
+	}
+
 	useEffect(() => {
 		objects
 			.queryFeatures({
@@ -119,10 +127,7 @@ const Filter = (props) => {
 				variant="contained"
 				disableElevation
 				sx={{ mt: 1, mb: 1, width: "100%" }}
-				onClick={() => {
-					props.setSelectedObjectFilter("")
-					props.setSelectedMemoryFilter("")
-				}}
+				onClick={handleClearFilters}
 			>
 				Išvalyti filtrus
 			</Button>

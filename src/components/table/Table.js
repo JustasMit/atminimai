@@ -2,14 +2,20 @@ import React from "react"
 import Filter from "./Filter"
 import TableItems from "./TableItems"
 import Search from "./Search"
+
 import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 
 const Table = (props) => {
 	return (
 		<Box sx={{ width: 350 }} style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
 			<Box>
-				<Search objects={props.objects.features} />
+				<Search
+					objects={props.objects.features}
+					searchInputValue={props.searchInputValue}
+					setSearchInputValue={props.setSearchInputValue}
+					setSelectedObject={props.setSelectedObject}
+					setQueryObjects={props.setQueryObjects}
+				/>
 			</Box>
 			<Box>
 				<Filter
@@ -19,6 +25,8 @@ const Table = (props) => {
 					selectedMemoryFilter={props.selectedMemoryFilter}
 					setObjectsList={props.setObjectsList}
 					setFilter={props.setFilter}
+					setSearchInputValue={props.setSearchInputValue}
+					setSelectedObject={props.setSelectedObject}
 				/>
 			</Box>
 			<Box style={{ flexGrow: 1, minHeight: 0 }}>
@@ -27,6 +35,8 @@ const Table = (props) => {
 					filterLoading={props.filterLoading}
 					setSelectedObject={props.setSelectedObject}
 					selectedObject={props.selectedObject}
+					setSearchInputValue={props.setSearchInputValue}
+					setQueryObjects={props.setQueryObjects}
 				/>
 			</Box>
 		</Box>

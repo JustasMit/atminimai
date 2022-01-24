@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
+
 import { objects, view } from "../../utils/arcgisItems"
 import displayFeatures from "../../utils/displayFeatures"
-import { Outlet, useNavigate } from "react-router-dom"
 import "../../css/map.css"
 
 const ObjectMap = (props) => {
@@ -19,7 +20,8 @@ const ObjectMap = (props) => {
 							filteredResponse.push(response.results[result])
 						}
 					})
-					console.log(filteredResponse)
+					props.setSelectedObject(filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
+					props.setSearchInputValue(null)
 					props.setQueryObjects(filteredResponse)
 					props.setObjectPopupPage(1)
 
