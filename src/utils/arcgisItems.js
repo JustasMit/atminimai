@@ -4,7 +4,7 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer"
 import TileLayer from "@arcgis/core/layers/TileLayer"
 
 export const objects = new FeatureLayer({
-	url: "https://atviras.vplanas.lt/arcgis/rest/services/VilniausDNR/VilniausDNR/MapServer/0",
+	url: process.env.REACT_APP_URL + "/0",
 	outFields: ["*"],
 	title: "Lentelės",
 	minScale: 0,
@@ -12,7 +12,7 @@ export const objects = new FeatureLayer({
 })
 
 export const persons = new FeatureLayer({
-	url: "https://atviras.vplanas.lt/arcgis/rest/services/VilniausDNR/VilniausDNR/MapServer/2",
+	url: process.env.REACT_APP_URL + "/2",
 	outFields: ["*"],
 	title: "Asmenys",
 	minScale: 0,
