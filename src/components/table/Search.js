@@ -5,7 +5,6 @@ import Box from "@mui/material/Box"
 import { useNavigate } from "react-router-dom"
 
 const Search = (props) => {
-	//reiks kazkaip pakeist.. state? istraukt iskart id? state = selectedID?
 	let listObj = []
 	Object.keys(props.objects).map((object) => {
 		const temp = {}
