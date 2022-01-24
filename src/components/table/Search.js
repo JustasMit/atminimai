@@ -17,7 +17,7 @@ const Search = (props) => {
 
 	const handleSearch = (value) => {
         if(value){
-            navigate(`object/${value.key}`)
+            navigate(`objektas/${value.key}`)
         }
 	}
 

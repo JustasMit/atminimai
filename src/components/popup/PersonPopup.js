@@ -123,7 +123,7 @@ const PersonPopup = (props) => {
 								<IconButton
 									aria-label="close"
 									onClick={() => {
-										navigate("/vilniausdnr/map")
+										navigate("/atminimolentos")
 									}}
 								>
 									<CloseIcon />
@@ -189,7 +189,7 @@ const PersonPopup = (props) => {
 												variant="body2"
 												onClick={() => {
 													navigate(
-														`/vilniausdnr/map/object/${personObj[obj].attributes.GlobalID.replace(
+														`/atminimolentos/objektas/${personObj[obj].attributes.GlobalID.replace(
 															/[{}]/g,
 															""
 														)}`

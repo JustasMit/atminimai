@@ -122,7 +122,7 @@ const App = () => {
 				}
 			>
 				<Route
-					path="object/:globalID"
+					path="objektas/:globalID"
 					element={
 						<ObjectPopup
 							queryObjects={queryObjects}
@@ -131,7 +131,7 @@ const App = () => {
 						/>
 					}
 				/>
-				<Route path="person/:globalID" element={<PersonPopup />} />
+				<Route path="asmuo/:globalID" element={<PersonPopup />} />
 			</Route>
 		</Routes>
 	)

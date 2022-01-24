@@ -31,7 +31,7 @@ const ObjectPopup = (props) => {
 		console.log(props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 		console.log(value)
 		navigate(
-			`/vilniausdnr/map/object/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(
+			`/atminimolentos/objektas/${props.queryObjects[value - 1].graphic.attributes.GlobalID.replace(
 				/[{}]/g,
 				""
 			)}`
@@ -210,7 +210,7 @@ const ObjectPopup = (props) => {
 								<IconButton
 									aria-label="close"
 									onClick={() => {
-										navigate("/vilniausdnr/map")
+										navigate("/atminimolentos")
 									}}
 								>
 									<CloseIcon />
@@ -265,7 +265,7 @@ const ObjectPopup = (props) => {
 												variant="body2"
 												onClick={() => {
 													navigate(
-														`/vilniausdnr/map/person/${objectPer[per].attributes.GlobalID.replace(
+														`/atminimolentos/asmuo/${objectPer[per].attributes.GlobalID.replace(
 															/[{}]/g,
 															""
 														)}`

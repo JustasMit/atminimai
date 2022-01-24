@@ -23,7 +23,7 @@ const ObjectMap = (props) => {
 					props.setQueryObjects(filteredResponse)
 					props.setObjectPopupPage(1)
 
-					navigate(`object/${filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
+					navigate(`objektas/${filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
 				}
 			})
 		})
