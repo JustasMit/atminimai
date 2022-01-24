@@ -11,8 +11,8 @@ ReactDOM.render(
 		<CssBaseline />
 		<BrowserRouter>
 			<Routes>
-				<Route path="/vilniausdnr/map/*" element={<App />}></Route>
-				<Route path="/" element={<Navigate to="/vilniausdnr/map"/>}></Route>
+				<Route path="/atminimolentos/*" element={<App />}></Route>
+				<Route path="/" element={<Navigate to="/atminimolentos"/>}></Route>
 			</Routes>
 		</BrowserRouter>
 	</ThemeProvider>,
