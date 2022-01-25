@@ -12,15 +12,12 @@ import Grid from "@mui/material/Grid"
 import Collapse from "@mui/material/Collapse"
 
 import "./css/app.css"
-//images, routes, list select?, 
 const App = () => {
 	const [selectedObjectFilter, setSelectedObjectFilter] = useState("")
 	const [selectedMemoryFilter, setSelectedMemoryFilter] = useState("")
 	const [selectedObject, setSelectedObject] = useState("")
 	const [filter, setFilter] = useState("")
 	const [objectsList, setObjectsList] = useState([])
-	const [queryObjects, setQueryObjects] = useState([])
-	const [objectPopupPage, setObjectPopupPage] = useState(1)
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [filterLoading, setFilterLoading] = useState(false)
@@ -43,7 +40,6 @@ const App = () => {
 				console.error(error)
 			})
 	}, [])
-	//https://developers.arcgis.com/javascript/latest/sample-code/featurefilter-attributes/ ?
 	useEffect(() => {
 		setFilterLoading(true)
 		objects
@@ -107,15 +103,12 @@ const App = () => {
 										selectedObject={selectedObject}
 										searchInputValue={searchInputValue}
 										setSearchInputValue={setSearchInputValue}
-                    setQueryObjects={setQueryObjects}
 									/>
 								</Grid>
 							</Collapse>
 							<Grid item xs={true} sx={{ height: "100vh" }}>
 								<TableToggle visible={visible} setVisible={setVisible} />
 								<ObjectMap
-									setQueryObjects={setQueryObjects}
-									setObjectPopupPage={setObjectPopupPage}
 									objects={objectsList}
 									filter={filter}
 									setSearchInputValue={setSearchInputValue}
@@ -130,9 +123,6 @@ const App = () => {
 					path="objektas/:globalID"
 					element={
 						<ObjectPopup
-							queryObjects={queryObjects}
-							objectPopupPage={objectPopupPage}
-							setObjectPopupPage={setObjectPopupPage}
 							setSearchInputValue={setSearchInputValue}
 							setSelectedObject={setSelectedObject}
 						/>

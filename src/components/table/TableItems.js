@@ -17,7 +17,6 @@ const TableItems = (props) => {
 			{Object.keys(props.objects).map((object) => (
 				<ListItemButton
 					onClick={() => {
-            props.setQueryObjects([])
             props.setSearchInputValue(null)
 						props.setSelectedObject(`${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 						navigate(`objektas/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)

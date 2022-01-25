@@ -14,7 +14,6 @@ const Table = (props) => {
 					searchInputValue={props.searchInputValue}
 					setSearchInputValue={props.setSearchInputValue}
 					setSelectedObject={props.setSelectedObject}
-					setQueryObjects={props.setQueryObjects}
 				/>
 			</Box>
 			<Box>
@@ -36,7 +35,6 @@ const Table = (props) => {
 					setSelectedObject={props.setSelectedObject}
 					selectedObject={props.selectedObject}
 					setSearchInputValue={props.setSearchInputValue}
-					setQueryObjects={props.setQueryObjects}
 				/>
 			</Box>
 		</Box>

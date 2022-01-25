@@ -18,7 +18,6 @@ const Search = (props) => {
 
 	const handleSearch = (value) => {
 		if (value) {
-      props.setQueryObjects([])
       props.setSelectedObject(value.key)
 			props.setSearchInputValue(value)
 			navigate(`objektas/${value.key}`)

@@ -20,11 +20,7 @@ const ObjectMap = (props) => {
 							filteredResponse.push(response.results[result])
 						}
 					})
-					props.setSelectedObject(filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, ""))
 					props.setSearchInputValue(null)
-					props.setQueryObjects(filteredResponse)
-					props.setObjectPopupPage(1)
-
 					navigate(`objektas/${filteredResponse[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
 				}
 			})
