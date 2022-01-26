@@ -32,10 +32,7 @@ const ObjectMap = (props) => {
 	}, [props.objects])
 
 	return (
-		<>
 			<div className="map" ref={mapDiv}></div>
-			<Outlet />
-		</>
 	)
 }
 

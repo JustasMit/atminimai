@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Outlet } from "react-router-dom"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import { objects } from "./utils/arcgisItems"
@@ -85,28 +85,26 @@ const App = () => {
 						</Grid>
 					) : (
 						<Grid container spacing={0}>
-							<Collapse orientation="horizontal" in={visible}>
-								<Grid sx={{ height: "100vh" }}>
-									<Table
-										setSelectedObjectFilter={setSelectedObjectFilter}
-										selectedObjectFilter={selectedObjectFilter}
-										setSelectedMemoryFilter={setSelectedMemoryFilter}
-										selectedMemoryFilter={selectedMemoryFilter}
-										setObjectsList={setObjectsList}
-										objects={objectsList}
-										setFilter={setFilter}
-										filter={filter}
-										filterLoading={filterLoading}
-										setVisible={setVisible}
-										visible={visible}
-										setSelectedObject={setSelectedObject}
-										selectedObject={selectedObject}
-										searchInputValue={searchInputValue}
-										setSearchInputValue={setSearchInputValue}
-									/>
-								</Grid>
+							<Collapse sx={{ maxWidth: 350 }} orientation="horizontal" in={visible}>
+								<Table
+									setSelectedObjectFilter={setSelectedObjectFilter}
+									selectedObjectFilter={selectedObjectFilter}
+									setSelectedMemoryFilter={setSelectedMemoryFilter}
+									selectedMemoryFilter={selectedMemoryFilter}
+									setObjectsList={setObjectsList}
+									objects={objectsList}
+									setFilter={setFilter}
+									filter={filter}
+									filterLoading={filterLoading}
+									setVisible={setVisible}
+									visible={visible}
+									setSelectedObject={setSelectedObject}
+									selectedObject={selectedObject}
+									searchInputValue={searchInputValue}
+									setSearchInputValue={setSearchInputValue}
+								/>
 							</Collapse>
-							<Grid item xs={true} sx={{ height: "100vh" }}>
+							<Grid item xs>
 								<TableToggle visible={visible} setVisible={setVisible} />
 								<ObjectMap
 									objects={objectsList}
@@ -114,6 +112,7 @@ const App = () => {
 									setSearchInputValue={setSearchInputValue}
 									setSelectedObject={setSelectedObject}
 								/>
+								<Outlet />
 							</Grid>
 						</Grid>
 					)
@@ -122,10 +121,7 @@ const App = () => {
 				<Route
 					path="objektas/:globalID"
 					element={
-						<ObjectPopup
-							setSearchInputValue={setSearchInputValue}
-							setSelectedObject={setSelectedObject}
-						/>
+						<ObjectPopup setSearchInputValue={setSearchInputValue} setSelectedObject={setSelectedObject} />
 					}
 				/>
 

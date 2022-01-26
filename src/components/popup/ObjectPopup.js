@@ -19,7 +19,7 @@ import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
 import Pagination from "@mui/material/Pagination"
 import CircularProgress from "@mui/material/CircularProgress"
-import Grid from "@mui/material/Grid"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const ObjectPopup = (props) => {
 	const { globalID } = useParams()
@@ -185,6 +185,7 @@ const ObjectPopup = (props) => {
 									})
 								})
 								setObjectAtt(allAttachments)
+								setLoading(false)
 							})
 							.catch((error) => {
 								console.error(error)
@@ -194,7 +195,6 @@ const ObjectPopup = (props) => {
 						console.error(error)
 					})
 			})
-		setLoading(false)
 	}, [globalID, page])
 
 	useEffect(() => {
@@ -211,27 +211,32 @@ const ObjectPopup = (props) => {
 		}
 	}, [])
 
+	const matches = useMediaQuery("(min-width:995px)")
 	return (
-		<Box sx={{ top: 10, right: 10, position: "fixed", zIndex: 2 }}>
-			<Card sx={{ width: 500 }}>
-				<CardContent sx={{ maxHeight: window.innerHeight - 35, overflowY: "auto", overflowX: "hidden" }}>
+		<Box sx={{ top: 0, right: 0, position: "fixed", zIndex: 2 }}>
+			<Card
+				sx={{
+					maxWidth: matches ? "auto" : 995,
+					width: matches ? 600 : "100vw",
+					mt: matches ? 1.5 : 0,
+					mr: matches ? 1.5 : 0,
+				}}
+			>
+				<CardContent
+					sx={{
+						maxHeight: matches ? window.innerHeight - 38 : window.innerHeight - 16,
+						overflowY: "auto",
+						overflowX: "hidden",
+					}}
+				>
 					{loading ? (
-						<Grid
-							container
-							spacing={0}
-							direction="column"
-							alignItems="center"
-							justifyContent="center"
-							sx={{ minHeight: "10vh" }}
-						>
-							<Grid item xs={3}>
-								<CircularProgress />
-							</Grid>
-						</Grid>
+						<Box display="flex" justifyContent="center" alignItems="center">
+							<CircularProgress />
+						</Box>
 					) : (
 						<>
 							{pageCount > 1 ? (
-								<Box display="flex" justifyContent="center" alignItems="center">
+								<Box component="div" display="flex" justifyContent="center" alignItems="center">
 									<Pagination count={pageCount} page={page} onChange={handlePage} />
 								</Box>
 							) : null}
@@ -252,7 +257,7 @@ const ObjectPopup = (props) => {
 								)}
 							/>
 							<TableContainer sx={{ mb: 1 }} component={Paper}>
-								<Table sx={{ width: 450 }} size="small">
+								<Table size="small">
 									<TableBody>
 										{Object.keys(objectAttr).map((attr) =>
 											objectAttr[attr].field === "OBJ_APRAS" ||
@@ -309,8 +314,10 @@ const ObjectPopup = (props) => {
 							) : null}
 							{objectAtt.length
 								? Object.keys(objectAtt).map((att) => (
-										<Box sx={{ width: 450, mt: 1 }} key={att}>
-											<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+										<Box sx={{ mt: 1 }} key={att}>
+											<a href={`${objectAtt[att].url}`} target="_blank">
+												<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
+											</a>
 										</Box>
 								  ))
 								: null}

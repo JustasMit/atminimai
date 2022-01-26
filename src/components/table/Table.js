@@ -7,7 +7,7 @@ import Box from "@mui/material/Box"
 
 const Table = (props) => {
 	return (
-		<Box sx={{ width: 350 }} style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+		<Box sx={{ width: 350, height: "100vh", display: "flex", flexDirection: "column" }}>
 			<Box>
 				<Search
 					objects={props.objects.features}
