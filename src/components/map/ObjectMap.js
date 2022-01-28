@@ -23,7 +23,9 @@ const ObjectMap = () => {
 						})
 					})
 					.then((response) => {
-						navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
+						if (response.features.length) {
+							navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
+						}
 					})
 			})
 		})
