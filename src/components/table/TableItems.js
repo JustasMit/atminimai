@@ -10,14 +10,12 @@ const TableItems = (props) => {
 	const navigate = useNavigate()
 
 	return (
-		<List
-			style={{ height: "100%", width: "100%", overflowY: "scroll", overflowX: "hidden" }}
-		>
+		<List style={{ height: "100%", width: "100%", overflowY: "scroll", overflowX: "hidden" }}>
 			<ListSubheader disableSticky={true}>Objektų sąrašas</ListSubheader>
 			{Object.keys(props.objects).map((object) => (
 				<ListItemButton
 					onClick={() => {
-            props.setSearchInputValue(null)
+						props.setSearchInputValue(null)
 						props.setSelectedObject(`${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 						navigate(`objektas/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 					}}

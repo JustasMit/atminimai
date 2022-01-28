@@ -18,20 +18,15 @@ const Table = (props) => {
 			</Box>
 			<Box>
 				<Filter
-					setSelectedObjectFilter={props.setSelectedObjectFilter}
-					selectedObjectFilter={props.selectedObjectFilter}
-					setSelectedMemoryFilter={props.setSelectedMemoryFilter}
-					selectedMemoryFilter={props.selectedMemoryFilter}
-					setObjectsList={props.setObjectsList}
-					setFilter={props.setFilter}
+					objects={props.objects.features}
 					setSearchInputValue={props.setSearchInputValue}
 					setSelectedObject={props.setSelectedObject}
+					setObjectsList={props.setObjectsList}
 				/>
 			</Box>
 			<Box style={{ flexGrow: 1, minHeight: 0 }}>
 				<TableItems
 					objects={props.objects.features}
-					filterLoading={props.filterLoading}
 					setSelectedObject={props.setSelectedObject}
 					selectedObject={props.selectedObject}
 					setSearchInputValue={props.setSearchInputValue}

@@ -125,11 +125,13 @@ const PersonPopup = (props) => {
 
 						setPersonObj(allObjects)
 					})
+					.then(() => {
+						setLoading(false)
+					})
 					.catch((error) => {
 						console.error(error)
 					})
 			})
-		setLoading(false)
 	}, [globalID])
 
 	const matches = useMediaQuery("(min-width:995px)")
