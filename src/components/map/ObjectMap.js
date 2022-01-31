@@ -5,7 +5,7 @@ import { view, objects } from "../../utils/arcgisItems"
 import * as watchUtils from "@arcgis/core/core/watchUtils"
 import "../../css/map.css"
 
-const ObjectMap = () => {
+const ObjectMap = (props) => {
 	const navigate = useNavigate()
 	const mapDiv = useRef(null)
 
@@ -24,6 +24,8 @@ const ObjectMap = () => {
 					})
 					.then((response) => {
 						if (response.features.length) {
+              props.setPageCount(response.features.length)
+              props.setPage(1)
 							navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
 						}
 					})

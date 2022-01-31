@@ -18,6 +18,8 @@ const App = () => {
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [searchInputValue, setSearchInputValue] = useState(null)
+	const [page, setPage] = useState(1)
+	const [pageCount, setPageCount] = useState(1)
 
 	useEffect(() => {
 		map.layers.items[1]
@@ -71,7 +73,7 @@ const App = () => {
 							</Collapse>
 							<Grid item xs>
 								<TableToggle visible={visible} setVisible={setVisible} />
-								<ObjectMap />
+								<ObjectMap setPage={setPage} setPageCount={setPageCount} />
 								<Outlet />
 							</Grid>
 						</Grid>
@@ -81,7 +83,14 @@ const App = () => {
 				<Route
 					path="objektas/:globalID"
 					element={
-						<ObjectPopup setSearchInputValue={setSearchInputValue} setSelectedObject={setSelectedObject} />
+						<ObjectPopup
+							setSearchInputValue={setSearchInputValue}
+							setSelectedObject={setSelectedObject}
+							page={page}
+							setPage={setPage}
+							pageCount={pageCount}
+							setPageCount={setPageCount}
+						/>
 					}
 				/>
 

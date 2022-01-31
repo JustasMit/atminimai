@@ -27,8 +27,6 @@ const ObjectPopup = (props) => {
 	const [objectPer, setObjectPer] = useState([])
 	const [objectAtt, setObjectAtt] = useState([])
 	const [loading, setLoading] = useState(true)
-	const [page, setPage] = useState(1)
-	const [pageCount, setPageCount] = useState(1)
 	const [queryObjects, setQueryObjects] = useState([])
 	const navigate = useNavigate()
 
@@ -57,8 +55,16 @@ const ObjectPopup = (props) => {
 							return
 						}
 
+						for (let obj in response.features) {
+							if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
+								props.setPage(parseInt(obj) + 1)
+							}
+						}
+            
+						props.setPageCount(response.features.length)
+
 						view.goTo({
-							target: response.features[0].geometry,
+							target: response.features[props.page - 1].geometry,
 							zoom: 7,
 						})
 
@@ -76,8 +82,9 @@ const ObjectPopup = (props) => {
 								width: 3,
 							},
 						}
+						
 						const highlightGraphic = new Graphic({
-							geometry: response.features[page - 1].geometry,
+							geometry: response.features[props.page - 1].geometry,
 							symbol: highlight,
 							attributes: {
 								highlight: "highlight",
@@ -89,21 +96,14 @@ const ObjectPopup = (props) => {
 						return response
 					})
 					.then((response) => {
-						for (let obj in response.features) {
-							if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
-								setPage(parseInt(obj) + 1)
-							}
-						}
-            setPageCount(response.features.length)
-
 						const allAttributes = []
 
 						let count = 0
-						for (let attr in response.features[page - 1].attributes) {
+						for (let attr in response.features[props.page - 1].attributes) {
 							if (
-								response.features[page - 1].attributes[attr] === null ||
-								response.features[page - 1].attributes[attr] === "" ||
-								response.features[page - 1].attributes[attr] === 0 ||
+								response.features[props.page - 1].attributes[attr] === null ||
+								response.features[props.page - 1].attributes[attr] === "" ||
+								response.features[props.page - 1].attributes[attr] === 0 ||
 								attr === "OBJECTID" ||
 								attr === "IDENTIFIK" ||
 								attr === "REG_TURTAS" ||
@@ -123,17 +123,17 @@ const ObjectPopup = (props) => {
 							} else {
 								const obj = {}
 
-								obj.alias = response.features[page - 1].layer.fields[count].alias
-								if (response.features[page - 1].layer.fields[count].domain === null) {
-									obj.value = response.features[page - 1].attributes[attr]
+								obj.alias = response.features[props.page - 1].layer.fields[count].alias
+								if (response.features[props.page - 1].layer.fields[count].domain === null) {
+									obj.value = response.features[props.page - 1].attributes[attr]
 								} else {
-									for (let code in response.features[page - 1].layer.fields[count].domain.codedValues) {
+									for (let code in response.features[props.page - 1].layer.fields[count].domain.codedValues) {
 										if (
-											response.features[page - 1].layer.fields[count].domain.codedValues[code].code ===
-											response.features[page - 1].attributes[attr]
+											response.features[props.page - 1].layer.fields[count].domain.codedValues[code].code ===
+											response.features[props.page - 1].attributes[attr]
 										) {
 											obj.value =
-												response.features[page - 1].layer.fields[count].domain.codedValues[code].name
+												response.features[props.page - 1].layer.fields[count].domain.codedValues[code].name
 										}
 									}
 								}
@@ -144,7 +144,7 @@ const ObjectPopup = (props) => {
 							count++
 						}
 						setObjectAttr(allAttributes)
-						return response.features[page - 1].attributes.OBJECTID
+						return response.features[props.page - 1].attributes.OBJECTID
 					})
 					.then((OBJECTID) => {
 						const allPersons = []
@@ -206,13 +206,14 @@ const ObjectPopup = (props) => {
 			.catch((error) => {
 				console.log(error)
 			})
-	}, [globalID])
+	}, [globalID, props.page])
 
 	useEffect(() => {
 		return () => {
-			setPage(1)
-			setPageCount(1)
+      props.setPage(1)
+			props.setPageCount(1)
 			setQueryObjects([])
+      console.log(props.page - 1)
 			view.graphics.some((graphic) => {
 				if (graphic.attributes["highlight"] == "highlight") {
 					view.graphics.remove(graphic)
@@ -246,9 +247,9 @@ const ObjectPopup = (props) => {
 						</Box>
 					) : (
 						<>
-							{pageCount > 1 ? (
+							{props.pageCount > 1 ? (
 								<Box component="div" display="flex" justifyContent="center" alignItems="center">
-									<Pagination count={pageCount} page={page} onChange={handlePage} />
+									<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
 								</Box>
 							) : null}
 							<CardHeader
