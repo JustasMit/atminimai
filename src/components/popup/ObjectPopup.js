@@ -35,6 +35,7 @@ const ObjectPopup = (props) => {
 	}
 
 	useEffect(() => {
+		setLoading(true)
 		objects
 			.queryFeatures({
 				outFields: ["GlobalID"],
@@ -42,6 +43,34 @@ const ObjectPopup = (props) => {
 				where: `GlobalID = '${globalID}'`,
 			})
 			.then((response) => {
+				view.goTo({
+					target: response.features[0].geometry,
+					zoom: 7,
+				})
+
+				view.graphics.some((graphic) => {
+					if (graphic.attributes["highlight"] == "highlight") {
+						view.graphics.remove(graphic)
+						return true
+					}
+				})
+				const highlight = {
+					type: "simple-marker",
+					color: [255, 0, 0],
+					outline: {
+						color: [255, 255, 255],
+						width: 3,
+					},
+				}
+				const highlightGraphic = new Graphic({
+					geometry: response.features[0].geometry,
+					symbol: highlight,
+					attributes: {
+						highlight: "highlight",
+					},
+				})
+				view.graphics.add(highlightGraphic)
+
 				objects
 					.queryFeatures({
 						geometry: response.features[0].geometry,
@@ -58,39 +87,10 @@ const ObjectPopup = (props) => {
 						for (let obj in response.features) {
 							if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
 								props.setPage(parseInt(obj) + 1)
+								props.setSelectedObject(`${globalID}`)
 							}
 						}
-            
 						props.setPageCount(response.features.length)
-
-						view.goTo({
-							target: response.features[props.page - 1].geometry,
-							zoom: 7,
-						})
-
-						view.graphics.some((graphic) => {
-							if (graphic.attributes["highlight"] == "highlight") {
-								view.graphics.remove(graphic)
-								return true
-							}
-						})
-						const highlight = {
-							type: "simple-marker",
-							color: [255, 0, 0],
-							outline: {
-								color: [255, 255, 255],
-								width: 3,
-							},
-						}
-						
-						const highlightGraphic = new Graphic({
-							geometry: response.features[props.page - 1].geometry,
-							symbol: highlight,
-							attributes: {
-								highlight: "highlight",
-							},
-						})
-						view.graphics.add(highlightGraphic)
 
 						setQueryObjects(response)
 						return response
@@ -170,9 +170,7 @@ const ObjectPopup = (props) => {
 							.catch((error) => {
 								console.error(error)
 							})
-						return OBJECTID
-					})
-					.then((OBJECTID) => {
+
 						const allAttachments = []
 						objects
 							.queryAttachments({
@@ -204,16 +202,18 @@ const ObjectPopup = (props) => {
 					})
 			})
 			.catch((error) => {
-				console.log(error)
+				console.error(error)
 			})
 	}, [globalID, props.page])
 
 	useEffect(() => {
 		return () => {
-      props.setPage(1)
+			props.setPage(1)
 			props.setPageCount(1)
+			props.setSelectedObject("")
+			props.setSearchInputValue(null)
 			setQueryObjects([])
-      console.log(props.page - 1)
+
 			view.graphics.some((graphic) => {
 				if (graphic.attributes["highlight"] == "highlight") {
 					view.graphics.remove(graphic)
@@ -241,17 +241,17 @@ const ObjectPopup = (props) => {
 						overflowX: "hidden",
 					}}
 				>
+					{props.pageCount > 1 ? (
+						<Box component="div" display="flex" justifyContent="center" alignItems="center">
+							<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
+						</Box>
+					) : null}
 					{loading ? (
 						<Box display="flex" justifyContent="center" alignItems="center">
 							<CircularProgress />
 						</Box>
 					) : (
 						<>
-							{props.pageCount > 1 ? (
-								<Box component="div" display="flex" justifyContent="center" alignItems="center">
-									<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
-								</Box>
-							) : null}
 							<CardHeader
 								sx={{ px: 0, pt: 0.5, pb: 1 }}
 								action={
