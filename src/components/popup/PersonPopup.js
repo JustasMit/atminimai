@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { persons } from "../../utils/arcgisItems"
+import MuiLinkify from "material-ui-linkify"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
@@ -210,6 +211,7 @@ const PersonPopup = (props) => {
 								personAttr[attr].field === "Mirties_data" ||
 								personAttr[attr].field === "Mirties_vieta" ||
 								personAttr[attr].field === "Palaidojimo_vieta" ||
+								personAttr[attr].field === "Šaltiniai__Autorius__pavadinima" ||
 								personAttr[attr].field === "Veikla__profesija" ? null : (
 									<Typography variant="h6" component="div" key={personAttr[attr].field}>
 										{personAttr[attr].alias}
@@ -218,6 +220,18 @@ const PersonPopup = (props) => {
 										</Typography>
 									</Typography>
 								)
+							)}
+							{Object.keys(personAttr).map((attr) =>
+								personAttr[attr].field === "Šaltiniai__Autorius__pavadinima" ? (
+									<Typography variant="h6" component="div" key={personAttr[attr].field}>
+										{personAttr[attr].alias}
+										<MuiLinkify>
+											<Typography variant="body2" component="div">
+												{personAttr[attr].value}
+											</Typography>
+										</MuiLinkify>
+									</Typography>
+								) : null
 							)}
 							{personObj.length ? (
 								<Typography variant="h6" component="div">

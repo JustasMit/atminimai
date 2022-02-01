@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { view, objects } from "../../utils/arcgisItems"
 import Graphic from "@arcgis/core/Graphic"
+import MuiLinkify from "material-ui-linkify"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
@@ -291,9 +292,7 @@ const ObjectPopup = (props) => {
 								</Table>
 							</TableContainer>
 							{Object.keys(objectAttr).map((attr) =>
-								objectAttr[attr].field === "OBJ_APRAS" ||
-								objectAttr[attr].field === "AUTORIUS" ||
-								objectAttr[attr].field === "SALTINIS" ? (
+								objectAttr[attr].field === "OBJ_APRAS" || objectAttr[attr].field === "AUTORIUS" ? (
 									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
 										{objectAttr[attr].alias}
 										<Typography variant="body2" component="div">
@@ -302,6 +301,19 @@ const ObjectPopup = (props) => {
 									</Typography>
 								) : null
 							)}
+							{Object.keys(objectAttr).map((attr) =>
+								objectAttr[attr].field === "SALTINIS" ? (
+									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
+										{objectAttr[attr].alias}
+										<MuiLinkify>
+											<Typography variant="body2" component="div">
+												{objectAttr[attr].value}
+											</Typography>
+										</MuiLinkify>
+									</Typography>
+								) : null
+							)}
+
 							{objectPer.length ? (
 								<Typography variant="h6" component="div">
 									{objectPer.length > 1 ? "Susiję asmenys" : "Susijęs asmuo"}
