@@ -305,7 +305,7 @@ const ObjectPopup = (props) => {
 								objectAttr[attr].field === "SALTINIS" ? (
 									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
 										{objectAttr[attr].alias}
-										<MuiLinkify>
+										<MuiLinkify LinkProps={{ target: "_blank", rel: "noopener", rel: "noreferrer" }}>
 											<Typography variant="body2" component="div">
 												{objectAttr[attr].value}
 											</Typography>

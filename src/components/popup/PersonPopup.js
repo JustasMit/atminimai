@@ -225,7 +225,7 @@ const PersonPopup = (props) => {
 								personAttr[attr].field === "Šaltiniai__Autorius__pavadinima" ? (
 									<Typography variant="h6" component="div" key={personAttr[attr].field}>
 										{personAttr[attr].alias}
-										<MuiLinkify>
+										<MuiLinkify LinkProps={{ target: "_blank", rel: "noopener", rel: "noreferrer" }}>
 											<Typography variant="body2" component="div">
 												{personAttr[attr].value}
 											</Typography>
