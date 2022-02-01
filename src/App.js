@@ -17,7 +17,7 @@ const App = () => {
 	const [objectsList, setObjectsList] = useState([])
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
-	const [searchInputValue, setSearchInputValue] = useState(null)
+	const [searchInputValue, setSearchInputValue] = useState("")
 	const [page, setPage] = useState(1)
 	const [pageCount, setPageCount] = useState(1)
 
@@ -30,7 +30,7 @@ const App = () => {
 			})
 			.then((response) => {
 				if (response.features.length) {
-					setObjectsList(response)
+					setObjectsList(response.features)
 					setInitialLoading(false)
 				}
 			})
@@ -62,7 +62,7 @@ const App = () => {
 							<Collapse sx={{ maxWidth: 350 }} orientation="horizontal" in={visible}>
 								<Table
 									setObjectsList={setObjectsList}
-									objects={objectsList}
+									objectsList={objectsList}
 									setVisible={setVisible}
 									visible={visible}
 									setSelectedObject={setSelectedObject}

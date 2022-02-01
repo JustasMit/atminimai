@@ -12,17 +12,21 @@ const TableItems = (props) => {
 	return (
 		<List style={{ height: "100%", width: "100%", overflowY: "scroll", overflowX: "hidden" }}>
 			<ListSubheader disableSticky={true}>Objektų sąrašas</ListSubheader>
-			{Object.keys(props.objects).map((object) => (
+			{Object.keys(props.searchObjectsList).map((object) => (
 				<ListItemButton
 					onClick={() => {
-						props.setSearchInputValue(null)
-						props.setSelectedObject(`${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
-						navigate(`objektas/${props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
+						props.setSearchInputValue("")
+						props.setSelectedObject(
+							`${props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "")}`
+						)
+						navigate(`objektas/${props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "")}`)
 					}}
-					selected={props.objects[object].attributes.GlobalID.replace(/[{}]/g, "") === props.selectedObject}
-					key={props.objects[object].attributes.GlobalID.replace(/[{}]/g, "")}
+					selected={
+						props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "") === props.selectedObject
+					}
+					key={props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "")}
 				>
-					<ListItemText primary={props.objects[object].attributes.OBJ_PAV} />
+					<ListItemText primary={props.searchObjectsList[object].attributes.OBJ_PAV} />
 				</ListItemButton>
 			))}
 		</List>

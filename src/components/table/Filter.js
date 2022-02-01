@@ -23,17 +23,17 @@ const Filter = (props) => {
 
 	const handleObjectSelect = (event) => {
 		props.setSelectedObject("")
-		props.setSearchInputValue(null)
+		props.setSearchInputValue("")
 		setSelectedObjectFilter(event.target.value)
 	}
 	const handleMemorySelect = (event) => {
 		props.setSelectedObject("")
-		props.setSearchInputValue(null)
+		props.setSearchInputValue("")
 		setSelectedMemoryFilter(event.target.value)
 	}
 	const handleClearFilters = () => {
 		props.setSelectedObject("")
-		props.setSearchInputValue(null)
+		props.setSearchInputValue("")
 		setSelectedObjectFilter("")
 		setSelectedMemoryFilter("")
 	}
@@ -52,7 +52,8 @@ const Filter = (props) => {
 					})
 					.then((response) => {
 						if (response.features.length) {
-							props.setObjectsList(response)
+							props.setObjectsList(response.features)
+							props.setSearchObjectsList(response.features)
 						} else {
 							setShowAlert(true)
 							setSelectedObjectFilter("")
@@ -62,20 +63,20 @@ const Filter = (props) => {
 			})
 		})
 
-		for (let field in props.objects[0].layer.fields) {
-			if (props.objects[0].layer.fields[field].name === "TIPAS") {
-				for (let code in props.objects[0].layer.fields[field].domain.codedValues) {
+		for (let field in props.objectsList[0].layer.fields) {
+			if (props.objectsList[0].layer.fields[field].name === "TIPAS") {
+				for (let code in props.objectsList[0].layer.fields[field].domain.codedValues) {
 					const objCodeAlias = {}
-					objCodeAlias.alias = props.objects[0].layer.fields[field].domain.codedValues[code].name
-					objCodeAlias.code = props.objects[0].layer.fields[field].domain.codedValues[code].code
+					objCodeAlias.alias = props.objectsList[0].layer.fields[field].domain.codedValues[code].name
+					objCodeAlias.code = props.objectsList[0].layer.fields[field].domain.codedValues[code].code
 					tempObjectAlias.push(objCodeAlias)
 				}
 				setObjectAlias(tempObjectAlias)
-			} else if (props.objects[0].layer.fields[field].name === "ATMINT_TIP") {
-				for (let code in props.objects[0].layer.fields[field].domain.codedValues) {
+			} else if (props.objectsList[0].layer.fields[field].name === "ATMINT_TIP") {
+				for (let code in props.objectsList[0].layer.fields[field].domain.codedValues) {
 					const memCodeAlias = {}
-					memCodeAlias.alias = props.objects[0].layer.fields[field].domain.codedValues[code].name
-					memCodeAlias.code = props.objects[0].layer.fields[field].domain.codedValues[code].code
+					memCodeAlias.alias = props.objectsList[0].layer.fields[field].domain.codedValues[code].name
+					memCodeAlias.code = props.objectsList[0].layer.fields[field].domain.codedValues[code].code
 					tempMemoryAlias.push(memCodeAlias)
 				}
 				setMemoryAlias(tempMemoryAlias)
