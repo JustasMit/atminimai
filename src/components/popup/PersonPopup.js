@@ -245,7 +245,6 @@ const PersonPopup = (props) => {
 													component="button"
 													variant="body2"
 													onClick={() => {
-														props.setSearchInputValue("")
 														navigate(`/objektas/${personObj[obj].attributes.GlobalID.replace(/[{}]/g, "")}`)
 													}}
 												>

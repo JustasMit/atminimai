@@ -17,7 +17,6 @@ const App = () => {
 	const [objectsList, setObjectsList] = useState([])
 	const [visible, setVisible] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)
-	const [searchInputValue, setSearchInputValue] = useState("")
 	const [page, setPage] = useState(1)
 	const [pageCount, setPageCount] = useState(1)
 
@@ -67,8 +66,6 @@ const App = () => {
 									visible={visible}
 									setSelectedObject={setSelectedObject}
 									selectedObject={selectedObject}
-									searchInputValue={searchInputValue}
-									setSearchInputValue={setSearchInputValue}
 								/>
 							</Collapse>
 							<Grid item xs>
@@ -84,7 +81,6 @@ const App = () => {
 					path="objektas/:globalID"
 					element={
 						<ObjectPopup
-							setSearchInputValue={setSearchInputValue}
 							setSelectedObject={setSelectedObject}
 							page={page}
 							setPage={setPage}
@@ -94,7 +90,7 @@ const App = () => {
 					}
 				/>
 
-				<Route path="asmuo/:globalID" element={<PersonPopup setSearchInputValue={setSearchInputValue} />} />
+				<Route path="asmuo/:globalID" element={<PersonPopup />} />
 			</Route>
 		</Routes>
 	)

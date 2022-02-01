@@ -15,7 +15,6 @@ const TableItems = (props) => {
 			{Object.keys(props.searchObjectsList).map((object) => (
 				<ListItemButton
 					onClick={() => {
-						props.setSearchInputValue("")
 						props.setSelectedObject(
 							`${props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "")}`
 						)

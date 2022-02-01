@@ -36,6 +36,7 @@ const Filter = (props) => {
 		props.setSearchInputValue("")
 		setSelectedObjectFilter("")
 		setSelectedMemoryFilter("")
+		props.setSearchObjectsList(props.objectsList)
 	}
 
 	useEffect(() => {

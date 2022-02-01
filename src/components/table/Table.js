@@ -7,21 +7,22 @@ import Box from "@mui/material/Box"
 
 const Table = (props) => {
 	const [searchObjectsList, setSearchObjectsList] = useState([])
+	const [searchInputValue, setSearchInputValue] = useState("")
 
 	return (
 		<Box sx={{ width: 350, height: "100vh", display: "flex", flexDirection: "column" }}>
 			<Box>
 				<Search
 					objectsList={props.objectsList}
-					searchInputValue={props.searchInputValue}
-					setSearchInputValue={props.setSearchInputValue}
+					searchInputValue={searchInputValue}
+					setSearchInputValue={setSearchInputValue}
 					setSearchObjectsList={setSearchObjectsList}
 				/>
 			</Box>
 			<Box>
 				<Filter
 					objectsList={props.objectsList}
-					setSearchInputValue={props.setSearchInputValue}
+					setSearchInputValue={setSearchInputValue}
 					setSelectedObject={props.setSelectedObject}
 					setObjectsList={props.setObjectsList}
 					setSearchObjectsList={setSearchObjectsList}
@@ -32,7 +33,6 @@ const Table = (props) => {
 					searchObjectsList={searchObjectsList}
 					setSelectedObject={props.setSelectedObject}
 					selectedObject={props.selectedObject}
-					setSearchInputValue={props.setSearchInputValue}
 				/>
 			</Box>
 		</Box>

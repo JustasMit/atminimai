@@ -212,7 +212,6 @@ const ObjectPopup = (props) => {
 			props.setPage(1)
 			props.setPageCount(1)
 			props.setSelectedObject("")
-			props.setSearchInputValue("")
 			setQueryObjects([])
 
 			view.graphics.some((graphic) => {
@@ -326,7 +325,6 @@ const ObjectPopup = (props) => {
 													component="button"
 													variant="body2"
 													onClick={() => {
-														props.setSearchInputValue("")
 														navigate(`/asmuo/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
 													}}
 												>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
