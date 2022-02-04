@@ -3,17 +3,83 @@ import MapView from "@arcgis/core/views/MapView"
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer"
 import TileLayer from "@arcgis/core/layers/TileLayer"
 
-let objectsRenderer = {
-	type: "simple",
-	symbol: {
-		type: "simple-marker",
-		size: 12,
-		color: "black",
-		outline: {
-			width: 0.5,
-			color: "white",
+const objectsRenderer = {
+	type: "unique-value",
+	field: "TIPAS",
+	uniqueValueInfos: [
+		{
+			value: "1",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_atminimo_lenta.svg",
+				width: "36px",
+				height: "36px",
+			},
 		},
-	},
+		{
+			value: "2",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_skulptura.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "3",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_atminimo_lenta_bareljefas.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "4",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_freska.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "5",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_pavadinimo_lentele.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "6",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_uzrasas.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "7",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_vietos_pazymejimas.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+		{
+			value: "8",
+			symbol: {
+				type: "picture-marker",
+				url: "Atmint_paminklas.svg",
+				width: "36px",
+				height: "36px",
+			},
+		},
+	],
 }
 
 export const objects = new FeatureLayer({
