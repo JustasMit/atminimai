@@ -12,8 +12,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_atminimo_lenta.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -21,8 +19,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_skulptura.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -30,8 +26,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_atminimo_lenta_bareljefas.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -39,8 +33,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_freska.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -48,8 +40,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_pavadinimo_lentele.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -57,8 +47,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_uzrasas.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -66,8 +54,6 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_vietos_pazymejimas.svg",
-				width: "36px",
-				height: "36px",
 			},
 		},
 		{
@@ -75,9 +61,20 @@ const objectsRenderer = {
 			symbol: {
 				type: "picture-marker",
 				url: "Atmint_paminklas.svg",
-				width: "36px",
-				height: "36px",
 			},
+		},
+	],
+	visualVariables: [
+		{
+			type: "size",
+			valueExpression: "$view.scale",
+			stops: [
+				{ size: 24, value: 500 },
+				{ size: 21, value: 1000 },
+				{ size: 18, value: 2000 },
+				{ size: 15, value: 5000 },
+				{ size: 12, value: 10000 },
+			],
 		},
 	],
 }
@@ -87,23 +84,17 @@ export const objects = new FeatureLayer({
 	outFields: ["*"],
 	title: "Lentelės",
 	renderer: objectsRenderer,
-	minScale: 0,
-	maxScale: 0,
 })
 
 export const persons = new FeatureLayer({
 	url: "https://utility.arcgis.com/usrsvcs/servers/14627426b83f4fcf8198764db38287f3/rest/services/VilniausDNR/VilniausDNR/MapServer/2",
 	outFields: ["*"],
 	title: "Asmenys",
-	minScale: 0,
-	maxScale: 0,
 })
 
 export const vilnius = new TileLayer({
 	url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
 	title: "Vilnius",
-	minScale: 0,
-	maxScale: 0,
 })
 
 export const map = new Map({

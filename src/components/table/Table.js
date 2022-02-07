@@ -11,30 +11,24 @@ const Table = (props) => {
 
 	return (
 		<Box sx={{ width: 350, height: "100vh", display: "flex", flexDirection: "column" }}>
-			<Box>
-				<Search
-					objectsList={props.objectsList}
-					searchInputValue={searchInputValue}
-					setSearchInputValue={setSearchInputValue}
-					setSearchObjectsList={setSearchObjectsList}
-				/>
-			</Box>
-			<Box>
-				<Filter
-					objectsList={props.objectsList}
-					setSearchInputValue={setSearchInputValue}
-					setSelectedObject={props.setSelectedObject}
-					setObjectsList={props.setObjectsList}
-					setSearchObjectsList={setSearchObjectsList}
-				/>
-			</Box>
-			<Box style={{ flexGrow: 1, minHeight: 0 }}>
-				<TableItems
-					searchObjectsList={searchObjectsList}
-					setSelectedObject={props.setSelectedObject}
-					selectedObject={props.selectedObject}
-				/>
-			</Box>
+			<Search
+				objectsList={props.objectsList}
+				searchInputValue={searchInputValue}
+				setSearchInputValue={setSearchInputValue}
+				setSearchObjectsList={setSearchObjectsList}
+			/>
+			<Filter
+				objectsList={props.objectsList}
+				setSearchInputValue={setSearchInputValue}
+				setSelectedObject={props.setSelectedObject}
+				setObjectsList={props.setObjectsList}
+				setSearchObjectsList={setSearchObjectsList}
+			/>
+			<TableItems
+				searchObjectsList={searchObjectsList}
+				setSelectedObject={props.setSelectedObject}
+				selectedObject={props.selectedObject}
+			/>
 		</Box>
 	)
 }

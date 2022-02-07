@@ -9,10 +9,15 @@ import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import Snackbar from "@mui/material/Snackbar"
 import MuiAlert from "@mui/material/Alert"
+import FormGroup from "@mui/material/FormGroup"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Checkbox from "@mui/material/Checkbox"
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
+
+let viewHandles = []
 
 const Filter = (props) => {
 	const [objectAlias, setObjectAlias] = useState([])
@@ -20,6 +25,7 @@ const Filter = (props) => {
 	const [selectedObjectFilter, setSelectedObjectFilter] = useState("")
 	const [selectedMemoryFilter, setSelectedMemoryFilter] = useState("")
 	const [showAlert, setShowAlert] = useState(false)
+	const [extentCheck, setExtentCheck] = useState(false)
 
 	const handleObjectSelect = (event) => {
 		props.setSelectedObject("")
@@ -36,32 +42,39 @@ const Filter = (props) => {
 		props.setSearchInputValue("")
 		setSelectedObjectFilter("")
 		setSelectedMemoryFilter("")
+		setExtentCheck(false)
+		viewHandles.forEach(function (handle) {
+			handle.remove()
+		})
+		viewHandles.length = 0
 		props.setSearchObjectsList(props.objectsList)
+	}
+	const handleExtent = () => {
+		viewHandles.forEach(function (handle) {
+			handle.remove()
+		})
+		viewHandles.length = 0
+
+		if (extentCheck) {
+			props.setSearchObjectsList(props.objectsList)
+		}
+
+		setExtentCheck(!extentCheck)
 	}
 
 	useEffect(() => {
 		let tempObjectAlias = []
 		let tempMemoryAlias = []
+		props.setSearchObjectsList(props.objectsList)
 
-		view.whenLayerView(objects).then((objectsView) => {
-			objectsView.watch("filter.where", () => {
-				map.layers.items[1]
-					.queryFeatures({
-						outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
-						where: objectsView.filter.where,
-						returnGeometry: false,
-					})
-					.then((response) => {
-						if (response.features.length) {
-							props.setObjectsList(response.features)
-							props.setSearchObjectsList(response.features)
-						} else {
-							setShowAlert(true)
-							setSelectedObjectFilter("")
-							setSelectedMemoryFilter("")
-						}
-					})
-			})
+		view.watch("scale", (newScale) => {
+			for (let stop in map.layers.items[1].renderer.visualVariables[0].stops) {
+				if (map.layers.items[1].renderer.visualVariables[0].stops[stop].value === newScale) {
+					console.log(
+						`scale ${newScale}, size ${map.layers.items[1].renderer.visualVariables[0].stops[stop].size}`
+					)
+				}
+			}
 		})
 
 		for (let field in props.objectsList[0].layer.fields) {
@@ -86,6 +99,32 @@ const Filter = (props) => {
 	}, [])
 
 	useEffect(() => {
+		if (extentCheck) {
+			view.whenLayerView(objects).then((objectsView) => {
+				viewHandles.push(
+					objectsView.watch("updating", (updating) => {
+						if (!updating) {
+							objectsView
+								.queryFeatures({
+									outFields: objectsView.availableFields,
+									where: objectsView.filter.where,
+									geometry: view.extent,
+									returnGeometry: false,
+								})
+								.then((response) => {
+									console.log(response, "response")
+									if (response.features.length) {
+										props.setSearchObjectsList(response.features)
+									}
+								})
+						}
+					})
+				)
+			})
+		}
+	}, [extentCheck])
+
+	useEffect(() => {
 		let query
 
 		if (selectedObjectFilter !== "" && selectedMemoryFilter === "") {
@@ -100,7 +139,26 @@ const Filter = (props) => {
 
 		view.whenLayerView(objects).then((objectsView) => {
 			objectsView.filter = {
+				//geometry: extentCheck ? view.extent : null,
 				where: query,
+			}
+			if (!extentCheck) {
+				objectsView
+					.queryFeatures({
+						outFields: objectsView.availableFields,
+						where: objectsView.filter.where,
+						returnGeometry: false,
+					})
+					.then((response) => {
+						console.log(response, "response")
+						if (response.features.length) {
+							props.setSearchObjectsList(response.features)
+						} else {
+							setShowAlert(true)
+							setSelectedObjectFilter("")
+							setSelectedMemoryFilter("")
+						}
+					})
 			}
 		})
 	}, [selectedObjectFilter, selectedMemoryFilter])
@@ -112,7 +170,7 @@ const Filter = (props) => {
 				</Alert>
 			</Snackbar>
 			<Box sx={{ ml: 0.5, mr: 0.5 }}>
-				<FormControl sx={{ mt: 1, width: "100%" }}>
+				<FormControl size="small" sx={{ mt: 1, width: "100%" }}>
 					<InputLabel id="object-select-label">Objekto tipas</InputLabel>
 					<Select
 						labelId="object-select-label"
@@ -133,7 +191,7 @@ const Filter = (props) => {
 					</Select>
 				</FormControl>
 
-				<FormControl sx={{ mt: 1, width: "100%" }}>
+				<FormControl size="small" sx={{ mt: 1, width: "100%" }}>
 					<InputLabel id="memory-select-label">Atminimo tipas</InputLabel>
 					<Select
 						labelId="memory-select-label"
@@ -154,10 +212,17 @@ const Filter = (props) => {
 					</Select>
 				</FormControl>
 
+				<FormGroup>
+					<FormControlLabel
+						control={<Checkbox checked={extentCheck} onChange={handleExtent} />}
+						label="Rodyti tik matomus objektus"
+					/>
+				</FormGroup>
+
 				<Button
 					variant="contained"
 					disableElevation
-					sx={{ mt: 1, mb: 1, width: "100%" }}
+					sx={{ mb: 1, width: "100%" }}
 					onClick={handleClearFilters}
 				>
 					Išvalyti filtrus

@@ -11,9 +11,13 @@ const TableItems = (props) => {
 
 	return (
 		<List style={{ height: "100%", width: "100%", overflowY: "scroll", overflowX: "hidden" }}>
-			<ListSubheader disableSticky={true}>Objektų sąrašas</ListSubheader>
+			{
+				//<ListSubheader disableSticky={true}>Objektų sąrašas</ListSubheader>
+			}
 			{Object.keys(props.searchObjectsList).map((object) => (
 				<ListItemButton
+					sx={{ py: 0 }}
+					divider
 					onClick={() => {
 						props.setSelectedObject(
 							`${props.searchObjectsList[object].attributes.GlobalID.replace(/[{}]/g, "")}`
