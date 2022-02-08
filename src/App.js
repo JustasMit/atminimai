@@ -21,7 +21,7 @@ const App = () => {
 	const [pageCount, setPageCount] = useState(1)
 
 	useEffect(() => {
-		map.layers.items[1]
+		map.layers.items[0]
 			.queryFeatures({
 				outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
 				where: "",

@@ -5,5 +5,9 @@
 	width: 100%;
 }
 .esri-view .esri-view-surface--inset-outline:focus::after {
-  outline: none !important;
+	outline: none !important;
+}
+
+.esri-basemap-gallery__item:first-child {
+	margin-top: 0 !important;
 }

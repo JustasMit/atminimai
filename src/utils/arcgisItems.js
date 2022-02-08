@@ -2,6 +2,7 @@ import Map from "@arcgis/core/Map"
 import MapView from "@arcgis/core/views/MapView"
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer"
 import TileLayer from "@arcgis/core/layers/TileLayer"
+import Basemap from "@arcgis/core/Basemap"
 
 const objectsRenderer = {
 	type: "unique-value",
@@ -92,13 +93,24 @@ export const persons = new FeatureLayer({
 	title: "Asmenys",
 })
 
-export const vilnius = new TileLayer({
-	url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
-	title: "Vilnius",
+// export const vilnius = new TileLayer({
+// 	url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
+// 	title: "Vilnius",
+// })
+
+let basemap = new Basemap({
+	baseLayers: [
+		new TileLayer({
+			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
+		}),
+	],
+	title: "Šviesus",
+	id: "Šviesus",
 })
 
 export const map = new Map({
-	layers: [vilnius, objects],
+	basemap: basemap,
+	layers: [objects],
 })
 
 export const view = new MapView({
@@ -116,4 +128,23 @@ export const view = new MapView({
 	ui: {
 		components: ["attribution"],
 	},
+})
+
+export const basemap1 = new Basemap({
+	baseLayers: [
+		new TileLayer({
+			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
+		}),
+	],
+	title: "Šviesus",
+	id: "Šviesus",
+})
+export const basemap2 = new Basemap({
+	baseLayers: [
+		new TileLayer({
+			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_dark_LKS/MapServer",
+		}),
+	],
+	title: "Tamsus",
+	id: "Tamsus",
 })

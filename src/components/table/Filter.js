@@ -68,10 +68,10 @@ const Filter = (props) => {
 		props.setSearchObjectsList(props.objectsList)
 
 		view.watch("scale", (newScale) => {
-			for (let stop in map.layers.items[1].renderer.visualVariables[0].stops) {
-				if (map.layers.items[1].renderer.visualVariables[0].stops[stop].value === newScale) {
+			for (let stop in map.layers.items[0].renderer.visualVariables[0].stops) {
+				if (map.layers.items[0].renderer.visualVariables[0].stops[stop].value === newScale) {
 					console.log(
-						`scale ${newScale}, size ${map.layers.items[1].renderer.visualVariables[0].stops[stop].size}`
+						`scale ${newScale}, size ${map.layers.items[0].renderer.visualVariables[0].stops[stop].size}`
 					)
 				}
 			}
