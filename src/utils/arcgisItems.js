@@ -93,11 +93,6 @@ export const persons = new FeatureLayer({
 	title: "Asmenys",
 })
 
-// export const vilnius = new TileLayer({
-// 	url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
-// 	title: "Vilnius",
-// })
-
 let basemap = new Basemap({
 	baseLayers: [
 		new TileLayer({
@@ -117,16 +112,20 @@ export const view = new MapView({
 	map: map,
 	zoom: 2,
 	slider: false,
-	popup: {
-		dockEnabled: true,
-		dockOptions: {
-			buttonEnabled: false,
-			breakpoint: false,
-			position: "top-right",
-		},
-	},
+	//popup: {
+	//	dockEnabled: true,
+	//	dockOptions: {
+	//		buttonEnabled: false,
+	//		breakpoint: false,
+	//		position: "top-right",
+	//	},
+	//},
 	ui: {
 		components: ["attribution"],
+	},
+	highlightOptions: {
+		color: "#FF0000",
+		haloColor: "#FF0000",
 	},
 })
 
