@@ -135,15 +135,17 @@ export const basemap1 = new Basemap({
 			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_light_LKS/MapServer",
 		}),
 	],
-	title: "Šviesus",
-	id: "Šviesus",
+	title: "Šviesus žemėlapis",
+	id: "Šviesus žemėlapis",
+	thumbnailUrl: "basemap_light.png",
 })
 export const basemap2 = new Basemap({
-	baseLayers: [
-		new TileLayer({
-			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_dark_LKS/MapServer",
+  baseLayers: [
+    new TileLayer({
+      url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_dark_LKS/MapServer",
 		}),
 	],
-	title: "Tamsus",
-	id: "Tamsus",
+	title: "Tamsus žemėlapis",
+	id: "Tamsus žemėlapis",
+  thumbnailUrl: "basemap_dark.png",
 })

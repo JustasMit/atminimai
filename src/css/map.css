@@ -11,3 +11,12 @@
 .esri-basemap-gallery__item:first-child {
 	margin-top: 0 !important;
 }
+.esri-basemap-gallery__item-title {
+	font-size: 16px !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+		"Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+}
+
+.esri-basemap-gallery {
+	width: 230px !important;
+}
