@@ -1,10 +1,8 @@
 import React, { useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { view, objects, map, basemap1, basemap2 } from "../../utils/arcgisItems"
+import { view, objects, bgExpand } from "../../utils/arcgisItems"
 import * as watchUtils from "@arcgis/core/core/watchUtils"
-import BasemapGallery from "@arcgis/core/widgets/BasemapGallery"
-import Expand from "@arcgis/core/widgets/Expand"
 import "../../css/map.css"
 
 const ObjectMap = (props) => {
@@ -14,22 +12,13 @@ const ObjectMap = (props) => {
 	useEffect(() => {
 		view.container = mapDiv.current
 
-		const basemapGallery = new BasemapGallery({
-			view: view,
-			source: [basemap1, basemap2],
-		})
-		const bgExpand = new Expand({
-			view: view,
-			content: basemapGallery,
-			collapseIconClass: "esri-icon-left",
-			collapseTooltip: "Suskleisti",
-			expandTooltip: "Išskleisti bazinius žemėlapius",
-		})
 		view.ui.add(bgExpand, {
 			position: "top-left",
 		})
 
 		view.on("click", (event) => {
+      bgExpand.collapse()
+
 			view.whenLayerView(objects).then((objectsView) => {
 				watchUtils
 					.whenNotOnce(objectsView, "updating")

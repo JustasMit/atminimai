@@ -150,7 +150,6 @@ const Filter = (props) => {
 						returnGeometry: false,
 					})
 					.then((response) => {
-						console.log(response, "response")
 						if (response.features.length) {
 							props.setSearchObjectsList(response.features)
 						} else {
