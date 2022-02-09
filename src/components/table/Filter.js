@@ -145,7 +145,7 @@ const Filter = (props) => {
 			if (!extentCheck) {
 				objectsView
 					.queryFeatures({
-						outFields: objectsView.availableFields,
+						outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
 						where: objectsView.filter.where,
 						returnGeometry: false,
 					})

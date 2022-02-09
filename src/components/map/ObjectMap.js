@@ -16,8 +16,27 @@ const ObjectMap = (props) => {
 			position: "top-left",
 		})
 
+		view.whenLayerView(objects).then((objectsView) => {
+			watchUtils.whenFalseOnce(objectsView, "updating").then(() => {
+				objectsView
+					.queryFeatures({
+						outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
+						where: "",
+						returnGeometry: false,
+					})
+					.then((response) => {
+						if (response.features.length) {
+							props.setInitialObjectsList(response.features)
+						}
+					})
+					.catch((error) => {
+						console.error(error)
+					})
+			})
+		})
+
 		view.on("click", (event) => {
-      bgExpand.collapse()
+			bgExpand.collapse()
 
 			view.whenLayerView(objects).then((objectsView) => {
 				watchUtils
