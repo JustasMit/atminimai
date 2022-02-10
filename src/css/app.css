@@ -1,25 +1,15 @@
-@import 'https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css';
+@import "https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css";
 html,
 body,
 #root {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
 }
 
 body {
-  margin: 0;
-  height: 100%;
-  overflow:hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace !important;
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
 }

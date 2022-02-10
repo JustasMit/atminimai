@@ -21,7 +21,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "react-virtualized": "^9.22.3"
   },
   "browserslist": {
     "production": [

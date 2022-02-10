@@ -7,8 +7,8 @@ import Box from "@mui/material/Box"
 const Search = (props) => {
 	const handleSearch = (event) => {
 		props.setSearchInputValue(event.target.value)
-		props.setSearchObjectsList(
-			matchSorter(props.objectsList, event.target.value, {
+		props.setTableObjectsList(
+			matchSorter(props.searchObjectsList, event.target.value, {
 				keys: [(item) => item.attributes.OBJ_PAV],
 				threshold: matchSorter.rankings.MATCHES,
 			})
