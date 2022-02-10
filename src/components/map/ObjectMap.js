@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { view, objects, bgExpand } from "../../utils/arcgisItems"
+import { view, objects, bgExpand, locateWidget } from "../../utils/arcgisItems"
 import * as watchUtils from "@arcgis/core/core/watchUtils"
 import "../../css/map.css"
 
@@ -12,9 +12,8 @@ const ObjectMap = (props) => {
 	useEffect(() => {
 		view.container = mapDiv.current
 
-		view.ui.add(bgExpand, {
-			position: "top-left",
-		})
+		view.ui.add(bgExpand, "top-left")
+		view.ui.add(locateWidget, "top-left")
 
 		view.whenLayerView(objects).then((objectsView) => {
 			watchUtils.whenFalseOnce(objectsView, "updating").then(() => {
