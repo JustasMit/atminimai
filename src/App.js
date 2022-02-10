@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Routes, Route, Outlet, Navigate } from "react-router-dom"
+import { Routes, Route, Outlet } from "react-router-dom"
 import ObjectMap from "./components/map/ObjectMap"
 import Table from "./components/table/Table"
 import ObjectPopup from "./components/popup/ObjectPopup"
@@ -59,7 +59,6 @@ const App = () => {
 				/>
 
 				<Route path="asmuo/:globalID" element={<PersonPopup />} />
-				<Route path="/atminimolentos" element={<Navigate to="/" />} />
 			</Route>
 		</Routes>
 	)
