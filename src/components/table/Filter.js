@@ -50,22 +50,14 @@ const Filter = (props) => {
 		props.setSearchObjectsList(props.objectsList)
 	}
 	const handleExtent = () => {
-		view.whenLayerView(objects).then((objectsView) => {
-			if (!extentCheck) {
-				objectsView
-					.queryFeatures({
-						outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
-						where: objectsView.filter.where,
-						geometry: view.extent,
-						returnGeometry: false,
-					})
-					.then((response) => {
-						if (response.features.length) {
-							props.setSearchObjectsList(response.features)
-						}
-					})
-			}
+		viewHandles.forEach(function (handle) {
+			handle.remove()
 		})
+		viewHandles.length = 0
+
+		if (extentCheck) {
+			props.setSearchObjectsList(props.objectsList)
+		}
 
 		setExtentCheck(!extentCheck)
 	}
@@ -107,6 +99,31 @@ const Filter = (props) => {
 	}, [])
 
 	useEffect(() => {
+		if (extentCheck) {
+			view.whenLayerView(objects).then((objectsView) => {
+				viewHandles.push(
+					objectsView.watch("updating", (updating) => {
+						if (!updating) {
+							objectsView
+								.queryFeatures({
+									outFields: objectsView.availableFields,
+									where: objectsView.filter.where,
+									geometry: view.extent,
+									returnGeometry: false,
+								})
+								.then((response) => {
+									if (response.features.length) {
+										props.setSearchObjectsList(response.features)
+									}
+								})
+						}
+					})
+				)
+			})
+		}
+	}, [extentCheck])
+
+	useEffect(() => {
 		let query
 
 		if (selectedObjectFilter !== "" && selectedMemoryFilter === "") {
@@ -143,50 +160,6 @@ const Filter = (props) => {
 			}
 		})
 	}, [selectedObjectFilter, selectedMemoryFilter])
-
-	useEffect(() => {
-		viewHandles.forEach(function (handle) {
-			handle.remove()
-		})
-		viewHandles.length = 0
-
-		view.whenLayerView(objects).then((objectsView) => {
-			if (extentCheck) {
-				viewHandles.push(
-					objectsView.watch("updating", (updating) => {
-						if (!updating) {
-							objectsView
-								.queryFeatures({
-									outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
-									where: objectsView.filter.where,
-									geometry: view.extent,
-									returnGeometry: false,
-								})
-								.then((response) => {
-									if (response.features.length) {
-										props.setSearchObjectsList(response.features)
-									}
-								})
-						}
-					})
-				)
-			} else {
-				objectsView
-					.queryFeatures({
-						outFields: ["OBJ_PAV", "TIPAS", "ATMINT_TIP", "GlobalID"],
-						where: objectsView.filter.where,
-						geometry: null,
-						returnGeometry: false,
-					})
-					.then((response) => {
-						if (response.features.length) {
-							props.setSearchObjectsList(response.features)
-						}
-					})
-			}
-		})
-	}, [extentCheck])
-
 	return (
 		<>
 			<Snackbar open={showAlert} autoHideDuration={4000} onClose={() => setShowAlert(false)}>

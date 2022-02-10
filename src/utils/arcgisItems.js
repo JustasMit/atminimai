@@ -5,7 +5,6 @@ import TileLayer from "@arcgis/core/layers/TileLayer"
 import Basemap from "@arcgis/core/Basemap"
 import BasemapGallery from "@arcgis/core/widgets/BasemapGallery"
 import Expand from "@arcgis/core/widgets/Expand"
-import Locate from "@arcgis/core/widgets/Locate";
 
 const objectsRenderer = {
 	type: "unique-value",
@@ -166,7 +165,3 @@ export const bgExpand = new Expand({
   collapseTooltip: "Suskleisti",
   expandTooltip: "Išskleisti bazinius žemėlapius",
 })
-
-export const locateWidget = new Locate({
-  view: view,
-});
