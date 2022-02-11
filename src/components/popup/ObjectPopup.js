@@ -57,7 +57,6 @@ const ObjectPopup = (props) => {
 						objectsView
 							.queryFeatures(query)
 							.then((response) => {
-								console.log(response)
 								if (highlight) {
 									highlight.remove()
 								}
@@ -199,7 +198,7 @@ const ObjectPopup = (props) => {
 					})
 			})
 		}
-	}, [globalID, props.page, props.initialLoading])
+	}, [globalID, props.initialLoading])
 
 	useEffect(() => {
 		return () => {

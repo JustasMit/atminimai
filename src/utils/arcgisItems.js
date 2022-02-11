@@ -9,7 +9,6 @@ import Locate from "@arcgis/core/widgets/Locate";
 
 const url = window.location.href
 const origin = new URL(url).origin
-console.log(origin)
 const objectsRenderer = {
 	type: "unique-value",
 	field: "TIPAS",
