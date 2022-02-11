@@ -26,6 +26,7 @@ const ObjectMap = (props) => {
 					.then((response) => {
 						if (response.features.length) {
 							props.setInitialObjectsList(response.features)
+              props.setInitialLoading(false)
 						}
 					})
 					.catch((error) => {
@@ -37,24 +38,34 @@ const ObjectMap = (props) => {
 		view.on("click", (event) => {
 			bgExpand.collapse()
 
-			view.whenLayerView(objects).then((objectsView) => {
-				watchUtils
-					.whenNotOnce(objectsView, "updating")
-					.then(() => {
-						return objectsView.queryFeatures({
-							geometry: event.mapPoint,
-							distance: view.resolution * 6,
-							spatialRelationship: "intersects",
-						})
-					})
-					.then((response) => {
-						if (response.features.length) {
-							props.setPageCount(response.features.length)
-							props.setPage(1)
-							navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
-						}
-					})
+			const opts = {
+				include: objects,
+			}
+			view.hitTest(event, opts).then((response) => {
+				if (response.results.length) {
+					props.setPage(1)
+					navigate(`objektas/${response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
+				}
 			})
+
+			// view.whenLayerView(objects).then((objectsView) => {
+			// 	watchUtils
+			// 		.whenNotOnce(objectsView, "updating")
+			// 		.then(() => {
+			// 			return objectsView.queryFeatures({
+			// 				geometry: event.mapPoint,
+			// 				distance: view.resolution * 6,
+			// 				spatialRelationship: "intersects",
+			// 			})
+			// 		})
+			// 		.then((response) => {
+			// 			if (response.features.length) {
+			// 				props.setPageCount(response.features.length)
+			// 				props.setPage(1)
+			// 				navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
+			// 			}
+			// 		})
+			// })
 		})
 	}, [])
 

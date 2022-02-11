@@ -28,112 +28,114 @@ const PersonPopup = (props) => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		persons
-			.queryFeatures({
-				outFields: ["*"],
-				where: `GlobalID = '${globalID}'`,
-			})
-			.then((response) => {
-				const allAttributes = []
-				let count = 0
-				for (let attr in response.features[0].attributes) {
-					if (
-						response.features[0].attributes[attr] === null ||
-						response.features[0].attributes[attr] === "" ||
-						response.features[0].attributes[attr] === 0 ||
-						attr === "OBJECTID" ||
-						attr === "GAT_ID" ||
-						attr === "Daiktas" ||
-						attr === "Vardas__pavardė_kitomis_kalbomi" ||
-						attr === "Pseudonimas__slapyvardžiai" ||
-						attr === "Pagrindinė_veikla" ||
-						attr === "Veiklos_detalizavimas" ||
-						attr === "Kiti_veiklos_momentai_faktai" ||
-						attr === "Kiti_vertinimai__nuomonės" ||
-						attr === "objekto_adresas" ||
-						attr === "ATMINIMO_LENTA" ||
-						attr === "KITA" ||
-						attr === "KITA2" ||
-						attr === "KITA3" ||
-						attr === "KITA4" ||
-						attr === "KITA5" ||
-						attr === "KITA6" ||
-						attr === "KITA7" ||
-						attr === "MUZIEJUS_KOREGAVO" ||
-						attr === "Meninė_vertė" ||
-						attr === "gatvė" ||
-						attr === "GATVĖ_1" ||
-						attr === "lentelė_apie_asmenybė__instituc" ||
-						attr === "objekto_adresas" ||
-						attr === "lentos_prieinamumas" ||
-						attr === "ATMINIMO_LENTA" ||
-						attr === "created_user" ||
-						attr === "created_date" ||
-						attr === "last_edited_user" ||
-						attr === "last_edited_date" ||
-						attr === "GlobalID"
-					) {
-					} else {
-						const obj = {}
-
-						obj.alias = response.features[0].layer.fields[count].alias
-						if (response.features[0].layer.fields[count].domain === null) {
-							if (attr === "Gimimo_data" || attr === "Mirties_data") {
-								let parsedDate = new Date(Date.parse(response.features[0].attributes[attr]))
-								obj.value = parsedDate.toLocaleDateString("lt-LT")
-							} else {
-								obj.value = response.features[0].attributes[attr]
-							}
+		if (!props.initialLoading) {
+			persons
+				.queryFeatures({
+					outFields: ["*"],
+					where: `GlobalID = '${globalID}'`,
+				})
+				.then((response) => {
+					const allAttributes = []
+					let count = 0
+					for (let attr in response.features[0].attributes) {
+						if (
+							response.features[0].attributes[attr] === null ||
+							response.features[0].attributes[attr] === "" ||
+							response.features[0].attributes[attr] === 0 ||
+							attr === "OBJECTID" ||
+							attr === "GAT_ID" ||
+							attr === "Daiktas" ||
+							attr === "Vardas__pavardė_kitomis_kalbomi" ||
+							attr === "Pseudonimas__slapyvardžiai" ||
+							attr === "Pagrindinė_veikla" ||
+							attr === "Veiklos_detalizavimas" ||
+							attr === "Kiti_veiklos_momentai_faktai" ||
+							attr === "Kiti_vertinimai__nuomonės" ||
+							attr === "objekto_adresas" ||
+							attr === "ATMINIMO_LENTA" ||
+							attr === "KITA" ||
+							attr === "KITA2" ||
+							attr === "KITA3" ||
+							attr === "KITA4" ||
+							attr === "KITA5" ||
+							attr === "KITA6" ||
+							attr === "KITA7" ||
+							attr === "MUZIEJUS_KOREGAVO" ||
+							attr === "Meninė_vertė" ||
+							attr === "gatvė" ||
+							attr === "GATVĖ_1" ||
+							attr === "lentelė_apie_asmenybė__instituc" ||
+							attr === "objekto_adresas" ||
+							attr === "lentos_prieinamumas" ||
+							attr === "ATMINIMO_LENTA" ||
+							attr === "created_user" ||
+							attr === "created_date" ||
+							attr === "last_edited_user" ||
+							attr === "last_edited_date" ||
+							attr === "GlobalID"
+						) {
 						} else {
-							for (let code in response.features[0].layer.fields[count].domain.codedValues) {
-								if (
-									response.features[0].layer.fields[count].domain.codedValues[code].code ===
-									response.features[0].attributes[attr]
-								) {
-									obj.value = response.features[0].layer.fields[count].domain.codedValues[code].name
+							const obj = {}
+
+							obj.alias = response.features[0].layer.fields[count].alias
+							if (response.features[0].layer.fields[count].domain === null) {
+								if (attr === "Gimimo_data" || attr === "Mirties_data") {
+									let parsedDate = new Date(Date.parse(response.features[0].attributes[attr]))
+									obj.value = parsedDate.toLocaleDateString("lt-LT")
+								} else {
+									obj.value = response.features[0].attributes[attr]
+								}
+							} else {
+								for (let code in response.features[0].layer.fields[count].domain.codedValues) {
+									if (
+										response.features[0].layer.fields[count].domain.codedValues[code].code ===
+										response.features[0].attributes[attr]
+									) {
+										obj.value = response.features[0].layer.fields[count].domain.codedValues[code].name
+									}
 								}
 							}
-						}
 
-						obj.field = attr
-						allAttributes.push(obj)
+							obj.field = attr
+							allAttributes.push(obj)
+						}
+						count++
 					}
-					count++
-				}
-				setPersonAttr(allAttributes)
-				return response.features[0].attributes.OBJECTID
-			})
-			.then((OBJECTID) => {
-				const allObjects = []
-				persons
-					.queryRelatedFeatures({
-						outFields: ["GlobalID", "OBJ_PAV", "VIETA"],
-						relationshipId: 0,
-						objectIds: OBJECTID,
-					})
-					.then((response) => {
-						if (Object.keys(response).length === 0) {
-							setPersonObj([])
-							return
-						}
-
-						Object.keys(response).forEach((objectId) => {
-							const obj = response[objectId].features
-							obj.forEach((obj) => {
-								allObjects.push(obj)
-							})
+					setPersonAttr(allAttributes)
+					return response.features[0].attributes.OBJECTID
+				})
+				.then((OBJECTID) => {
+					const allObjects = []
+					persons
+						.queryRelatedFeatures({
+							outFields: ["GlobalID", "OBJ_PAV", "VIETA"],
+							relationshipId: 0,
+							objectIds: OBJECTID,
 						})
+						.then((response) => {
+							if (Object.keys(response).length === 0) {
+								setPersonObj([])
+								return
+							}
 
-						setPersonObj(allObjects)
-					})
-					.then(() => {
-						setLoading(false)
-					})
-					.catch((error) => {
-						console.error(error)
-					})
-			})
-	}, [globalID])
+							Object.keys(response).forEach((objectId) => {
+								const obj = response[objectId].features
+								obj.forEach((obj) => {
+									allObjects.push(obj)
+								})
+							})
+
+							setPersonObj(allObjects)
+						})
+						.then(() => {
+							setLoading(false)
+						})
+						.catch((error) => {
+							console.error(error)
+						})
+				})
+		}
+	}, [globalID, props.initialLoading])
 
 	const matches = useMediaQuery("(min-width:995px)")
 	return (

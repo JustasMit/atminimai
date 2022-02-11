@@ -37,165 +37,169 @@ const ObjectPopup = (props) => {
 	}
 
 	useEffect(() => {
-		setLoading(true)
-		view.whenLayerView(objects).then((objectsView) => {
-			let query = objectsView.createQuery()
-			query.where = `GlobalID = '{${globalID}}'`
-			query.outFields = ["GlobalID"]
+		if (!props.initialLoading) {
+			setLoading(true)
+			view.whenLayerView(objects).then((objectsView) => {
+				let query = objectsView.createQuery()
+				query.where = `GlobalID = '{${globalID}}'`
+				query.outFields = ["GlobalID"]
 
-			objectsView
-				.queryFeatures(query)
-				.then((response) => {
-					return response.features[0].geometry
-				})
-				.then((geometry) => {
-					let query = objectsView.createQuery()
-					query.geometry = geometry
-					query.spatialRelationship = "intersects"
+				objectsView
+					.queryFeatures(query)
+					.then((response) => {
+						return response.features[0].geometry
+					})
+					.then((geometry) => {
+						let query = objectsView.createQuery()
+						query.geometry = geometry
+						query.spatialRelationship = "intersects"
 
-					objectsView
-						.queryFeatures(query)
-						.then((response) => {
-							console.log(response)
-							if (highlight) {
-								highlight.remove()
-							}
-
-							if (response.features.length === 0) {
-								navigate("/")
-								return
-							}
-
-							for (let obj in response.features) {
-								if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
-									view.goTo({
-										target: response.features[obj].geometry,
-										zoom: 7,
-									})
-
-									highlight = objectsView.highlight(response.features[obj])
-
-									props.setPage(parseInt(obj) + 1)
-									props.setSelectedObject(`${globalID}`)
+						objectsView
+							.queryFeatures(query)
+							.then((response) => {
+								console.log(response)
+								if (highlight) {
+									highlight.remove()
 								}
-							}
-							props.setPageCount(response.features.length)
 
-							setQueryObjects(response)
-							return response
-						})
-						.then((response) => {
-							const allAttributes = []
+								if (response.features.length === 0) {
+									navigate("/")
+									return
+								}
 
-							let count = 0
-							for (let attr in response.features[props.page - 1].attributes) {
-								if (
-									response.features[props.page - 1].attributes[attr] === null ||
-									response.features[props.page - 1].attributes[attr] === "" ||
-									response.features[props.page - 1].attributes[attr] === 0 ||
-									attr === "OBJECTID" ||
-									attr === "IDENTIFIK" ||
-									attr === "REG_TURTAS" ||
-									attr === "VERTE" ||
-									attr === "UZSAKOVAS" ||
-									attr === "PRIZIURI" ||
-									attr === "PASTABA" ||
-									attr === "Atmobj_id_temp" ||
-									attr === "last_edited_user" ||
-									attr === "last_edited_date" ||
-									attr === "SHAPE" ||
-									attr === "GlobalID" ||
-									attr === "OBJ_FOTO" ||
-									attr === "created_user" ||
-									attr === "created_date"
-								) {
-								} else {
-									const obj = {}
+								for (let obj in response.features) {
+									if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
+										view.goTo({
+											target: response.features[obj].geometry,
+											zoom: 8,
+										})
 
-									obj.alias = response.features[props.page - 1].layer.fields[count].alias
-									if (response.features[props.page - 1].layer.fields[count].domain === null) {
-										obj.value = response.features[props.page - 1].attributes[attr]
+										highlight = objectsView.highlight(response.features[obj])
+
+										props.setPage(parseInt(obj) + 1)
+										props.setSelectedObject(`${globalID}`)
+									}
+								}
+								props.setPageCount(response.features.length)
+
+								setQueryObjects(response)
+								return response
+							})
+							.then((response) => {
+								const allAttributes = []
+
+								let count = 0
+								for (let attr in response.features[props.page - 1].attributes) {
+									if (
+										response.features[props.page - 1].attributes[attr] === null ||
+										response.features[props.page - 1].attributes[attr] === "" ||
+										response.features[props.page - 1].attributes[attr] === 0 ||
+										attr === "OBJECTID" ||
+										attr === "IDENTIFIK" ||
+										attr === "REG_TURTAS" ||
+										attr === "VERTE" ||
+										attr === "UZSAKOVAS" ||
+										attr === "PRIZIURI" ||
+										attr === "PASTABA" ||
+										attr === "Atmobj_id_temp" ||
+										attr === "last_edited_user" ||
+										attr === "last_edited_date" ||
+										attr === "SHAPE" ||
+										attr === "GlobalID" ||
+										attr === "OBJ_FOTO" ||
+										attr === "created_user" ||
+										attr === "created_date"
+									) {
 									} else {
-										for (let code in response.features[props.page - 1].layer.fields[count].domain
-											.codedValues) {
-											if (
-												response.features[props.page - 1].layer.fields[count].domain.codedValues[code]
-													.code === response.features[props.page - 1].attributes[attr]
-											) {
-												obj.value =
-													response.features[props.page - 1].layer.fields[count].domain.codedValues[code].name
+										const obj = {}
+
+										obj.alias = response.features[props.page - 1].layer.fields[count].alias
+										if (response.features[props.page - 1].layer.fields[count].domain === null) {
+											obj.value = response.features[props.page - 1].attributes[attr]
+										} else {
+											for (let code in response.features[props.page - 1].layer.fields[count].domain
+												.codedValues) {
+												if (
+													response.features[props.page - 1].layer.fields[count].domain.codedValues[code]
+														.code === response.features[props.page - 1].attributes[attr]
+												) {
+													obj.value =
+														response.features[props.page - 1].layer.fields[count].domain.codedValues[
+															code
+														].name
+												}
 											}
 										}
-									}
 
-									obj.field = attr
-									allAttributes.push(obj)
+										obj.field = attr
+										allAttributes.push(obj)
+									}
+									count++
 								}
-								count++
-							}
-							setObjectAttr(allAttributes)
-							return response.features[props.page - 1].attributes.OBJECTID
-						})
-						.then((OBJECTID) => {
-							const allPersons = []
-							objects
-								.queryRelatedFeatures({
-									outFields: ["GlobalID", "Pavardė__liet_", "Vardas__liet_"],
-									relationshipId: 0,
-									objectIds: OBJECTID,
-								})
-								.then((response) => {
-									if (Object.keys(response).length === 0) {
-										setObjectPer([])
-										return
-									}
-									Object.keys(response).forEach((objectId) => {
-										const person = response[objectId].features
-										person.forEach((person) => {
-											allPersons.push(person)
-										})
+								setObjectAttr(allAttributes)
+								return response.features[props.page - 1].attributes.OBJECTID
+							})
+							.then((OBJECTID) => {
+								const allPersons = []
+								objects
+									.queryRelatedFeatures({
+										outFields: ["GlobalID", "Pavardė__liet_", "Vardas__liet_"],
+										relationshipId: 0,
+										objectIds: OBJECTID,
 									})
-									setObjectPer(allPersons)
-								})
-								.catch((error) => {
-									console.error(error)
-								})
+									.then((response) => {
+										if (Object.keys(response).length === 0) {
+											setObjectPer([])
+											return
+										}
+										Object.keys(response).forEach((objectId) => {
+											const person = response[objectId].features
+											person.forEach((person) => {
+												allPersons.push(person)
+											})
+										})
+										setObjectPer(allPersons)
+									})
+									.catch((error) => {
+										console.error(error)
+									})
 
-							const allAttachments = []
-							objects
-								.queryAttachments({
-									attachmentTypes: ["image/jpeg"],
-									objectIds: OBJECTID,
-								})
-								.then((response) => {
-									if (Object.keys(response).length === 0) {
-										setObjectAtt([])
-										return
-									}
-									Object.keys(response).forEach((objectId) => {
-										const attachment = response[objectId]
-										attachment.forEach((attachment) => {
-											allAttachments.push(attachment)
-										})
+								const allAttachments = []
+								objects
+									.queryAttachments({
+										attachmentTypes: ["image/jpeg"],
+										objectIds: OBJECTID,
 									})
-									setObjectAtt(allAttachments)
-								})
-								.catch((error) => {
-									console.error(error)
-								})
-						})
-						.then(() => {
-							setLoading(false)
-						})
-						.catch((error) => {
-							console.error(error)
-						})
-				})
-				.catch((error) => {
-					console.error(error)
-				})
-		})
-	}, [globalID, props.page])
+									.then((response) => {
+										if (Object.keys(response).length === 0) {
+											setObjectAtt([])
+											return
+										}
+										Object.keys(response).forEach((objectId) => {
+											const attachment = response[objectId]
+											attachment.forEach((attachment) => {
+												allAttachments.push(attachment)
+											})
+										})
+										setObjectAtt(allAttachments)
+									})
+									.catch((error) => {
+										console.error(error)
+									})
+							})
+							.then(() => {
+								setLoading(false)
+							})
+							.catch((error) => {
+								console.error(error)
+							})
+					})
+					.catch((error) => {
+						console.error(error)
+					})
+			})
+		}
+	}, [globalID, props.page, props.initialLoading])
 
 	useEffect(() => {
 		return () => {

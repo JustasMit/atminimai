@@ -7,6 +7,9 @@ import BasemapGallery from "@arcgis/core/widgets/BasemapGallery"
 import Expand from "@arcgis/core/widgets/Expand"
 import Locate from "@arcgis/core/widgets/Locate";
 
+const url = window.location.href
+const origin = new URL(url).origin
+console.log(origin)
 const objectsRenderer = {
 	type: "unique-value",
 	field: "TIPAS",
@@ -15,56 +18,56 @@ const objectsRenderer = {
 			value: "1",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_atminimo_lenta.svg",
+				url: `${origin}/Atmint_atminimo_lenta.svg`,
 			},
 		},
 		{
 			value: "2",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_skulptura.svg",
+				url: `${origin}/Atmint_skulptura.svg`,
 			},
 		},
 		{
 			value: "3",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_atminimo_lenta_bareljefas.svg",
+				url: `${origin}/Atmint_atminimo_lenta_bareljefas.svg`,
 			},
 		},
 		{
 			value: "4",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_freska.svg",
+				url: `${origin}/Atmint_freska.svg`,
 			},
 		},
 		{
 			value: "5",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_pavadinimo_lentele.svg",
+				url: `${origin}/Atmint_pavadinimo_lentele.svg`,
 			},
 		},
 		{
 			value: "6",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_uzrasas.svg",
+				url: `${origin}/Atmint_uzrasas.svg`,
 			},
 		},
 		{
 			value: "7",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_vietos_pazymejimas.svg",
+				url: `${origin}/Atmint_vietos_pazymejimas.svg`,
 			},
 		},
 		{
 			value: "8",
 			symbol: {
 				type: "picture-marker",
-				url: "Atmint_paminklas.svg",
+				url: `${origin}/Atmint_paminklas.svg`,
 			},
 		},
 	],
