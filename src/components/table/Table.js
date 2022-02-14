@@ -18,7 +18,6 @@ const Table = (props) => {
 		setObjectsList(props.initialObjectsList)
 	}, [props.initialObjectsList])
 
-	//////
 	useEffect(() => {
 		if (searchInputValue) {
 			setTableObjectsList(
