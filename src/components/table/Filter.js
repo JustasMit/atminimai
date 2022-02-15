@@ -209,7 +209,7 @@ const Filter = (props) => {
 							<em>Visi</em>
 						</MenuItem>
 						{objectAlias.map((object) => (
-							<MenuItem key={object.code} value={object.code}>
+							<MenuItem sx={{ whiteSpace: "unset" }} key={object.code} value={object.code}>
 								{object.alias}
 							</MenuItem>
 						))}
