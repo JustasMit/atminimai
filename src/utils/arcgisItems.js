@@ -5,7 +5,7 @@ import TileLayer from "@arcgis/core/layers/TileLayer"
 import Basemap from "@arcgis/core/Basemap"
 import BasemapGallery from "@arcgis/core/widgets/BasemapGallery"
 import Expand from "@arcgis/core/widgets/Expand"
-import Locate from "@arcgis/core/widgets/Locate";
+import Locate from "@arcgis/core/widgets/Locate"
 
 const url = window.location.href
 const origin = new URL(url).origin
@@ -145,30 +145,31 @@ const basemap1 = new Basemap({
 	thumbnailUrl: "basemap_light.png",
 })
 const basemap2 = new Basemap({
-  baseLayers: [
-    new TileLayer({
-      url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_dark_LKS/MapServer",
+	baseLayers: [
+		new TileLayer({
+			url: "https://atviras.vplanas.lt/arcgis/rest/services/Baziniai_zemelapiai/Vilnius_basemap_dark_LKS/MapServer",
 		}),
 	],
 	title: "Tamsus žemėlapis",
 	id: "Tamsus žemėlapis",
-  thumbnailUrl: "basemap_dark.png",
+	thumbnailUrl: "basemap_dark.png",
 })
 
 const basemapGallery = new BasemapGallery({
-  view: view,
-  source: [basemap1, basemap2],
+	view: view,
+	source: [basemap1, basemap2],
 })
 
 export const bgExpand = new Expand({
-  view: view,
-  content: basemapGallery,
-  autoCollapse: true,
-  collapseIconClass: "esri-icon-left",
-  collapseTooltip: "Suskleisti",
-  expandTooltip: "Išskleisti bazinius žemėlapius",
+	view: view,
+	content: basemapGallery,
+	autoCollapse: true,
+	collapseIconClass: "esri-icon-left",
+	collapseTooltip: "Suskleisti",
+	expandTooltip: "Išskleisti bazinius žemėlapius",
 })
 
 export const locateWidget = new Locate({
-  view: view,
-});
+	view: view,
+	popupEnabled: false,
+})
