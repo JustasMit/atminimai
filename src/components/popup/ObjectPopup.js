@@ -31,181 +31,177 @@ const ObjectPopup = (props) => {
 	const [loading, setLoading] = useState(true)
 	const [queryObjects, setQueryObjects] = useState([])
 	const [popupOpen, setPopupOpen] = useState(false)
+	const [page, setPage] = useState(1)
+	const [pageCount, setPageCount] = useState(1)
 	const navigate = useNavigate()
 
 	const handlePage = (event, value) => {
-		navigate(`/objektas/${queryObjects.features[value - 1].attributes.GlobalID.replace(/[{}]/g, "")}`)
+		navigate(`/objektas/${queryObjects[value - 1].attributes.GlobalID.replace(/[{}]/g, "")}`)
 	}
 
 	useEffect(() => {
 		if (!props.initialLoading) {
 			setPopupOpen(true)
 			setLoading(true)
-			view.whenLayerView(objects).then((objectsView) => {
-				let query = objectsView.createQuery()
-				query.where = `GlobalID = '{${globalID}}'`
-				query.outFields = ["GlobalID"]
 
-				objectsView
-					.queryFeatures(query)
-					.then((response) => {
-						return response.features[0].geometry
-					})
-					.then((geometry) => {
-						let query = objectsView.createQuery()
-						query.geometry = geometry
-						query.spatialRelationship = "intersects"
+			let found = false
+			for (let obj in props.mapQuery) {
+				if (props.mapQuery[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
+					setPage(parseInt(obj) + 1)
+					found = true
+				}
+			}
 
-						objectsView
-							.queryFeatures(query)
-							.then((response) => {
-								if (highlight) {
-									highlight.remove()
-								}
+			if (found) {
+				setQueryObjects(props.mapQuery)
+				setPageCount(props.mapQuery.length)
+			} else {
+				setPageCount(1)
+				setPage(1)
+			}
 
-								if (response.features.length === 0) {
-									navigate("/")
-									return
-								}
+			view
+				.whenLayerView(objects)
+				.then((objectsView) => {
+					let query = objectsView.createQuery()
+					query.where = `GlobalID = '{${globalID}}'`
 
-								for (let obj in response.features) {
-									if (response.features[obj].attributes.GlobalID.replace(/[{}]/g, "") === globalID) {
-										view.goTo({
-											target: response.features[obj].geometry,
-											zoom: 8,
-										})
+					objectsView
+						.queryFeatures(query)
+						.then((response) => {
+							if (highlight) {
+								highlight.remove()
+							}
 
-										highlight = objectsView.highlight(response.features[obj])
+							if (response.features.length === 0) {
+								navigate("/")
+								return
+							}
 
-										props.setPage(parseInt(obj) + 1)
-										props.setSelectedObject(`${globalID}`)
-									}
-								}
-								props.setPageCount(response.features.length)
-
-								setQueryObjects(response)
-								return response
+							view.goTo({
+								target: response.features[0].geometry,
+								zoom: 8,
 							})
-							.then((response) => {
-								const allAttributes = []
+							highlight = objectsView.highlight(response.features[0])
+							props.setSelectedObject(`${globalID}`)
 
-								let count = 0
-								for (let attr in response.features[props.page - 1].attributes) {
-									if (
-										response.features[props.page - 1].attributes[attr] === null ||
-										response.features[props.page - 1].attributes[attr] === "" ||
-										response.features[props.page - 1].attributes[attr] === 0 ||
-										attr === "OBJECTID" ||
-										attr === "IDENTIFIK" ||
-										attr === "REG_TURTAS" ||
-										attr === "VERTE" ||
-										attr === "UZSAKOVAS" ||
-										attr === "PRIZIURI" ||
-										attr === "PASTABA" ||
-										attr === "Atmobj_id_temp" ||
-										attr === "last_edited_user" ||
-										attr === "last_edited_date" ||
-										attr === "SHAPE" ||
-										attr === "GlobalID" ||
-										attr === "OBJ_FOTO" ||
-										attr === "created_user" ||
-										attr === "created_date"
-									) {
+							return response
+						})
+						.then((response) => {
+							const allAttributes = []
+
+							let count = 0
+							for (let attr in response.features[0].attributes) {
+								if (
+									response.features[0].attributes[attr] === null ||
+									response.features[0].attributes[attr] === "" ||
+									response.features[0].attributes[attr] === 0 ||
+									attr === "OBJECTID" ||
+									attr === "IDENTIFIK" ||
+									attr === "REG_TURTAS" ||
+									attr === "VERTE" ||
+									attr === "UZSAKOVAS" ||
+									attr === "PRIZIURI" ||
+									attr === "PASTABA" ||
+									attr === "Atmobj_id_temp" ||
+									attr === "last_edited_user" ||
+									attr === "last_edited_date" ||
+									attr === "SHAPE" ||
+									attr === "GlobalID" ||
+									attr === "OBJ_FOTO" ||
+									attr === "created_user" ||
+									attr === "created_date"
+								) {
+								} else {
+									const obj = {}
+
+									obj.alias = response.features[0].layer.fields[count].alias
+									if (response.features[0].layer.fields[count].domain === null) {
+										obj.value = response.features[0].attributes[attr]
 									} else {
-										const obj = {}
-
-										obj.alias = response.features[props.page - 1].layer.fields[count].alias
-										if (response.features[props.page - 1].layer.fields[count].domain === null) {
-											obj.value = response.features[props.page - 1].attributes[attr]
-										} else {
-											for (let code in response.features[props.page - 1].layer.fields[count].domain
-												.codedValues) {
-												if (
-													response.features[props.page - 1].layer.fields[count].domain.codedValues[code]
-														.code === response.features[props.page - 1].attributes[attr]
-												) {
-													obj.value =
-														response.features[props.page - 1].layer.fields[count].domain.codedValues[
-															code
-														].name
-												}
+										for (let code in response.features[0].layer.fields[count].domain.codedValues) {
+											if (
+												response.features[0].layer.fields[count].domain.codedValues[code].code ===
+												response.features[0].attributes[attr]
+											) {
+												obj.value = response.features[0].layer.fields[count].domain.codedValues[code].name
 											}
 										}
-
-										obj.field = attr
-										allAttributes.push(obj)
 									}
-									count++
-								}
-								setObjectAttr(allAttributes)
-								return response.features[props.page - 1].attributes.OBJECTID
-							})
-							.then((OBJECTID) => {
-								const allPersons = []
-								objects
-									.queryRelatedFeatures({
-										outFields: ["GlobalID", "Pavardė__liet_", "Vardas__liet_"],
-										relationshipId: 0,
-										objectIds: OBJECTID,
-									})
-									.then((response) => {
-										if (Object.keys(response).length === 0) {
-											setObjectPer([])
-											return
-										}
-										Object.keys(response).forEach((objectId) => {
-											const person = response[objectId].features
-											person.forEach((person) => {
-												allPersons.push(person)
-											})
-										})
-										setObjectPer(allPersons)
-									})
-									.catch((error) => {
-										console.error(error)
-									})
 
-								const allAttachments = []
-								objects
-									.queryAttachments({
-										attachmentTypes: ["image/jpeg"],
-										objectIds: OBJECTID,
-									})
-									.then((response) => {
-										if (Object.keys(response).length === 0) {
-											setObjectAtt([])
-											return
-										}
-										Object.keys(response).forEach((objectId) => {
-											const attachment = response[objectId]
-											attachment.forEach((attachment) => {
-												allAttachments.push(attachment)
-											})
+									obj.field = attr
+									allAttributes.push(obj)
+								}
+								count++
+							}
+							setObjectAttr(allAttributes)
+							return response.features[0].attributes.OBJECTID
+						})
+						.then((OBJECTID) => {
+							const allPersons = []
+							objects
+								.queryRelatedFeatures({
+									outFields: ["GlobalID", "Pavardė__liet_", "Vardas__liet_"],
+									relationshipId: 0,
+									objectIds: OBJECTID,
+								})
+								.then((response) => {
+									if (Object.keys(response).length === 0) {
+										setObjectPer([])
+										return
+									}
+									Object.keys(response).forEach((objectId) => {
+										const person = response[objectId].features
+										person.forEach((person) => {
+											allPersons.push(person)
 										})
-										setObjectAtt(allAttachments)
 									})
-									.catch((error) => {
-										console.error(error)
+									setObjectPer(allPersons)
+								})
+								.catch((error) => {
+									console.error(error)
+								})
+
+							const allAttachments = []
+							objects
+								.queryAttachments({
+									attachmentTypes: ["image/jpeg"],
+									objectIds: OBJECTID,
+								})
+								.then((response) => {
+									if (Object.keys(response).length === 0) {
+										setObjectAtt([])
+										return
+									}
+									Object.keys(response).forEach((objectId) => {
+										const attachment = response[objectId]
+										attachment.forEach((attachment) => {
+											allAttachments.push(attachment)
+										})
 									})
-							})
-							.then(() => {
-								setLoading(false)
-							})
-							.catch((error) => {
-								console.error(error)
-							})
-					})
-					.catch((error) => {
-						console.error(error)
-					})
-			})
+									setObjectAtt(allAttachments)
+								})
+								.catch((error) => {
+									console.error(error)
+								})
+						})
+						.then(() => {
+							setLoading(false)
+						})
+						.catch((error) => {
+							console.error(error)
+						})
+				})
+				.catch((error) => {
+					console.error(error)
+				})
 		}
 	}, [globalID, props.initialLoading])
 
 	useEffect(() => {
 		return () => {
-			props.setPage(1)
-			props.setPageCount(1)
+			setPage(1)
+			setPageCount(1)
 			props.setSelectedObject("")
 			setQueryObjects([])
 			setPopupOpen(false)
@@ -219,12 +215,7 @@ const ObjectPopup = (props) => {
 	const matches = useMediaQuery("(min-width:995px)")
 	return (
 		<>
-			{!matches && (
-				<Backdrop
-					sx={{ color: "#fff", zIndex: 2 }}
-					open={popupOpen}
-				></Backdrop>
-			)}
+			{!matches && <Backdrop sx={{ color: "#fff", zIndex: 2 }} open={popupOpen}></Backdrop>}
 			<Box sx={{ top: 0, right: 0, position: "fixed", zIndex: 100 }}>
 				<Card
 					sx={{
@@ -241,9 +232,9 @@ const ObjectPopup = (props) => {
 							overflowX: "hidden",
 						}}
 					>
-						{props.pageCount > 1 ? (
+						{pageCount > 1 ? (
 							<Box component="div" display="flex" justifyContent="center" alignItems="center">
-								<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
+								<Pagination count={pageCount} page={page} onChange={handlePage} />
 							</Box>
 						) : null}
 						{loading ? (

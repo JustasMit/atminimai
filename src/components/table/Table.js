@@ -27,7 +27,12 @@ const Table = (props) => {
 				})
 			)
 		} else {
-			setTableObjectsList(searchObjectsList)
+      setTableObjectsList(
+				matchSorter(searchObjectsList, "", {
+					keys: [(item) => item.attributes.OBJ_PAV],
+					threshold: matchSorter.rankings.MATCHES,
+				})
+			)
 		}
 	}, [searchObjectsList])
 

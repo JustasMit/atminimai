@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { map, objects, view } from "../../utils/arcgisItems"
+import { objects, view } from "../../utils/arcgisItems"
 
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
@@ -74,16 +74,6 @@ const Filter = (props) => {
 		let tempObjectAlias = []
 		let tempMemoryAlias = []
 		props.setSearchObjectsList(props.objectsList)
-
-		view.watch("scale", (newScale) => {
-			for (let stop in map.layers.items[0].renderer.visualVariables[0].stops) {
-				if (map.layers.items[0].renderer.visualVariables[0].stops[stop].value === newScale) {
-					console.log(
-						`scale ${newScale}, size ${map.layers.items[0].renderer.visualVariables[0].stops[stop].size}`
-					)
-				}
-			}
-		})
 
 		for (let field in props.objectsList[0].layer.fields) {
 			if (props.objectsList[0].layer.fields[field].name === "TIPAS") {
@@ -163,9 +153,7 @@ const Filter = (props) => {
 									returnGeometry: false,
 								})
 								.then((response) => {
-									if (response.features.length) {
-										props.setSearchObjectsList(response.features)
-									}
+									props.setSearchObjectsList(response.features)
 								})
 						}
 					})

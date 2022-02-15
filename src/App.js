@@ -18,9 +18,8 @@ const App = () => {
 	const [selectedObject, setSelectedObject] = useState("")
 	const [initialLoading, setInitialLoading] = useState(true)
 	const [initialObjectsList, setInitialObjectsList] = useState([])
+	const [mapQuery, setMapQuery] = useState([])
 	const [visible, setVisible] = useState(false)
-	const [page, setPage] = useState(1)
-	const [pageCount, setPageCount] = useState(1)
 
 	const theme = createTheme({
 		palette: {
@@ -55,9 +54,8 @@ const App = () => {
 									<TableToggle visible={visible} setVisible={setVisible} />
 									<ObjectMap
 										setInitialObjectsList={setInitialObjectsList}
-										setPage={setPage}
-										setPageCount={setPageCount}
 										setInitialLoading={setInitialLoading}
+										setMapQuery={setMapQuery}
 									/>
 									<Outlet />
 								</Grid>
@@ -69,11 +67,8 @@ const App = () => {
 						path="objektas/:globalID"
 						element={
 							<ObjectPopup
+								mapQuery={mapQuery}
 								setSelectedObject={setSelectedObject}
-								page={page}
-								setPage={setPage}
-								pageCount={pageCount}
-								setPageCount={setPageCount}
 								initialLoading={initialLoading}
 							/>
 						}

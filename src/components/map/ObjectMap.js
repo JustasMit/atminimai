@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { view, objects, bgExpand, locateWidget } from "../../utils/arcgisItems"
+import { map, view, objects, bgExpand, locateWidget } from "../../utils/arcgisItems"
 import * as watchUtils from "@arcgis/core/core/watchUtils"
 import "../../css/map.css"
 
@@ -26,7 +26,7 @@ const ObjectMap = (props) => {
 					.then((response) => {
 						if (response.features.length) {
 							props.setInitialObjectsList(response.features)
-              props.setInitialLoading(false)
+							props.setInitialLoading(false)
 						}
 					})
 					.catch((error) => {
@@ -35,37 +35,37 @@ const ObjectMap = (props) => {
 			})
 		})
 
+		// view.watch("scale", (newScale) => {
+		// 	for (let stop in map.layers.items[0].renderer.visualVariables[0].stops) {
+		// 		if (map.layers.items[0].renderer.visualVariables[0].stops[stop].value === newScale) {
+		// 			console.log(
+		// 				`scale ${newScale}, size ${map.layers.items[0].renderer.visualVariables[0].stops[stop].size}`
+		// 			)
+		// 		}
+		// 	}
+		// })
+
 		view.on("click", (event) => {
 			bgExpand.collapse()
 
-			const opts = {
-				include: objects,
-			}
-			view.hitTest(event, opts).then((response) => {
-				if (response.results.length) {
-					props.setPage(1)
-					navigate(`objektas/${response.results[0].graphic.attributes.GlobalID.replace(/[{}]/g, "")}`)
-				}
+			view.whenLayerView(objects).then((objectsView) => {
+				watchUtils
+					.whenNotOnce(objectsView, "updating")
+					.then(() => {
+						return objectsView.queryFeatures({
+							geometry: event.mapPoint,
+							distance: view.resolution <= 7 ? view.resolution * 15 : 100,
+							spatialRelationship: "intersects",
+							outFields: ["GlobalID"],
+						})
+					})
+					.then((response) => {
+						if (response.features.length > 0) {
+							props.setMapQuery(response.features)
+							navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
+						}
+					})
 			})
-
-			// view.whenLayerView(objects).then((objectsView) => {
-			// 	watchUtils
-			// 		.whenNotOnce(objectsView, "updating")
-			// 		.then(() => {
-			// 			return objectsView.queryFeatures({
-			// 				geometry: event.mapPoint,
-			// 				distance: view.resolution * 6,
-			// 				spatialRelationship: "intersects",
-			// 			})
-			// 		})
-			// 		.then((response) => {
-			// 			if (response.features.length) {
-			// 				props.setPageCount(response.features.length)
-			// 				props.setPage(1)
-			// 				navigate(`objektas/${response.features[0].attributes.GlobalID.replace(/[{}]/g, "")}`)
-			// 			}
-			// 		})
-			// })
 		})
 	}, [])
 
