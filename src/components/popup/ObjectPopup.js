@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { view, objects } from "../../utils/arcgisItems"
-import Graphic from "@arcgis/core/Graphic"
 import MuiLinkify from "material-ui-linkify"
 
 import Card from "@mui/material/Card"
@@ -21,6 +20,7 @@ import Box from "@mui/material/Box"
 import Pagination from "@mui/material/Pagination"
 import CircularProgress from "@mui/material/CircularProgress"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import Backdrop from "@mui/material/Backdrop"
 
 let highlight
 const ObjectPopup = (props) => {
@@ -30,6 +30,7 @@ const ObjectPopup = (props) => {
 	const [objectAtt, setObjectAtt] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [queryObjects, setQueryObjects] = useState([])
+	const [popupOpen, setPopupOpen] = useState(false)
 	const navigate = useNavigate()
 
 	const handlePage = (event, value) => {
@@ -38,6 +39,7 @@ const ObjectPopup = (props) => {
 
 	useEffect(() => {
 		if (!props.initialLoading) {
+			setPopupOpen(true)
 			setLoading(true)
 			view.whenLayerView(objects).then((objectsView) => {
 				let query = objectsView.createQuery()
@@ -206,6 +208,7 @@ const ObjectPopup = (props) => {
 			props.setPageCount(1)
 			props.setSelectedObject("")
 			setQueryObjects([])
+			setPopupOpen(false)
 
 			if (highlight) {
 				highlight.remove()
@@ -215,129 +218,140 @@ const ObjectPopup = (props) => {
 
 	const matches = useMediaQuery("(min-width:995px)")
 	return (
-		<Box sx={{ top: 0, right: 0, position: "fixed", zIndex: 2 }}>
-			<Card
-				sx={{
-					maxWidth: matches ? "auto" : 995,
-					width: matches ? 600 : "100vw",
-					mt: matches ? 1.5 : 0,
-					mr: matches ? 1.5 : 0,
-				}}
-			>
-				<CardContent
+		<>
+			{!matches && (
+				<Backdrop
+					sx={{ color: "#fff", zIndex: 2 }}
+					open={popupOpen}
+				></Backdrop>
+			)}
+			<Box sx={{ top: 0, right: 0, position: "fixed", zIndex: 100 }}>
+				<Card
 					sx={{
-						maxHeight: matches ? window.innerHeight - 38 : window.innerHeight - 16,
-						overflowY: "auto",
-						overflowX: "hidden",
+						maxWidth: matches ? "auto" : 995,
+						width: matches ? 600 : "100vw",
+						mt: matches ? 1.5 : 0,
+						mr: matches ? 1.5 : 0,
 					}}
 				>
-					{props.pageCount > 1 ? (
-						<Box component="div" display="flex" justifyContent="center" alignItems="center">
-							<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
-						</Box>
-					) : null}
-					{loading ? (
-						<Box display="flex" justifyContent="center" alignItems="center">
-							<CircularProgress />
-						</Box>
-					) : (
-						<>
-							<CardHeader
-								sx={{ px: 0, pt: 0.5, pb: 1 }}
-								action={
-									<IconButton
-										aria-label="close"
-										onClick={() => {
-											navigate("/")
-										}}
-									>
-										<CloseIcon />
-									</IconButton>
-								}
-								title={Object.keys(objectAttr).map((attr) =>
-									objectAttr[attr].field === "OBJ_PAV" ? objectAttr[attr].value : null
-								)}
-							/>
-							<TableContainer sx={{ mb: 1 }} component={Paper}>
-								<Table size="small">
-									<TableBody>
-										{Object.keys(objectAttr).map((attr) =>
-											objectAttr[attr].field === "OBJ_APRAS" ||
-											objectAttr[attr].field === "AUTORIUS" ||
-											objectAttr[attr].field === "OBJ_PAV" ||
-											objectAttr[attr].field === "SALTINIS" ? null : (
-												<TableRow
-													key={objectAttr[attr].field}
-													sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-												>
-													<TableCell component="th" scope="row">
-														{objectAttr[attr].alias}
-													</TableCell>
-													<TableCell align="right">{objectAttr[attr].value}</TableCell>
-												</TableRow>
-											)
-										)}
-									</TableBody>
-								</Table>
-							</TableContainer>
-							{Object.keys(objectAttr).map((attr) =>
-								objectAttr[attr].field === "OBJ_APRAS" || objectAttr[attr].field === "AUTORIUS" ? (
-									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
-										{objectAttr[attr].alias}
-										<Typography variant="body2" component="div">
-											{objectAttr[attr].value}
-										</Typography>
-									</Typography>
-								) : null
-							)}
-							{Object.keys(objectAttr).map((attr) =>
-								objectAttr[attr].field === "SALTINIS" ? (
-									<Typography variant="h6" component="div" key={objectAttr[attr].field}>
-										{objectAttr[attr].alias}
-										<MuiLinkify LinkProps={{ target: "_blank", rel: "noopener", rel: "noreferrer" }}>
+					<CardContent
+						sx={{
+							maxHeight: matches ? window.innerHeight - 38 : window.innerHeight - 16,
+							overflowY: "auto",
+							overflowX: "hidden",
+						}}
+					>
+						{props.pageCount > 1 ? (
+							<Box component="div" display="flex" justifyContent="center" alignItems="center">
+								<Pagination count={props.pageCount} page={props.page} onChange={handlePage} />
+							</Box>
+						) : null}
+						{loading ? (
+							<Box display="flex" justifyContent="center" alignItems="center">
+								<CircularProgress />
+							</Box>
+						) : (
+							<>
+								<CardHeader
+									sx={{ px: 0, pt: 0.5, pb: 1 }}
+									action={
+										<IconButton
+											aria-label="close"
+											onClick={() => {
+												navigate("/")
+											}}
+										>
+											<CloseIcon />
+										</IconButton>
+									}
+									title={Object.keys(objectAttr).map((attr) =>
+										objectAttr[attr].field === "OBJ_PAV" ? objectAttr[attr].value : null
+									)}
+								/>
+								<TableContainer sx={{ mb: 1 }} component={Paper}>
+									<Table size="small">
+										<TableBody>
+											{Object.keys(objectAttr).map((attr) =>
+												objectAttr[attr].field === "OBJ_APRAS" ||
+												objectAttr[attr].field === "AUTORIUS" ||
+												objectAttr[attr].field === "OBJ_PAV" ||
+												objectAttr[attr].field === "SALTINIS" ? null : (
+													<TableRow
+														key={objectAttr[attr].field}
+														sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+													>
+														<TableCell component="th" scope="row">
+															{objectAttr[attr].alias}
+														</TableCell>
+														<TableCell align="right">{objectAttr[attr].value}</TableCell>
+													</TableRow>
+												)
+											)}
+										</TableBody>
+									</Table>
+								</TableContainer>
+								{Object.keys(objectAttr).map((attr) =>
+									objectAttr[attr].field === "OBJ_APRAS" || objectAttr[attr].field === "AUTORIUS" ? (
+										<Typography variant="h6" component="div" key={objectAttr[attr].field}>
+											{objectAttr[attr].alias}
 											<Typography variant="body2" component="div">
 												{objectAttr[attr].value}
 											</Typography>
-										</MuiLinkify>
-									</Typography>
-								) : null
-							)}
+										</Typography>
+									) : null
+								)}
+								{Object.keys(objectAttr).map((attr) =>
+									objectAttr[attr].field === "SALTINIS" ? (
+										<Typography variant="h6" component="div" key={objectAttr[attr].field}>
+											{objectAttr[attr].alias}
+											<MuiLinkify LinkProps={{ target: "_blank", rel: "noopener", rel: "noreferrer" }}>
+												<Typography variant="body2" component="div">
+													{objectAttr[attr].value}
+												</Typography>
+											</MuiLinkify>
+										</Typography>
+									) : null
+								)}
 
-							{objectPer.length ? (
-								<Typography variant="h6" component="div">
-									{objectPer.length > 1 ? "Susiję asmenys" : "Susijęs asmuo"}
-									<Typography component="div">
-										{Object.keys(objectPer).map((per) => (
-											<div key={per}>
-												<Link
-													sx={{ mt: 0.5 }}
-													textAlign="left"
-													component="button"
-													variant="body2"
-													onClick={() => {
-														navigate(`/asmuo/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
-													}}
-												>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
-												<br></br>
-											</div>
-										))}
+								{objectPer.length ? (
+									<Typography variant="h6" component="div">
+										{objectPer.length > 1 ? "Susiję asmenys" : "Susijęs asmuo"}
+										<Typography component="div">
+											{Object.keys(objectPer).map((per) => (
+												<div key={per}>
+													<Link
+														sx={{ mt: 0.5 }}
+														textAlign="left"
+														component="button"
+														variant="body2"
+														onClick={() => {
+															navigate(`/asmuo/${objectPer[per].attributes.GlobalID.replace(/[{}]/g, "")}`)
+														}}
+													>{`${objectPer[per].attributes.Vardas__liet_} ${objectPer[per].attributes.Pavardė__liet_}`}</Link>
+													<br></br>
+												</div>
+											))}
+										</Typography>
 									</Typography>
-								</Typography>
-							) : null}
-							{objectAtt.length
-								? Object.keys(objectAtt).map((att) => (
-										<Box sx={{ mt: 1 }} key={att}>
-											<a href={`${objectAtt[att].url}`} target="_blank">
-												<img style={{ maxWidth: "100%", maxHeight: "auto" }} src={`${objectAtt[att].url}`} />
-											</a>
-										</Box>
-								  ))
-								: null}
-						</>
-					)}
-				</CardContent>
-			</Card>
-		</Box>
+								) : null}
+								{objectAtt.length
+									? Object.keys(objectAtt).map((att) => (
+											<Box sx={{ mt: 1 }} key={att}>
+												<a href={`${objectAtt[att].url}`} target="_blank">
+													<img
+														style={{ maxWidth: "100%", maxHeight: "auto" }}
+														src={`${objectAtt[att].url}`}
+													/>
+												</a>
+											</Box>
+									  ))
+									: null}
+							</>
+						)}
+					</CardContent>
+				</Card>
+			</Box>
+		</>
 	)
 }
 
