@@ -54,6 +54,7 @@ const ObjectMap = (props) => {
 					.then(() => {
 						return objectsView.queryFeatures({
 							geometry: event.mapPoint,
+							where: objectsView.filter.where,
 							distance: view.resolution <= 7 ? view.resolution * 15 : 100,
 							spatialRelationship: "intersects",
 							outFields: ["GlobalID"],
